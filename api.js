@@ -26,13 +26,14 @@ router.get('/users', function (req, res){
 });
 
 router.post('/user', function(req, res){
-	/*connectn.connect();
+	connection.connect();
 
-	connect.query('INSERT INTO users (NickName, Name, LastName, BirthData) VALUES ()', function(err, rows){
-		if (err) throw err;*/
-		console.log(req.body);
+	connection.query("INSERT INTO users (Name, LastName, NickName) VALUES ('"+req.body.name+"', '"+req.body.surname+"', '"+req.body.nickName+"')", function(err, rows){
+		if (err) throw err;
 		res.send("Данные добавлены!");
-	//})
+	});
+	connection.end();
+	//console.log(req.body.nickName);
 })
 
 module.exports = router;
