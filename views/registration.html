@@ -1,6 +1,16 @@
-<form name = "user" action="/api/user" method="POST">
-  <input name="name" placeholder="Виктор">
-  <input name="surname" placeholder="Цой">
-  <input name="nickName" placeholder="Coi">
+<html ng-app="books">
+<head>
+<title> Registration of user</title>	
+</head>
+<body>
+<form ng-controller="registration" ng-submit="sendData()">
+  <input ng-model="user.name"placeholder="Виктор">
+  <input ng-model="user.surname"placeholder="Цой">
+  <input ng-model="user.nickName"placeholder="Coi">
   <button type="submit">Регистрация</button>
 </form>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+ <script src="script.js"></script>
+</body>
+</html>
