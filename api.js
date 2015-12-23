@@ -33,7 +33,7 @@ router.post('/user', function(req, res){
 		res.send("Данные добавлены!");
 	});
 	connection.end();
-	//console.log(req.body.nickName);
+	//console.log(req.body.name);
 })
 
 module.exports = router;
