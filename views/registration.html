@@ -3,10 +3,12 @@
 <title> Registration of user</title>	
 </head>
 <body>
-<form ng-controller="registration" ng-submit="sendData()">
-  <input ng-model="user.name"placeholder="Виктор">
-  <input ng-model="user.surname"placeholder="Цой">
-  <input ng-model="user.nickName"placeholder="Coi">
+<form name="formA"ng-controller="registration" ng-submit="sendData()">
+  <input name="name"type="text" ng-model="user.nickName" placeholder="Введите login" maxlength="20" required><br/>
+  <input name="email" type="email" ng-model="user.email" placeholder="Введите email" required>
+  	<span ng-show="formA.email.$error.email">Не корректная почта</span><br/>
+  <input type="password" ng-model="user.password" placeholder="Введите пароль" required><br/>
+  
   <button type="submit">Регистрация</button>
 </form>
 

@@ -26,13 +26,28 @@ router.get('/users', function (req, res){
 });
 
 router.post('/user', function(req, res){
-	connection.connect();
-
-	connection.query("INSERT INTO users (Name, LastName, NickName) VALUES ('"+req.body.name+"', '"+req.body.surname+"', '"+req.body.nickName+"')", function(err, rows){
+	connection.query("SELECT Email FROM users WHERE Email='"+req.body.email+"'", function(err, rows2){
+		if (err) throw err;
+		if (rows2!=0) res.send("Email занят!");
+		connection.query("SELECT NickName FROM users WHERE NickName='"+req.body.nickName+"'", function(err, rows1){
+			if (err) throw err;
+			if (rows1!=0)
+			{
+				res.send("Login занят");
+				return;
+			}
+			connection.query("INSERT INTO users (Email, password, NickName) VALUES ('"+req.body.email+"', '"+req.body.password+"', '"+req.body.nickName+"')", function(err, rows){
+			if (err) throw err;
+			res.send("Данные добавлены!");
+			});
+	
+		});
+	});
+	/*connection.query("INSERT INTO users (Email, password, NickName) VALUES ('"+req.body.email+"', '"+req.body.password+"', '"+req.body.nickName+"')", function(err, rows){
 		if (err) throw err;
 		res.send("Данные добавлены!");
 	});
-	connection.end();
+	*/
 	//console.log(req.body.name);
 })
 
