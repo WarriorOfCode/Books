@@ -5,19 +5,9 @@ app.controller('registration', ['$scope', '$http', function($scope, $http) {
 		//console.log($scope.user);
 		$http.post('/api/user', $scope.user)
 		.success(function(data){
-			if(data["error"]){
-				if (data["emailError"]){
-					$scope.emailError = data["message"];
-					var test = true;
-				}
-
-				else
-					$scope.nameError = data["message"];
-			}
-			else 
-				$scope.registrationTrue = data["message"];
-			//alert(data.message);
-			//$scope.user = {};
+			$scope.message = data["message"];
+			if(!data["error"])
+				$scope.user = {};
 		})
 		.error(function (data) {
 			console.log(data);
