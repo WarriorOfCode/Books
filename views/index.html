@@ -6,10 +6,11 @@
 </head>
 <body>
 	<h1>Главная страница</h1>
+	<a href='registration'>Зарегестрироваться</a>
 	<ul>
-		 <% data.forEach(function(ind){%>
+		 <% data.forEach(function(book){%>
 		<li>
-			<a href='book/<%= ind.id %>'><%= ind.Name%></a>
+			<a href='book/<%= book.id %>'><%= book.Name%></a>
 		</li>
 		<% }) %>
 	</ul>

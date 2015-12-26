@@ -2,7 +2,6 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var api = require('./api');
-//var book = require('./book');
 
 var mysql      = require('mysql');
 var config = require('./config.js');
@@ -23,9 +22,10 @@ app.use('/api', api);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/book/:id', function(req, res){
-	connection.query('SELECT * FROM Books WHERE id = ?',req.params.id, function(err, rows){
+	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1',req.params.id, function(err, rows){
 		if (err) throw err;
-		res.render('book.html', {data: rows});
+		if (book==null) res.redirect('/');	
+		res.render('book.html', {book: rows});
 	});
 } );
 
