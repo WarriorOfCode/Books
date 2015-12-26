@@ -8,8 +8,10 @@
 	<h1>Главная страница</h1>
 	<ul>
 		 <% data.forEach(function(ind){%>
-		<li><%= ind.Name %></li>
-	<% }) %>
-	 </ul>
+		<li>
+			<a href='book/<%= ind.id %>'><%= ind.Name%></a>
+		</li>
+		<% }) %>
+	</ul>
 </body>
 </html>
