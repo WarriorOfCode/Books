@@ -25,9 +25,45 @@ router.get('/users', function (req, res){
 
 });
 
+router.post('/book', function(req, res){
+	selectBooks = "SELECT * FROM Books WHERE Name = ?";
+	selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
+	selectAuthors = "SELECT * FROM Authors WHERE id = ?";
+	var insertSql = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
+	var insertParams = [req.body.name, req.body.description,  req.body.page];
+	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
+	var success = {"error": false, "message": "Вы успешно зарегистрированны!"};
+
+	connection.query(selectBooks, req.body.name, function(err, rows){
+		if (err) throw err;
+		if (rows != null && rows.length > 0){
+			connection.query(selectBA, rows[0].id, function(err, rows1){
+				if(err) throw err;
+				connection.query(selectAuthors, rows1[0].id_author, function(err, rows2){
+					if (err) throw err;
+					if (rows2[0].Name == req.body.authorName && rows2[0].Last_Name == req.body.authorLastName){
+						res.json(errorbook);
+					} else {
+						connection.query(insertSql, insertParams, function(err, rows3){
+							if (err) throw err;
+							res.json(success);
+						});
+						
+					}
+				});
+			});
+		} else{
+			connection.query(insertSql, insertParams, function(err, rows3){
+				if (err) throw err;
+				res.json(success);
+			});
+		}
+	});
+});
+
 router.post('/user', function (req, res) {
 
-	var selectSql = "SELECT Email FROM users WHERE Email= ? OR NickName=?";
+	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
 	var selectParams = [req.body.email, req.body.nickName];
 
 	var insertSql = "INSERT INTO users (Email, password, NickName) VALUES (?,?,?)";

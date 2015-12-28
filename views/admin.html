@@ -1,0 +1,19 @@
+<html ng-app="booksregistration">
+<head>
+<title> Registration of book</title>	
+</head>
+<body>
+<form name="formA" ng-controller="registration" ng-submit="sendData()">
+  <input name="name" type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
+  <input name="description" type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
+  <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц" required><br/>
+ <input name="authorName" type="text" ng-model="book.authorName" placeholder="Введите имя автора книги" required><br/>
+  <input name="author" type="text" ng-model="book.authorLastName" placeholder="Введите фамилию автора" required><br/>
+  <button type="submit">Регистрация</button>
+  <span ng-bind="message"></span>
+</form>
+<a href="/">На главную</a>
+ <script src="angular.min.js"></script>
+ <script src="scriptAdmin.js"></script>
+</body>
+</html>

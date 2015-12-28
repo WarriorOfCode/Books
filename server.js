@@ -25,9 +25,14 @@ app.get('/book/:id', function(req, res){
 	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1',req.params.id, function(err, rows){
 		if (err) throw err;
 		if (req.params.id==null) res.redirect('/');	
+		
 		res.render('book.html', {book: rows});
 	});
 } );
+
+app.get('/admin', function(req, res){
+	res.render('admin.html');
+});
 
 app.get('/', function(req, res){
 	connection.query('SELECT * FROM Books', function(err, rows) {
