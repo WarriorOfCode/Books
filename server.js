@@ -22,11 +22,13 @@ app.use('/api', api);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/book/:id', function(req, res){
-	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1',req.params.id, function(err, rows){
+	if (req.params.id == null) res.redirect('/');
+	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
-		if (req.params.id==null) res.redirect('/');	
-		
-		res.render('book.html', {book: rows});
+		if (rows !== null && rows.length > 0)
+			res.render('book.html', {book: rows});
+		else
+			res.redirect('/');
 	});
 } );
 
