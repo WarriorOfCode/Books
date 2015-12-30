@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var config = require('./config.js');
 var connection = mysql.createConnection({
   
@@ -25,10 +25,22 @@ router.get('/users', function (req, res){
 
 });
 
+router.post('/login', function(req, res){
+	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
+	var success = {"error": false, "message": "Вы успешно вошли!"};
+	connection.query("SELECT * FROM users WHERE NickName =?", req.body.nickName, function(err, rows){
+		if (err) throw err;
+		if (rows[0].password==req.body.password)
+			res.json(success);
+		else
+			res.json(errorLogin);
+	});
+});
+
 router.post('/book', function(req, res){
-	selectBooks = "SELECT * FROM Books WHERE Name = ?";
-	selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
-	selectAuthors = "SELECT * FROM Authors WHERE id = ?";
+	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
+	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
+	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
 	var insertSql = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
 	var insertParams = [req.body.name, req.body.description,  req.body.page];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};

@@ -1,0 +1,21 @@
+<html ng-app="Userlogin">
+	<head>
+		<title>Вход</title>
+	</head>
+	<body>
+		<form name="formA" ng-controller="login" ng-submit="sendData()">
+	  		<input name="name"type="text" ng-model="user.nickName" placeholder="Введите login" maxlength="20" required><br/>
+	 		<!-- <input name="email" type="email" ng-model="user.email" placeholder="Введите email" required>
+	 		<span ng-bind="emailError" ></span>  
+	 		<span ng-show="formA.email.$error.email">Не корректная почта</span><br/>-->
+	 		<input type="password" ng-model="user.password" placeholder="Введите пароль" required><br/>
+
+	  		<button type="submit">Вход</button>
+	 		 <span ng-bind="message"></span>
+		</form>
+		<a href="/">На главную</a>
+		<a href='registration'>Зарегистрироваться</a>
+ 		<script src="angular.min.js"></script>
+ 		<script src="scriptlogin.js"></script>
+	</body>
+</html>

@@ -45,7 +45,11 @@ app.get('/', function(req, res){
 
 app.get('/registration', function(req, res){
 	res.render('registration.html');
-})
+});
+
+app.get('/login', function(req, res){
+	res.render('login.html');
+});
 
 
 app.listen(3000);
