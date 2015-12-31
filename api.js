@@ -30,10 +30,18 @@ router.post('/login', function(req, res){
 	var success = {"error": false, "message": "Вы успешно вошли!"};
 	connection.query("SELECT * FROM users WHERE NickName =?", req.body.nickName, function(err, rows){
 		if (err) throw err;
-		if (rows[0].password==req.body.password)
+
+		if (rows[0].password==req.body.password) {
+			if (rows[0].permissions > 0) {
+				success.message = "Вы Админ!";
+			} else {
+				success.message = "Вы пользователь!";
+			}
+
 			res.json(success);
-		else
+		} else {
 			res.json(errorLogin);
+		}
 	});
 });
 

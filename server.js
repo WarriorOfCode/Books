@@ -3,14 +3,14 @@ var express = require('express');
 var app = express();
 var api = require('./api');
 
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var config = require('./config.js');
 var connection = mysql.createConnection({
   
   host     : config.dbhost,
   user     : config.dbuser,
   password : config.dbpassword,
-  database: config.dbname
+  database : config.dbname
 });
 
 
