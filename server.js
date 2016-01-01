@@ -50,11 +50,15 @@ app.get('/', function(req, res){
 });
 
 app.get('/registration', function(req, res){
-	res.render('registration.html');
+	if (!req.session.login)
+		res.render('registration.html');
+	else res.redirect('/');
 });
 
 app.get('/login', function(req, res){
-	res.render('login.html');
+	if (!req.session.login)
+		res.render('login.html');
+	else res.redirect('/');
 });
 
 app.listen(3000);

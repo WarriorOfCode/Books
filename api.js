@@ -31,18 +31,12 @@ router.get('/users', function (req, res){
 
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
-	var success = {"error": false, "message": "Вы успешно вошли!"};
+	var success = {"error": false};
 	connection.query("SELECT * FROM users WHERE NickName =?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
 		if (rows[0].password==req.body.password) {
-			if (rows[0].permissions > 0) {
-				success.message = "Вы Админ!";
-			} else {
-				success.message = "Вы пользователь!";
-			}
 			req.session.login = req.body.nickName;
-			console.log(req.session.login);
 			res.json(success);
 		} else {
 			res.json(errorLogin);
@@ -96,7 +90,7 @@ router.post('/user', function (req, res) {
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
-	var success = {"error": false, "message": "Вы успешно зарегистрированны!"};
+	var success = {"error": false, "message": "Подтвердите почту!"};
 
 	connection.query(selectSql, selectParams, function (err, rows1) {
 		if (err) throw err;
@@ -111,6 +105,7 @@ router.post('/user', function (req, res) {
 			connection.query(insertSql, insertParams, function (err, rows2) {
 				if (err) throw err;
 				
+				req.session.login = req.body.nickName;
 				res.json(success);
 			});
 		}
