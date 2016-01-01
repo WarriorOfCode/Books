@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
 var api = require('./api');
@@ -18,6 +19,11 @@ app.engine('html', require('ejs').renderFile);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieSession({ name: 'session',
+	keys: ['sid', 'key2']
+} ));
+
 app.use('/api', api);
 app.use(express.static(__dirname + '/public'));
 
@@ -39,7 +45,7 @@ app.get('/admin', function(req, res){
 app.get('/', function(req, res){
 	connection.query('SELECT * FROM Books', function(err, rows) {
 		if (err) throw err;
-		res.render('index.html', {data: rows});
+		res.render('index.html', {data: rows, login: req.session.login});
   });
 });
 

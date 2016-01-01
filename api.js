@@ -37,7 +37,8 @@ router.post('/login', function(req, res){
 			} else {
 				success.message = "Вы пользователь!";
 			}
-
+			req.session.login = req.body.nickName;
+			console.log(req.session.login);
 			res.json(success);
 		} else {
 			res.json(errorLogin);
