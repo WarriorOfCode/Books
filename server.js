@@ -32,7 +32,7 @@ app.get('/book/:id', function(req, res){
 	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0)
-			res.render('book.html', {book: rows});
+			res.render('book.html', {book: rows, login: req.session.login});
 		else
 			res.redirect('/');
 	});

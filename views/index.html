@@ -6,13 +6,16 @@
 </head>
 <body>
 	<h1>Главная страница</h1>
-	<p><%= login%></p>
-	<a href='registration'>Зарегистрироваться</a>
-	<a href='login'>Войти!</a>
+	<% if (login) { %>
+		<p> You are <%= login %></p>
+	<% } else {%>
+		<a href='registration'>Зарегистрироваться</a>
+		<a href='login'>Войти!</a>
+	<% } %>
 	<ul>
-		 <% data.forEach(function(book){%>
+		 <% data.forEach(function(book) { %>
 		<li>
-			<a href='book/<%= book.id %>'><%= book.Name%></a>
+			<a href='book/<%= book.id %>'><%= book.Name %></a>
 		</li>
 		<% }) %>
 	</ul>
