@@ -10,7 +10,11 @@ var connection = mysql.createConnection({
   database: config.dbname
 });
 
-
+router.get('/out', function(req, res){
+	req.session.login = null;
+	console.log(req.session.login);
+	res.send("");
+})
 
 router.get('/users', function (req, res){
 	
