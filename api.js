@@ -10,11 +10,6 @@ var connection = mysql.createConnection({
   database: config.dbname
 });
 
-router.get('/out', function(req, res){
-	req.session.login = null;
-	console.log(req.session.login);
-	res.send("");
-})
 
 router.get('/users', function (req, res){
 	
@@ -32,7 +27,7 @@ router.get('/users', function (req, res){
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
-	connection.query("SELECT * FROM users WHERE NickName =?", req.body.nickName, function(err, rows){
+	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
 		if (rows[0].password==req.body.password) {
@@ -42,6 +37,35 @@ router.post('/login', function(req, res){
 		} else {
 			res.json(errorLogin);
 		}
+	});
+});
+
+router.get('/out', function(req, res){
+	req.session.login = null;
+	res.send("");
+});
+
+router.post('/author', function(req, res){
+	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
+	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
+	var insertSql = "INSERT INTO Authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth) VALUES (?,?,?,?,?,?)";
+	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country];
+	var overlap;
+	connection.query("SELECT * FROM Authors WHERE Name = ?", req.body.name, function(err, rows){
+		if (err) throw err;
+		for (var i = 0; i < rows.length; i++){
+			if (rows[i].Last_Name == req.body.lastname)
+				overlap = 1;
+		}
+		if (!overlap) {
+			connection.query(insertSql, insertParams, function(err, rows1){
+				if (err) throw err;
+				res.json(success);
+			});
+		} else {
+			res.json(error);
+		}
+
 	});
 });
 
