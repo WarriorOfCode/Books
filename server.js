@@ -39,7 +39,9 @@ app.get('/book/:id', function(req, res){
 } );
 
 app.get('/admin', function(req, res){
-	res.render('admin.html');
+	if (req.session.permissions > 0)
+		res.render('admin.html');
+	else res.redirect('/');
 });
 
 app.get('/', function(req, res){

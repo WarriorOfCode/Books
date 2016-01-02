@@ -37,6 +37,7 @@ router.post('/login', function(req, res){
 
 		if (rows[0].password==req.body.password) {
 			req.session.login = req.body.nickName;
+			req.session.permissions = rows[0].permissions;
 			res.json(success);
 		} else {
 			res.json(errorLogin);
