@@ -1,26 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
-var config = require('./config.js');
-var connection = mysql.createConnection({
-  
-  host     : config.dbhost,
-  user     : config.dbuser,
-  password : config.dbpassword,
-  database: config.dbname
-});
+var connection = require('./db');
 
-
-router.get('/users', function (req, res){
-	
-	connection.connect();
+router.get('/users', function (req, res){	
 
 	connection.query('SELECT * FROM users', function(err, rows) {
 		if (err) throw err;
   		res.json(rows);
 	});
-
-	connection.end();
 
 });
 
@@ -76,7 +63,7 @@ router.post('/book', function(req, res){
 	var insertSql = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
 	var insertParams = [req.body.name, req.body.description,  req.body.page];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
-	var success = {"error": false, "message": "Вы успешно зарегистрированны!"};
+	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
 	connection.query(selectBooks, req.body.name, function(err, rows){
 		if (err) throw err;
