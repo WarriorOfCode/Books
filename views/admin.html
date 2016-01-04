@@ -4,17 +4,24 @@
 </head>
 <body>
 <h3>Регистрация книги</h3>
-<form name="formBook" ng-controller="registrationBook" ng-submit="sendData()">
-  <input name="name" type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
-  <input name="description" type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
+<form ng-controller="registrationBook" ng-submit="sendData()">
+  <input type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
+  <input type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
   <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц" required><br/>
- <input name="authorName" type="text" ng-model="book.authorName" placeholder="Введите имя автора книги" required><br/>
-  <input name="author" type="text" ng-model="book.authorLastName" placeholder="Введите фамилию автора" required><br/>
+  <input type="date" ng-model="author.age" max=today() placeholder="Год рождения"><br/>
+  <select ng-model="book.author" required>
+  <option value="" disabled>-Выберите-</option>
+    <% authors.forEach(function(author) { %>
+    <option value = "<%= author.id %>">
+        <%= author.Name %> <%= author.Last_Name %>
+      </option>
+    <% }) %>
+  </select><br/>
   <button type="submit">Регистрация</button>
-  <span ng-bind="message"></span>
-</form>
+  <span ng-bind="messageBook"></span>
+</form>     
 <h3>Регистрация автора</h3>
-<form name="formAuthor" ng-controller="registrationAuthor" ng-submit="sendAuthor()">
+<form ng-controller="registrationAuthor" ng-submit="sendAuthor()">
   <input type="text" ng-model="author.name" placeholder="Введите имя автора" required><br/>
   <input type="text" ng-model="author.lastname" placeholder="Введите фамилию автора" required><br/>
   <input type="text" ng-model="author.patronymic" placeholder="Введите отчество автора"><br/>
@@ -22,7 +29,7 @@
   <input type="date" ng-model="author.age" max="2010-12-31" placeholder="Год рождения"><br/>
  <input type="text" ng-model="author.country" placeholder="Введите страну происхождения автора" required><br/>
   <button type="submit">Регистрация</button>
-  <span ng-bind="message"></span>
+  <span ng-bind="messageAuthor"></span>
 </form>
 <a href="/">На главную</a>
  <script src="/angular.min.js"></script>

@@ -3,8 +3,8 @@
 		<title>Вход</title>
 	</head>
 	<body>
-		<form name="formA" ng-controller="login" ng-submit="sendData()">
-	  		<input name="name"type="text" ng-model="user.nickName" placeholder="Введите login" maxlength="20" required><br/>
+		<form ng-controller="login" ng-submit="sendData()">
+	  		<input type="text" ng-model="user.nickName" placeholder="Введите login" maxlength="20" required><br/>
 	 		<!-- <input name="email" type="email" ng-model="user.email" placeholder="Введите email" required>
 	 		<span ng-bind="emailError" ></span>  
 	 		<span ng-show="formA.email.$error.email">Не корректная почта</span><br/>-->

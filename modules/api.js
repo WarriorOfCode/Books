@@ -60,11 +60,13 @@ router.post('/book', function(req, res){
 	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
 	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
 	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
-	var insertSql = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
+	var insertSqlBook = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
+	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
 	var insertParams = [req.body.name, req.body.description,  req.body.page];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
+	console.log(req.body);
 	connection.query(selectBooks, req.body.name, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0){
@@ -75,18 +77,29 @@ router.post('/book', function(req, res){
 					if (rows2[0].Name == req.body.authorName && rows2[0].Last_Name == req.body.authorLastName){
 						res.json(errorbook);
 					} else {
-						connection.query(insertSql, insertParams, function(err, rows3){
+						connection.query(insertSqlBook, insertParams, function(err, rows3){
 							if (err) throw err;
-							res.json(success);
+							connection.query(selectBooks, req.body.name, function(err, rows4){	
+								if (err) throw err;				
+								connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+									if (err) throw err;
+									res.json(success);
+								});
+							});
 						});
-						
 					}
 				});
 			});
 		} else{
-			connection.query(insertSql, insertParams, function(err, rows3){
+			connection.query(insertSqlBook, insertParams, function(err, rows3){
 				if (err) throw err;
-				res.json(success);
+				connection.query(selectBooks, req.body.name, function(err, rows4){	
+					if (err) throw err;						
+					connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+						if (err) throw err;
+						res.json(success);
+					});
+				});
 			});
 		}
 	});
