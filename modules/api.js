@@ -57,6 +57,8 @@ router.post('/author', function(req, res){
 });
 
 router.post('/book', function(req, res){
+	var irows = 0;
+	var bol = 0;
 	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
 	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
 	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
@@ -66,17 +68,17 @@ router.post('/book', function(req, res){
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
-	console.log(req.body);
 	connection.query(selectBooks, req.body.name, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0){
-			connection.query(selectBA, rows[0].id, function(err, rows1){
-				if(err) throw err;
-				connection.query(selectAuthors, rows1[0].id_author, function(err, rows2){
-					if (err) throw err;
-					if (rows2[0].Name == req.body.authorName && rows2[0].Last_Name == req.body.authorLastName){
-						res.json(errorbook);
-					} else {
+			for (var i = 0; i<rows.length; i++){
+				connection.query(selectBA, rows[i].id, function(err, rows1){
+					if(err) throw err;
+					bol++;
+					if (req.body.author != rows1[0].id_author){
+						irows++;
+					}
+					if (irows == rows.length){
 						connection.query(insertSqlBook, insertParams, function(err, rows3){
 							if (err) throw err;
 							connection.query(selectBooks, req.body.name, function(err, rows4){	
@@ -87,21 +89,25 @@ router.post('/book', function(req, res){
 								});
 							});
 						});
+					} else if (bol == rows.length && irows != rows.length){
+						res.json(errorbook);
 					}
 				});
-			});
-		} else{
-			connection.query(insertSqlBook, insertParams, function(err, rows3){
-				if (err) throw err;
-				connection.query(selectBooks, req.body.name, function(err, rows4){	
-					if (err) throw err;						
-					connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
-						if (err) throw err;
-						res.json(success);
-					});
+			}
+			
+		} else {
+		connection.query(insertSqlBook, insertParams, function(err, rows3){
+			if (err) throw err;
+			connection.query(selectBooks, req.body.name, function(err, rows4){	
+				if (err) throw err;				
+				connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+					if (err) throw err;
+					res.json(success);
 				});
 			});
-		}
+		});
+	}
+		
 	});
 });
 
