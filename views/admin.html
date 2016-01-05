@@ -4,11 +4,16 @@
 </head>
 <body>
 <h3>Регистрация книги</h3>
-<form ng-controller="registrationBook" ng-submit="sendData()">
+<form name="formA" ng-controller="registrationBook" ng-submit="sendData()">
   <input type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
   <input type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
   <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц" required><br/>
-  <input type="date" ng-model="author.age" max=today() placeholder="Год рождения"><br/>
+  <input type="date" ng-model="book.age" placeholder="Год рождения" required><br/>
+  Без ISBN <input type="checkbox" ng-model="checked">
+  <input name="isbn" ng-model="book.isbn"  ng-hide="checked" type="number" ng-minlength="13" min="1" max="9999999999999" ng-maxlength="13" placeholder = "ISBN">
+  <span ng-show="!formA.isbn.$valid">Не валидное значение</span><br/>
+  
+
   <select ng-model="book.author" required>
   <option value="" disabled>-Выберите-</option>
     <% authors.forEach(function(author) { %>

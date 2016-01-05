@@ -62,53 +62,76 @@ router.post('/book', function(req, res){
 	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
 	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
 	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
-	var insertSqlBook = "INSERT INTO Books (Name, Description, number_of_pages) VALUES (?,?,?)";
+	var insertSqlBook = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data) VALUES (?,?,?,?)";
+	var insertSqlISBN = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data, ISBN) VALUES (?,?,?,?,?)";
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
-	var insertParams = [req.body.name, req.body.description,  req.body.page];
+	var insertParams = [req.body.name, req.body.description,  req.body.page, req.body.age];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
-	connection.query(selectBooks, req.body.name, function(err, rows){
-		if (err) throw err;
-		if (rows != null && rows.length > 0){
-			for (var i = 0; i<rows.length; i++){
-				connection.query(selectBA, rows[i].id, function(err, rows1){
-					if(err) throw err;
-					bol++;
-					if (req.body.author != rows1[0].id_author){
-						irows++;
-					}
-					if (irows == rows.length){
-						connection.query(insertSqlBook, insertParams, function(err, rows3){
+	if (req.body.isbn!= null && req.body.isbn > 0)
+	{
+		connection.query("SELECT * FROM Books WHERE ISBN = ?", req.body.isbn, function(err, rows){
+			if (err) throw err;
+			if (rows!= null && rows.length > 0){
+				res.json(errorbook);
+			} else {
+				insertParams.push(req.body.isbn)
+				connection.query(insertSqlISBN, insertParams, function(err, rows3){
+					if (err) throw err;
+					connection.query("SELECT * FROM Books WHERE ISBN = ?", req.body.isbn, function(err, rows4){	
+						if (err) throw err;				
+						connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
 							if (err) throw err;
-							connection.query(selectBooks, req.body.name, function(err, rows4){	
-								if (err) throw err;				
-								connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
-									if (err) throw err;
-									res.json(success);
+							res.json(success);
+						});
+					});
+				});
+	
+			};
+		});
+	} else {
+		connection.query(selectBooks, req.body.name, function(err, rows){
+			if (err) throw err;
+			if (rows != null && rows.length > 0){
+				for (var i = 0; i<rows.length; i++){
+					connection.query(selectBA, rows[i].id, function(err, rows1){
+						if(err) throw err;
+						bol++;
+						if (req.body.author != rows1[0].id_author){
+							irows++;
+						}
+						if (irows == rows.length){
+							connection.query(insertSqlBook, insertParams, function(err, rows3){
+								if (err) throw err;
+								connection.query(selectBooks, req.body.name, function(err, rows4){	
+									if (err) throw err;				
+									connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+										if (err) throw err;
+										res.json(success);
+									});
 								});
 							});
-						});
-					} else if (bol == rows.length && irows != rows.length){
-						res.json(errorbook);
-					}
-				});
-			}
-			
-		} else {
-		connection.query(insertSqlBook, insertParams, function(err, rows3){
-			if (err) throw err;
-			connection.query(selectBooks, req.body.name, function(err, rows4){	
-				if (err) throw err;				
-				connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+						} else if (bol == rows.length && irows != rows.length){
+							res.json(errorbook);
+						}
+					});
+				}
+				
+			} else {
+				connection.query(insertSqlBook, insertParams, function(err, rows3){
 					if (err) throw err;
-					res.json(success);
+					connection.query(selectBooks, req.body.name, function(err, rows4){	
+						if (err) throw err;				
+						connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+							if (err) throw err;
+							res.json(success);
+						});
+					});
 				});
-			});
+			};
 		});
-	}
-		
-	});
+	};
 });
 
 router.post('/user', function (req, res) {
