@@ -11,6 +11,11 @@ router.get('/users', function (req, res){
 
 });
 
+router.post('/bookSave', function(req, res){
+	console.log(req.session.id);
+	
+});
+
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
@@ -19,6 +24,7 @@ router.post('/login', function(req, res){
 
 		if (rows[0].password==req.body.password) {
 			req.session.login = req.body.nickName;
+			req.session.id = rows[0].id;
 			req.session.permissions = rows[0].permissions;
 			res.json(success);
 		} else {
@@ -29,6 +35,8 @@ router.post('/login', function(req, res){
 
 router.get('/out', function(req, res){
 	req.session.login = null;
+	req.session.permissions = null;
+	req.session.id = null;
 	res.send("");
 });
 

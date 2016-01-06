@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title><%= book[0].Name %></title>
 </head>
-<body ng-app="Exit">
+<body ng-app="BookSave">
 	<div ng-controller="out">
 		<% if (login) { %>
 			<p> You are <%= login %></p>
@@ -13,18 +13,22 @@
 			<a href='/registration'>Зарегистрироваться</a>
 			<a href='/login'>Войти!</a>
 		<% } %>
-		
+
 		<a href="/">На главную</a>
 		<h1><%= book[0].Name %></h1>
 		<p><%= book[0].Description %></p><br/>
 		<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>
 	</div>
-	<% if (flag.length > 0 && flag !== null ) { %>
-		<input type="button" value="Не читал">
-	<% } else { %>
-		<input type="button" value="Читал">
-	<% } %>
+	<div ng-controller="Read">
+		<% if (login) { %>
+			<% if (flag.length > 0 && flag !== null ) { %>
+				<input type="button" value="Не читал" ng-click="confirm()">
+			<% } else { %>
+				<input type="button" value="Читал" ng-click="confirm()">
+			<% } %>
+		<% } %>
+	</div>
 	<script src="/angular.min.js"></script>
- 	<script src="/scriptIndex.js"></script>
+ 	<script src="/bookScript.js"></script>
 </body>
 </html>
