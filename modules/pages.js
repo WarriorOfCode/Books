@@ -3,12 +3,12 @@ var router = express.Router();
 var connection = require('./db');
 
 router.get('/book/:id', function(req, res){
-	SelectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user =?";
+	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user =?";
 	if (req.params.id == null) res.redirect('/');
 	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
-			connection.query(SelectSql, [req.params.id, req.session.id], function(err, rows1){
+			connection.query(selectSql, [req.params.id, req.session.id], function(err, rows1){
 				if (err) throw err;
 				res.render('book.html', {book: rows, login: req.session.login,	flag: rows1});
 			});

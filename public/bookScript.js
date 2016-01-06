@@ -13,7 +13,7 @@ app.controller('out', ['$scope', '$http', function($scope, $http) {
 
 app.controller('Read', ['$scope', '$http', function($scope, $http){
 	$scope.confirm = function(){
-		var bookId = location.pathname.replace("/book/", "");
+		var bookId = location.pathname.replace("/book/user/", "");
 		var data ={bookId: bookId};
 		$http.post('/api/BookSave', data)
 		.success(function(data){

@@ -11,9 +11,12 @@ router.get('/users', function (req, res){
 
 });
 
-router.post('/bookSave', function(req, res){
-	console.log(req.session.id);
-	
+router.post('/book/user', function(req, res){
+	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
+	connection.query(insertSql, [req.body.bookId, req.session.id], function(err, rows){
+		if (err) throw err;
+		res.send(" ");
+	});
 });
 
 router.post('/login', function(req, res){
