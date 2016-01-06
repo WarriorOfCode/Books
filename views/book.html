@@ -19,6 +19,11 @@
 		<p><%= book[0].Description %></p><br/>
 		<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>
 	</div>
+	<% if (flag.length > 0 && flag !== null ) { %>
+		<input type="button" value="Не читал">
+	<% } else { %>
+		<input type="button" value="Читал">
+	<% } %>
 	<script src="/angular.min.js"></script>
  	<script src="/scriptIndex.js"></script>
 </body>

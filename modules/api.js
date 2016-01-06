@@ -162,7 +162,7 @@ router.post('/user', function (req, res) {
 				req.session.login = req.body.nickName;
 				res.json(success);
 			});
-		}
+		};
 	});
 
 })
