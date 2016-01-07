@@ -14,7 +14,7 @@ router.post('/book/user', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
 	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
 	var deleteSql = "DELETE FROM books_users WHERE id_book = ? AND id_user = ?";
-	params = [req.body.bookId, req.session.id]; 
+	var params = [req.body.bookId, req.session.id]; 
 	connection.query(selectSql, params, function(err, rows){
 		if (err) throw err;
 		if (rows!= null && rows.length > 0){

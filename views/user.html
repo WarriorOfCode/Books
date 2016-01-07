@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> <%= user[0].Name+" "+user[0].LastName%> </title>
+	</head>
+	<body>
+		<h1><%= user[0].Name+" "+user[0].LastName%></h1>
+		<h3>NickName is: <%= user[0].NickName %> </h3>
+	<ul>
+		<p> Прочитанные книги: </p>
+		<% books.forEach(function(book) { %>
+		<li>
+			<a href='/book/<%= book.id %>'><%= book.Name %></a>
+		</li>
+		<% }) %>
+	</ul>
+	</body>
+</html>
