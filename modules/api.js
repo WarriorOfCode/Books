@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 var connection = require('./db');
 
-router.get('/users', function (req, res){	
-
+router.get('/users', function (req, res){
 	connection.query('SELECT * FROM users', function(err, rows) {
 		if (err) throw err;
   		res.json(rows);
@@ -12,10 +11,23 @@ router.get('/users', function (req, res){
 });
 
 router.post('/book/user', function(req, res){
+	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
 	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
-	connection.query(insertSql, [req.body.bookId, req.session.id], function(err, rows){
+	var deleteSql = "DELETE FROM books_users WHERE id_book = ? AND id_user = ?";
+	params = [req.body.bookId, req.session.id]; 
+	connection.query(selectSql, params, function(err, rows){
 		if (err) throw err;
-		res.send(" ");
+		if (rows!= null && rows.length > 0){
+			connection.query(deleteSql, params, function(err, rows1){
+				if (err) throw err;
+				res.send(" ");
+			});
+		} else {
+			connection.query(insertSql,params, function(err, rows1){
+				if (err) throw err;
+				res.send(" ");
+			});
+		};
 	});
 });
 

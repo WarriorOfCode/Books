@@ -13,9 +13,9 @@ app.controller('out', ['$scope', '$http', function($scope, $http) {
 
 app.controller('Read', ['$scope', '$http', function($scope, $http){
 	$scope.confirm = function(){
-		var bookId = location.pathname.replace("/book/user/", "");
+		var bookId = location.pathname.replace("/book/", "");
 		var data ={bookId: bookId};
-		$http.post('/api/BookSave', data)
+		$http.post('/api/book/user', data)
 		.success(function(data){
 			location.reload();
 		})
