@@ -3,7 +3,16 @@
 	<head>
 		<title> <%= user[0].Name+" "+user[0].LastName%> </title>
 	</head>
-	<body>
+	<body ng-app="user">
+	<div ng-controller="out">
+		<% if (login) { %>
+			<p> You are <%= login %></p>
+			<input type="button" ng-click="send()" value="Выйти">
+		<% } else { %>
+			<a href='/registration'>Зарегистрироваться</a>
+			<a href='/login'>Войти!</a>
+		<% } %>
+	</div>
 		<h1><%= user[0].Name+" "+user[0].LastName%></h1>
 		<h3>NickName is: <%= user[0].NickName %> </h3>
 	<ul>
@@ -14,5 +23,8 @@
 		</li>
 		<% }) %>
 	</ul>
+	<a href="/">На главную</a>
+	<script src="angular.min.js"></script>
+ 	<script src="userscript.js"></script>
 	</body>
 </html>
