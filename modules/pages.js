@@ -20,13 +20,17 @@ router.get('/book/:id', function(req, res){
 
 router.get('/user/:id', function (req, res){
 	var selectSql = "SELECT Books.* FROM Books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
+	var selectFriendSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
 	if (req.params.id == null) res.redirect('/');
 	connection.query("SELECT * FROM Users WHERE id = ? LIMIT 1", req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
 			connection.query(selectSql, req.params.id, function(err, rows1){
 				if (err) throw err;
-				res.render('user.html', {login: req.session.login, user: rows, books: rows1});
+				connection.query(selectFriendSql, [req.session.id, req.params.id], function(err, rows2){
+					if (err) throw err;
+					res.render('user.html', {login: req.session.login, user: rows, books: rows1, flag: rows2});
+				});
 			});
 		} else {
 			res.redirect('/');

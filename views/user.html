@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> <%= user[0].Name+" "+user[0].LastName%> </title>
+		<title> <%= user[0].NickName %> </title>
 	</head>
 	<body ng-app="user">
 	<div ng-controller="out">
@@ -13,18 +13,34 @@
 			<a href='/login'>Войти!</a>
 		<% } %>
 	</div>
-		<h1><%= user[0].Name+" "+user[0].LastName%></h1>
-		<h3>NickName is: <%= user[0].NickName %> </h3>
-	<ul>
-		<p> Прочитанные книги: </p>
-		<% books.forEach(function(book) { %>
-		<li>
-			<a href='/book/<%= book.id %>'><%= book.Name %></a>
-		</li>
-		<% }) %>
-	</ul>
-	<a href="/">На главную</a>
-	<script src="angular.min.js"></script>
- 	<script src="userscript.js"></script>
+	<div ng-controller="friend">
+		<h1> <%= user[0].NickName %> </h1>
+			<% if (user[0].Name) { %>
+				<span > Name is : <%= user[0].Name+" " %></span>
+				<% if (user[0].LastName) { %>
+					<%= user[0].LastName%><br/>
+			<% }} %>
+			
+			<% if (login == user[0].NickName) { %>
+				<input type="button" value = "Редактировать" ng-click="change()">
+			<% } else { %>
+				<% if (flag.length > 0 && flag !== null ) { %>
+					<input type="button" value="Отписаться" ng-click="pal()">
+				<% } else { %>
+					<input type="button" value = "Подписаться" ng-click="pal()">
+				<% } %>
+			<% } %>
+		<ul>
+			<p> Прочитанные книги: </p>
+			<% books.forEach(function(book) { %>
+			<li>
+				<a href='/book/<%= book.id %>'><%= book.Name %></a>
+			</li>
+			<% }) %>
+		</ul>
+		<a href="/">На главную</a>
+	</div>
+	<script src="/angular.min.js"></script>
+ 	<script src="/userscript.js"></script>
 	</body>
 </html>

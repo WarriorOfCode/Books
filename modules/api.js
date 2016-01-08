@@ -17,7 +17,7 @@ router.post('/book/user', function(req, res){
 	var params = [req.body.bookId, req.session.id]; 
 	connection.query(selectSql, params, function(err, rows){
 		if (err) throw err;
-		if (rows!= null && rows.length > 0){
+		if (rows != null && rows.length > 0){
 			connection.query(deleteSql, params, function(err, rows1){
 				if (err) throw err;
 				res.send(" ");
@@ -28,6 +28,27 @@ router.post('/book/user', function(req, res){
 				res.send(" ");
 			});
 		};
+	});
+});
+
+router.post('/friend', function(req, res){
+	var params = [req.session.id, req.body.userId];
+	var selectSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
+	var deleteSql = "DELETE FROM friends WHERE id_follower = ? AND id_following = ?";
+	var insertSql = "INSERT INTO friends (id_follower, id_following) VALUES (?,?)";
+	connection.query(selectSql, params, function(err, rows){
+		if (err) throw err;
+		if (rows != null && rows.length > 0){
+			connection.query(deleteSql, params, function(err, rows1){
+				if (err) throw err;
+				res.send(" ");
+			});
+		} else {
+			connection.query(insertSql, params, function(err, rows1){
+				if (err) throw err;
+				res.send(" ");
+			});
+		}
 	});
 });
 
