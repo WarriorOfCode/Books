@@ -25,6 +25,7 @@ router.get('/setting', function(req, res){
 			res.render('edit.html', {data: rows});
 		});
 	} else {
+		console.log(req.session.id)
 		res.redirect('/');
 	}
 });

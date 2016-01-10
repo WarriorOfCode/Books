@@ -72,7 +72,7 @@ router.post('/login', function(req, res){
 	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
-		if (rows[0].password==req.body.password){
+		if (rows.length>0 && rows[0].password==req.body.password){
 			req.session.login = rows[0].NickName;
 			req.session.id = rows[0].id;
 			req.session.permissions = rows[0].permissions;
@@ -216,9 +216,13 @@ router.post('/user', function (req, res) {
 		} else {
 			connection.query(insertSql, insertParams, function (err, rows2) {
 				if (err) throw err;
-				
-				req.session.login = req.body.nickName;
-				res.json(success);
+				connection.query("SELECT * FROM Users WHERE NickName = ?", req.body.nickName, function(err, rows3){
+					if (err) throw err;
+					req.session.login = rows3[0].NickName;
+					req.session.id =rows3[0].id;
+					req.session.permissions = rows3[0].permissions;
+					res.json(success);
+				});
 			});
 		};
 	});
