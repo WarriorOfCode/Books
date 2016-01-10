@@ -22,12 +22,12 @@
 			<% }} %>
 			
 			<% if (login == user[0].NickName) { %>
-				<input type="button" value = "Редактировать" ng-click="change()">
+				<a href="/setting"><input type="button" value = "Редактировать"></a>
 			<% } else { %>
 				<% if (flag.length > 0 && flag !== null ) { %>
-					<input type="button" value="Отписаться" ng-click="pal()">
+					<input type="button" value="Отписаться" ng-click="follow()">
 				<% } else { %>
-					<input type="button" value = "Подписаться" ng-click="pal()">
+					<input type="button" value = "Подписаться" ng-click="follow()">
 				<% } %>
 			<% } %>
 		<ul>

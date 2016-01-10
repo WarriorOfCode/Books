@@ -18,6 +18,17 @@ router.get('/book/:id', function(req, res){
 	});
 });
 
+router.get('/setting', function(req, res){
+	if (req.session.id){
+		connection.query("SELECT * FROM Users WHERE id = ?", req.session.id, function(err, rows){
+			if (err) throw err;
+			res.render('edit.html', {data: rows});
+		});
+	} else {
+		res.redirect('/');
+	}
+});
+
 router.get('/user/:id', function (req, res){
 	var selectSql = "SELECT Books.* FROM Books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
 	var selectFriendSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
