@@ -9,7 +9,15 @@ router.get('/users', function (req, res){
 	});
 
 });
-
+router.post('/edit', function(req, res){
+	var updateSql = "UPDATE Users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
+	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id]
+	connection.query(updateSql, params, function(err, rows){
+		if (err) throw err;
+		res.json({"message": 'Saved!'})
+	});
+	
+});
 router.post('/book/user', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
 	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
@@ -58,8 +66,8 @@ router.post('/login', function(req, res){
 	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
-		if (rows[0].password==req.body.password) {
-			req.session.login = req.body.nickName;
+		if (rows[0].password==req.body.password){
+			req.session.login = rows[0].NickName;
 			req.session.id = rows[0].id;
 			req.session.permissions = rows[0].permissions;
 			res.json(success);

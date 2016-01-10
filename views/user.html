@@ -18,8 +18,10 @@
 			<% if (user[0].Name) { %>
 				<span > Name is : <%= user[0].Name+" " %></span>
 				<% if (user[0].LastName) { %>
-					<%= user[0].LastName%><br/>
-			<% }} %>
+					<%= user[0].LastName%>
+				<% } %>
+				<br/>
+			<% } %>
 			
 			<% if (login == user[0].NickName) { %>
 				<a href="/setting"><input type="button" value = "Редактировать"></a>

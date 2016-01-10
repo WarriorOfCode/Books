@@ -4,21 +4,29 @@
 		<title> My settings </title>
 	</head>
 	<body ng-app="setting">
-		<form>
-			Your Name is: <input type="text" value="<%= data[0].Name %>"><br/>
-			Your Lastname is: <input type="text" value="<%= data[0].LastName %>"><br/>
-			The date of your birth is: <input type="date" value="<%= data[0].BirthData %>"><br/>
-			Your Email is: <input type="email" value="<%= data[0].Email%>" required><br/>
-			<input type="button" value="Сохранить">
+		<form ng-controller="edit" ng-submit="save()">
+			Your Name is: <input type="text" ng-model="user.name" value="<%= data[0].Name %>"><br/>
+			Your Lastname is: <input type="text" ng-model="user.lastName" value="<%= data[0].LastName %>"><br/>
+			The date of your birth is: <input type="date" ng-model="user.date" value="<%= data[0].BirthData %>"><br/>
+			Your Email is: <input type="email" ng-model="user.email" value="<%= data[0].Email%>" required><br/>
+			<button type="submit">Save</button>
+			<span ng-bind="message"></span>
 		</form>
 		
 		<input type="button" value="Change password" ng-click="checked=true">
-		<form ng-show="checked">
+		<form ng-show="checked" ng-submit="changpassword()">
 			<input type="password" placeholder="old password" required><br/>
 			<input type="password" placeholder="new password" required><br/>
 			<input type="password" placeholder="confirm new password" required><br/>
-			<input type="button" value="Update password">
+			<button type="submit">Update password</button>
 		</form>
+
+		<script>
+			window.userDate = {name: "<%= data[0].Name %>", 
+			lastName: "<%= data[0].LastName %>",
+			email: "<%= data[0].Email %>",
+			/*date: "<%= data[0].BirthData %>"*/};
+		</script>
 		<script src="/angular.min.js"></script>
  		<script src="/editscript.js"></script>
 	</body>
