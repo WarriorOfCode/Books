@@ -9,15 +9,7 @@ router.get('/users', function (req, res){
 	});
 
 });
-router.post('/edit', function(req, res){
-	var updateSql = "UPDATE Users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
-	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id]
-	connection.query(updateSql, params, function(err, rows){
-		if (err) throw err;
-		res.json({"message": 'Saved!'})
-	});
-	
-});
+
 router.post('/book/user', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
 	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
@@ -37,6 +29,20 @@ router.post('/book/user', function(req, res){
 			});
 		};
 	});
+});
+
+router.post('/password', function(req, res){
+	var error = {"error": true, "message": 'Old password is wrong'};
+	var success = {"error": true, "message": 'Password changed'}
+	connection.query("SELECT password FROM Users WHERE id = ?", req.session.id, function(err, rows){
+		if (err) throw err;
+		if (rows[0].password == req.body.old) {
+			connection.query("UPDATE Users SET password = ? WHERE id = ?", [req.body.new, req.session.id])
+			res.json(success);
+		} else {
+			res.json(error);
+		};
+	})
 });
 
 router.post('/friend', function(req, res){
@@ -216,7 +222,16 @@ router.post('/user', function (req, res) {
 			});
 		};
 	});
+});
 
-})
+
+router.post('/edit', function(req, res){
+	var updateSql = "UPDATE Users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
+	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id]
+	connection.query(updateSql, params, function(err, rows){
+		if (err) throw err;
+		res.json({"message": 'Saved!'})
+	});
+});
 
 module.exports = router;

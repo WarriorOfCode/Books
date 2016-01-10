@@ -4,7 +4,7 @@
 		<title> My settings </title>
 	</head>
 	<body ng-app="setting">
-		<form ng-controller="edit" ng-submit="save()">
+		<form ng-controller="edit" ng-submit="send()">
 			Your Name is: <input type="text" ng-model="user.name" value="<%= data[0].Name %>"><br/>
 			Your Lastname is: <input type="text" ng-model="user.lastName" value="<%= data[0].LastName %>"><br/>
 			The date of your birth is: <input type="date" ng-model="user.date" value="<%= data[0].BirthData %>"><br/>
@@ -14,18 +14,23 @@
 		</form>
 		
 		<input type="button" value="Change password" ng-click="checked=true">
-		<form ng-show="checked" ng-submit="changpassword()">
-			<input type="password" placeholder="old password" required><br/>
-			<input type="password" placeholder="new password" required><br/>
-			<input type="password" placeholder="confirm new password" required><br/>
+		<form ng-controller="changePassword" ng-show="checked" ng-submit="save()">
+			<input type="password" placeholder="old password" ng-model="password.old" required><br/>
+			<input type="password" minlength ="6" placeholder="new password" ng-model="password.new" required>
+			<span ng-bind="errorNewPassword"></span><br/>
+			<input type="password" minlength ="6" placeholder="repeat new password" ng-model="password.repeat" required>
+			<span ng-bind="errorPassword"></span><br/>
 			<button type="submit">Update password</button>
+			<span ng-bind="message"></span>
 		</form>
 
 		<script>
-			window.userDate = {name: "<%= data[0].Name %>", 
-			lastName: "<%= data[0].LastName %>",
-			email: "<%= data[0].Email %>",
-			/*date: "<%= data[0].BirthData %>"*/};
+			window.userDate = {
+				name: "<%= data[0].Name %>", 
+				lastName: "<%= data[0].LastName %>",
+				email: "<%= data[0].Email %>",
+				/*date: "<%= data[0].BirthData %>"*/
+			};
 		</script>
 		<script src="/angular.min.js"></script>
  		<script src="/editscript.js"></script>
