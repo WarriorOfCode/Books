@@ -4,15 +4,7 @@
 		<title> <%= user[0].NickName %> </title>
 	</head>
 	<body ng-app="user">
-	<div ng-controller="out">
-		<% if (login) { %>
-			<p> You are <%= login %></p>
-			<input type="button" ng-click="send()" value="Выйти">
-		<% } else { %>
-			<a href='/registration'>Зарегистрироваться</a>
-			<a href='/login'>Войти!</a>
-		<% } %>
-	</div>
+	<% include 	includes/login.ejs %>
 	<div ng-controller="friend">
 		<h1> <%= user[0].NickName %> </h1>
 			<% if (user[0].Name) { %>
@@ -24,22 +16,18 @@
 			<% } %>
 			
 			<% if (login == user[0].NickName) { %>
-				<a href="/setting"><input type="button" value = "Редактировать"></a>
+				<a href="/setting"><input type="button" value = "Редактировать"></a><br/>
 			<% } else { %>
 				<% if (flag.length > 0 && flag !== null ) { %>
-					<input type="button" value="Отписаться" ng-click="follow()">
+					<input type="button" value="Отписаться" ng-click="follow()"><br/>
 				<% } else { %>
-					<input type="button" value = "Подписаться" ng-click="follow()">
+					<input type="button" value = "Подписаться" ng-click="follow()"><br/>
 				<% } %>
 			<% } %>
-		<ul>
-			<p> Прочитанные книги: </p>
-			<% books.forEach(function(book) { %>
-			<li>
-				<a href='/book/<%= book.id %>'><%= book.Name %></a>
-			</li>
-			<% }) %>
-		</ul>
+		<% if (books != null && books.length > 0) { %>
+			<span> Прочитанные книги: </span>
+			<% include includes/booksList.ejs %>
+		<% } %>
 		<a href="/">На главную</a>
 	</div>
 	<script src="/angular.min.js"></script>

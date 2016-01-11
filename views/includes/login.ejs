@@ -1,0 +1,9 @@
+<div ng-controller="out">
+<% if (login) { %>
+	<p> You are <a href="/user/<%= login %>"><%= login %></a></p>
+	<input type="button" ng-click="send()" value="Выйти">
+<% } else { %>
+	<a href='/registration'>Зарегистрироваться</a>
+	<a href='/login'>Войти!</a>
+<% } %>
+</div>

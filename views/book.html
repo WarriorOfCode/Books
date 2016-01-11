@@ -5,20 +5,12 @@
 	<title><%= book[0].Name %></title>
 </head>
 <body ng-app="BookSave">
-	<div ng-controller="out">
-		<% if (login) { %>
-			<p> You are <%= login %></p>
-			<input type="button" ng-click="send()" value="Выйти">
-		<% } else { %>
-			<a href='/registration'>Зарегистрироваться</a>
-			<a href='/login'>Войти!</a>
-		<% } %>
-
+	<% include 	includes/login.ejs %>
 		<a href="/">На главную</a>
 		<h1><%= book[0].Name %></h1>
 		<p><%= book[0].Description %></p><br/>
 		<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>
-	</div>
+	<!-- </div> -->
 	<div ng-controller="Read">
 		<% if (login) { %>
 			<% if (flag.length > 0 && flag !== null ) { %>
