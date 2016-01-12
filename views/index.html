@@ -4,19 +4,41 @@
 	<meta charset="UTF-8">
 	<title>Books</title>
 </head>
- <link href="bootstrap.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="/bootstrap.min.css">
+ <link rel="stylesheet" href="/css/style.css">
 <body ng-app="Exit">
-	<img src="book.png" width = "120" height="100" class="img-rounded" alt="Книга">
-	<h3> Ведь и мы хотим жить и летать!</h3>
 
-		<% include includes/login.ejs %>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+    			<a class="navbar-brand" href ="/">
+    				<img alt="Brand" src="book.gif">
+    			</a>
+   			</div>
+
+			
+			<form class="navbar-form navbar-left" role="search">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search for...">
+					<span class="input-group-btn">
+						<button class="btn btn-default">Search!</button>
+					</span>
+				</div>
+			</form>
+			
+				<% include includes/login.ejs %>
+		</div>
+	</nav>
+
+	<span> Ведь и мы хотим жить и летать!</span>
+		
 		<% include includes/booksList.ejs %>
 
 	<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
-	<script src="bootstrap.min.js"></script>
-	<script src="angular.min.js"></script>
- 	<script src="scriptIndex.js"></script>
+	<script src="/bootstrap.min.js"></script>
+	<script src="/angular.min.js"></script>
+ 	<script src="/scriptIndex.js"></script>
 </body>
 </html>

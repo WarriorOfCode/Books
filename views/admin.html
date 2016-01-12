@@ -21,7 +21,7 @@
       </option>
     <% }) %>
   </select><br/>
-  <input type="text" ng-model="book.link" placeholder="Ссылка на обложку"><br/>
+  <input type="text" ng-model="book.link" placeholder="Ссылка на обложку" requared><br/>
   <button type="submit">Регистрация</button>
   <span ng-bind="messageBook"></span>
 </form>     
@@ -33,7 +33,7 @@
   <input type="text" ng-model="author.description" placeholder="Введите биографию"><br/>
   <input type="date" ng-model="author.age" max="2010-12-31" placeholder="Год рождения"><br/>
  <input type="text" ng-model="author.country" placeholder="Введите страну происхождения автора" required><br/>
- <input type="text" ng-model="author.link" placeholder="Ссылка на портрет"><br/>
+ <input type="text" ng-model="author.link" placeholder="Ссылка на портрет" requared><br/>
   <button type="submit">Регистрация</button>
   <span ng-bind="messageAuthor"></span>
 </form>
