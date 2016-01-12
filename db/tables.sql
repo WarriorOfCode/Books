@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `Authors` (
   `Birth_date` date DEFAULT NULL,
   `Biography` text,
   `Counry_of_birth` text NOT NULL,
-  `ISBN` int(13) unsigned zerofill NOT NULL,
+  `image_url` tinytext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `Books` (
   `Description` text,
   `number_of_pages` mediumint(20) unsigned NOT NULL,
   `ISBN` bigint(13) unsigned zerofill NOT NULL,
+  `image_url` tinytext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
