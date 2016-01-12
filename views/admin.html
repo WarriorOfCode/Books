@@ -7,12 +7,11 @@
 <form name="formA" ng-controller="registrationBook" ng-submit="sendData()">
   <input type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
   <input type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
-  <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц" required><br/>
+  <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц"><br/>
   <input type="date" ng-model="book.age" placeholder="Год рождения" required><br/>
   Без ISBN <input type="checkbox" ng-model="checked">
   <input name="isbn" ng-model="book.isbn"  ng-hide="checked" type="number" ng-minlength="13" min="1" max="9999999999999" ng-maxlength="13" placeholder = "ISBN">
   <span ng-show="!formA.isbn.$valid">Не валидное значение</span><br/>
-  
 
   <select ng-model="book.author" required>
   <option value="" disabled>-Выберите-</option>
@@ -22,6 +21,7 @@
       </option>
     <% }) %>
   </select><br/>
+  <input type="text" ng-model="book.link" placeholder="Ссылка на обложку"><br/>
   <button type="submit">Регистрация</button>
   <span ng-bind="messageBook"></span>
 </form>     
@@ -33,6 +33,7 @@
   <input type="text" ng-model="author.description" placeholder="Введите биографию"><br/>
   <input type="date" ng-model="author.age" max="2010-12-31" placeholder="Год рождения"><br/>
  <input type="text" ng-model="author.country" placeholder="Введите страну происхождения автора" required><br/>
+ <input type="text" ng-model="author.link" placeholder="Ссылка на портрет"><br/>
   <button type="submit">Регистрация</button>
   <span ng-bind="messageAuthor"></span>
 </form>

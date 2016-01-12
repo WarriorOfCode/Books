@@ -12,7 +12,12 @@
 			<button type="submit">Save</button>
 			<span ng-bind="message"></span>
 		</form>
-		
+		<!-- <input type="button" value="Change Photo" ng-click="photo=true">
+		<form ng-controller="photo" ng-show="photo" ng-submit="savephoto()">
+			<input type="file">
+			<button type="submit"> Update Photo</button>
+		</form> -->
+		<br/>
 		<input type="button" value="Change password" ng-click="checked=true">
 		<form ng-controller="changePassword" ng-show="checked" ng-submit="save()">
 			<input type="password" placeholder="old password" ng-model="password.old" required><br/>

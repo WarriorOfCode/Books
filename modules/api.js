@@ -93,8 +93,8 @@ router.get('/out', function(req, res){
 router.post('/author', function(req, res){
 	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
 	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
-	var insertSql = "INSERT INTO Authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth) VALUES (?,?,?,?,?,?)";
-	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country];
+	var insertSql = "INSERT INTO Authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth, image_url) VALUES (?,?,?,?,?,?,?)";
+	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link];
 	var overlap;
 	connection.query("SELECT * FROM Authors WHERE Name = ?", req.body.name, function(err, rows){
 		if (err) throw err;
@@ -120,10 +120,10 @@ router.post('/book', function(req, res){
 	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
 	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
 	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
-	var insertSqlBook = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data) VALUES (?,?,?,?)";
-	var insertSqlISBN = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data, ISBN) VALUES (?,?,?,?,?)";
+	var insertSqlBook = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data, image_url) VALUES (?,?,?,?,?)";
+	var insertSqlISBN = "INSERT INTO Books (Name, Description, number_of_pages, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?,?)";
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
-	var insertParams = [req.body.name, req.body.description,  req.body.page, req.body.age];
+	var insertParams = [req.body.name, req.body.description,  req.body.page, req.body.age, req.body.link];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 

@@ -6,7 +6,8 @@
 </head>
 <body ng-app="BookSave">
 	<% include 	includes/login.ejs %>
-		<a href="/">На главную</a>
+		<a href="/">На главную</a><br/>
+		<img src="<%= book[0].image_url %>" alt="= book[0].Name">
 		<h1><%= book[0].Name %></h1>
 		<p><%= book[0].Description %></p><br/>
 		<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>

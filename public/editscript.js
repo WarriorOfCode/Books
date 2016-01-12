@@ -34,6 +34,5 @@ app.controller('changePassword', ['$scope', '$http', function($scope, $http){
 		} else {
 			$scope.errorNewPassword = "В пароле должно быть как минимум 6 символов"
 		}
-		
 	};
 }]);
