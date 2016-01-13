@@ -73,7 +73,7 @@ router.get('/', function(req, res){
 
 router.get('/registration', function(req, res){
 	if (!req.session.login)
-		res.render('registration.html');
+		res.render('registration.html', { login: null });
 	else res.redirect('/');
 });
 

@@ -3,16 +3,30 @@
 		<title>Вход</title>
 	
 	<% include	includes/header.ejs %>
+		
+		<div class="container">
+			<form ng-controller="LoginCtrl" ng-submit="sendData()" class="form-horizontal">
+				<div class="form-group">
+					<label for="login" class="col-sm-3 control-label">Login</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" ng-model="user.nickName" id="login" placeholder="Введите login" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-3 control-label">Password</label>
+					<div class="col-sm-5">
+		 				<input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Введите пароль" required>
+		 			</div>
+				</div>
 
-		<form ng-controller="LoginCtrl" ng-submit="sendData()">
-			<input type="text" ng-model="user.nickName" placeholder="Введите login" required><br/>
-	 		<input type="password" ng-model="user.password" placeholder="Введите пароль" required><br/>
-
-	  		<button type="submit">Вход</button>
-	 		<span ng-bind="message"></span>
-		</form>
-		<a href="/">На главную</a>
-		<a href='/registration'>Зарегистрироваться</a>
+				<div class="form-group">
+    				<div class="col-sm-offset-3 col-sm-5">
+		  				<button type="submit" class="btn btn-default">Вход</button>
+		  			</div>
+		  		</div>
+		 		<span ng-bind="message"></span>
+			</form>
+		</div>
 
  		<% include includes/scripts.ejs %>
 

@@ -1,20 +1,45 @@
-<html ng-app="books">
+<html>
 <head>
-<title> Registration of user</title>	
-</head>
-<body>
-<form name="formA" ng-controller="registration" ng-submit="sendData()">
-  <input type="text" ng-model="user.nickName" placeholder="Введите login" maxlength="20" required><br/>
-  <input name="email" type="email" ng-model="user.email" placeholder="Введите email" required>
-	<span ng-bind="emailError" ></span>  
-  	<span ng-show="formA.email.$error.email">Не корректная почта</span><br/>
-  <input type="password" ng-model="user.password" placeholder="Введите пароль" minlength="7" required><br/>
+<title> Registration of user</title>
 
-  <button type="submit">Регистрация</button>
-  <span ng-bind="message"></span>
-</form>
-<a href="/">На главную</a>
- <script src="/angular.min.js"></script>
- <script src="/script.js"></script>
+<% include includes/header.ejs%>
+<div class="container">
+	<form name="formA" ng-controller="RegistrationCtrl" ng-submit="sendData()" class="form-horizontal">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Login</label>
+			<div class="col-sm-5">
+				<input type="text" name="login" ng-model="user.nickName" class="form-control" placeholder="Введите login" maxlength="20" required>
+			</div>
+		</div>
+
+		<div class="form-group" ng-class="{'has-error' : formA.email.$error.email}">
+			<label class="col-sm-3 control-label">Email</label>
+			<div class="col-sm-5">
+				<input name="email" type="email" ng-model="user.email" class="form-control" placeholder="Введите email" required>
+			</div>
+		</div>
+			<span ng-bind="emailError" ></span>
+
+		<div class="form-group" >
+			<label class="col-sm-3 control-label">Password</label>
+			<div class="col-sm-5">
+				<input type="password" ng-model="user.password" class="form-control" placeholder="Введите пароль" minlength="7" required><br/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-5">
+				<button type="submit" class="btn btn-default">Регистрация</button>
+			</div>
+		</div>
+		
+		<span ng-bind="message"></span>
+	</form>
+</div>
+
+ <% include includes/scripts.ejs %>
+
+ <script src="/js/registration.js"></script>
 </body>
 </html>
