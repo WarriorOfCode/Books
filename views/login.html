@@ -1,13 +1,11 @@
-<html ng-app="Userlogin">
+<html >
 	<head>
 		<title>Вход</title>
-	</head>
-	<body>
-		<form ng-controller="login" ng-submit="sendData()">
-	  		<input type="text" ng-model="user.nickName" placeholder="Введите login" required><br/>
-	 		<!-- <input name="email" type="email" ng-model="user.email" placeholder="Введите email" required>
-	 		<span ng-bind="emailError" ></span>  
-	 		<span ng-show="formA.email.$error.email">Не корректная почта</span><br/>-->
+	
+	<% include	includes/header.ejs %>
+
+		<form ng-controller="LoginCtrl" ng-submit="sendData()">
+			<input type="text" ng-model="user.nickName" placeholder="Введите login" required><br/>
 	 		<input type="password" ng-model="user.password" placeholder="Введите пароль" required><br/>
 
 	  		<button type="submit">Вход</button>
@@ -15,7 +13,9 @@
 		</form>
 		<a href="/">На главную</a>
 		<a href='/registration'>Зарегистрироваться</a>
- 		<script src="/angular.min.js"></script>
- 		<script src="/scriptlogin.js"></script>
+
+ 		<% include includes/scripts.ejs %>
+
+ 		<script src="/js/login.js"></script>
 	</body>
 </html>

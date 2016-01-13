@@ -2,8 +2,8 @@
 
 /* STYLES FOR HEADER */
 
-.navbar-default {
-	line-height: 100px;
+.head {
+	margin-top: 15px;
 }
 .navbar-brand {
 	height: 100px;
@@ -13,13 +13,24 @@
 	width: 120px;
 	height: 100px;
 	margin-top: -5px;
-}
-.navbar-form {
-	margin: 0;
-	border: none;
-}
-.navbar-default .input-group-btn {
-	line-height: 14px;
+	margin-left: 15px;
 }
 
+.head ul {
+	margin-top: 5px;
+}
 
+.navbar {
+	border-radius: 0;
+}
+
+/* STYLES FOR BOOK */
+
+.book-image img {
+	max-width: 100%;
+}
+
+.book-image input{
+	margin-top: 5px;
+	border: 1px solid #333333;
+}

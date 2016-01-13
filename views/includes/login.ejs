@@ -1,9 +1,0 @@
-<span ng-controller="out">
-<% if (login) { %>
-	<a href="/user/<%= login %>"><%= login %></a>
-	<a href ng-click="send()" value="Выйти">Выйти</a>
-<% } else { %>
-	<a href='/registration'>Зарегистрироваться</a>
-	<a href='/login'>Войти!</a>
-<% } %>
-</span>

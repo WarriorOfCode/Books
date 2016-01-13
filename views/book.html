@@ -3,25 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title><%= book[0].Name %></title>
-</head>
-<body ng-app="BookSave">
-	<% include 	includes/login.ejs %>
-		<a href="/">На главную</a><br/>
-		<img src="<%= book[0].image_url %>" alt="= book[0].Name">
-		<h1><%= book[0].Name %></h1>
-		<p><%= book[0].Description %></p><br/>
-		<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>
-	<!-- </div> -->
-	<div ng-controller="Read">
-		<% if (login) { %>
-			<% if (flag.length > 0 && flag !== null ) { %>
-				<input type="button" value="Не читал" ng-click="confirm()">
-			<% } else { %>
-				<input type="button" value="Читал" ng-click="confirm()">
-			<% } %>
-		<% } %>
+
+	<% include	includes/header.ejs %>
+	
+	<div class="row-fluid">
+		<div class="col-sm-3 book-image">
+			<img src="<%= book[0].image_url %>" class="img-rounded" alt="= book[0].Name">
+			<div ng-controller="ReadCtrl">
+				<% if (login) { %>
+					<% if (flag.length > 0 && flag !== null ) { %>
+						<input class="btn btn-large btn-block btn-primary" type="button" value="Не читал" ng-click="confirm()">
+					<% } else { %>
+						<input class="btn btn-large btn-block" type="button" value="Читал" ng-click="confirm()">
+					<% } %>
+				<% } %>
+			</div>
+		</div>
+		<div class="col-sm-9">
+			<h1><%= book[0].Name %></h1>
+			<p><%= book[0].Description %></p><br/>
+			<p>Количество страниц: <%= book[0].number_of_pages %></p><br/>
+		</div>
 	</div>
-	<script src="/angular.min.js"></script>
- 	<script src="/bookScript.js"></script>
+
+	
+	
+	<% include includes/scripts.ejs %>
+ 	<script src="/js/book.js"></script>
+
 </body>
 </html>

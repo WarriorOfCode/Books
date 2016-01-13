@@ -1,6 +1,9 @@
-var app = angular.module('Userlogin', []);
-app.controller('login', ['$scope', '$http', '$location', function($scope, $http, $location) {
-    $scope.sendData = function() {
+angular
+	.module('Books')
+	.controller('LoginCtrl', ['$scope', '$http', '$location', LoginCtrl]);
+
+function LoginCtrl($scope, $http, $location) {
+    $scope.sendData = function () {
 		$http.post('/api/login', $scope.user)
 		.success(function(data){
 			if(!data["error"])
@@ -11,4 +14,4 @@ app.controller('login', ['$scope', '$http', '$location', function($scope, $http,
 			console.log(data);
 		});
     };
-}]);
+}
