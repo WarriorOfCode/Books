@@ -2,35 +2,41 @@
 <html>
 	<head>
 		<title> <%= user[0].NickName %> </title>
-	</head>
-	<body ng-app="user">
-	<% include 	includes/login.ejs %>
-	<div ng-controller="friend">
-		<h1> <%= user[0].NickName %> </h1>
+	
+	<% include 	includes/header.ejs %>
+
+	<div ng-controller="FriendCtrl" class="row-fluid">
+		<div class="col-xs-offset-1">
+			<h1> <%= user[0].NickName %> </h1>
 			<% if (user[0].Name) { %>
-				<span > Name is : <%= user[0].Name+" " %></span>
-				<% if (user[0].LastName) { %>
-					<%= user[0].LastName%>
-				<% } %>
-				<br/>
+				<p> Name is : <%= user[0].Name+" " %>
+					<% if (user[0].LastName) { %>
+						<%= user[0].LastName%>
+					<% } %>
+				</p><br/>
 			<% } %>
-			
-			<% if (login == user[0].NickName) { %>
-				<a href="/setting"><input type="button" value = "Редактировать"></a><br/>
-			<% } else { %>
-				<% if (flag.length > 0 && flag !== null ) { %>
-					<input type="button" value="Отписаться" ng-click="follow()"><br/>
+			<% if (login) { %>
+				<% if (login == user[0].NickName) { %>
+					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a><br/>
 				<% } else { %>
-					<input type="button" value = "Подписаться" ng-click="follow()"><br/>
+					<% if (flag.length > 0 && flag !== null ) { %>
+						<input type="button" value="Отписаться" class="btn btn-primary btn-large" ng-click="follow()"><br/>
+					<% } else { %>
+						<input type="button" value = "Подписаться" class="btn btn-default btn-large" ng-click="follow()"><br/>
+					<% } %>
 				<% } %>
 			<% } %>
-		<% if (books != null && books.length > 0) { %>
-			<span> Прочитанные книги: </span>
-			<% include includes/booksList.ejs %>
-		<% } %>
-		<a href="/">На главную</a>
+			<% if (books != null && books.length > 0) { %>
+				<h3> Прочитанные книги: </h3>
+
+				<% include includes/booksList.ejs %>
+
+			<% } %>
+		</div>
 	</div>
-	<script src="/angular.min.js"></script>
- 	<script src="/userscript.js"></script>
+	
+	<% include includes/scripts.ejs %>
+
+ 	<script src="/js/user.js"></script>
 	</body>
 </html>

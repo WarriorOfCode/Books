@@ -46,24 +46,36 @@ router.post('/password', function(req, res){
 });
 
 router.post('/friend', function(req, res){
-	var params = [req.session.id, req.body.userId];
-	var selectSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
-	var deleteSql = "DELETE FROM friends WHERE id_follower = ? AND id_following = ?";
-	var insertSql = "INSERT INTO friends (id_follower, id_following) VALUES (?,?)";
-	connection.query(selectSql, params, function(err, rows){
-		if (err) throw err;
-		if (rows != null && rows.length > 0){
-			connection.query(deleteSql, params, function(err, rows1){
-				if (err) throw err;
-				res.send(" ");
-			});
-		} else {
-			connection.query(insertSql, params, function(err, rows1){
-				if (err) throw err;
-				res.send(" ");
-			});
-		}
-	});
+	if (isFinite(req.body.userId)){
+		friend(req.body.userId);
+	} else {
+		connection.query("SELECT id FROM Users WHERE NickName = ?", req.body.userId, function (err, rows0){
+			if (err) throw err;
+		friend(rows0[0].id);
+		});
+	};
+
+	function friend(id){
+		var params = [req.session.id, id];
+		var selectSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
+		var deleteSql = "DELETE FROM friends WHERE id_follower = ? AND id_following = ?";
+		var insertSql = "INSERT INTO friends (id_follower, id_following) VALUES (?,?)";
+		connection.query(selectSql, params, function(err, rows){
+			if (err) throw err;
+			if (rows != null && rows.length > 0){
+				connection.query(deleteSql, params, function (err, rows1){
+					if (err) throw err;
+					res.send(" ");
+				});
+			} else {
+				connection.query(insertSql, params, function (err, rows1){
+					if (err) throw err;
+					res.send(" ");
+				});
+			}
+		});
+	};
+	
 });
 
 router.post('/login', function(req, res){

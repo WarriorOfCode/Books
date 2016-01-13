@@ -43,7 +43,7 @@ router.get('/user/:id', function (req, res){
 			}
 		});
 	};
-	function user (params) {
+	function user(params) {
 		var selectSql = "SELECT Books.* FROM Books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
 		var selectFriendSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
 		if (params == null) res.redirect('/');
