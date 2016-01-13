@@ -1,5 +1,5 @@
 angular
-	.module('Books', [])
+	.module('Books', ['ngAnimate', 'ui.bootstrap'])
 	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl]);
 
 

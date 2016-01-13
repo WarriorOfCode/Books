@@ -34,3 +34,13 @@
 	margin-top: 5px;
 	border: 1px solid #333333;
 }
+
+/* STYLES FOR EDIT */
+
+.form-horizontal div:first-child{
+	margin-top: 15px;
+}
+
+form{
+	margin: 3px;
+}

@@ -1,5 +1,9 @@
-var app = angular.module('setting', []);
-app.controller('edit', ['$scope', '$http', '$window', function($scope, $http, $window){
+angular
+	.module('Books')
+	.controller('EditCtrl', ['$scope', '$http', '$window', EditCtrl])
+	.controller('PasswordCtrl', ['$scope', '$http', PasswordCtrl]);
+
+function EditCtrl($scope, $http, $window){
 	$scope.user = $window.userDate;
 	$scope.send = function() {
 		if ($scope.user.email){
@@ -14,9 +18,9 @@ app.controller('edit', ['$scope', '$http', '$window', function($scope, $http, $w
 			$scope.message = "поле email не может быть пустым, а люди могут";
 		}
 	};
-}]);
+}
 
-app.controller('changePassword', ['$scope', '$http', function($scope, $http){
+function PasswordCtrl($scope, $http){
 	$scope.save = function(){
 		if ($scope.password.new.length > 5){
 			if ($scope.password.new == $scope.password.repeat){
@@ -35,4 +39,5 @@ app.controller('changePassword', ['$scope', '$http', function($scope, $http){
 			$scope.errorNewPassword = "В пароле должно быть как минимум 6 символов"
 		}
 	};
-}]);
+}
+

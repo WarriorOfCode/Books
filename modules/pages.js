@@ -22,7 +22,7 @@ router.get('/setting', function(req, res){
 	if (req.session.id){
 		connection.query("SELECT * FROM Users WHERE id = ?", req.session.id, function(err, rows){
 			if (err) throw err;
-			res.render('edit.html', {data: rows});
+			res.render('edit.html', {data: rows, login: req.session.login});
 		});
 	} else {
 		console.log(req.session.id)

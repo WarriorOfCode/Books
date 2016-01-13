@@ -2,31 +2,82 @@
 <html>
 	<head>
 		<title> My settings </title>
-	</head>
-	<body ng-app="setting">
-		<form ng-controller="edit" ng-submit="send()">
-			Your Name is: <input type="text" ng-model="user.name" value="<%= data[0].Name %>"><br/>
-			Your Lastname is: <input type="text" ng-model="user.lastName" value="<%= data[0].LastName %>"><br/>
-			The date of your birth is: <input type="date" ng-model="user.date" value="<%= data[0].BirthData %>"><br/>
-			Your Email is: <input type="email" ng-model="user.email" value="<%= data[0].Email%>" required><br/>
-			<button type="submit">Save</button>
-			<span ng-bind="message"></span>
-		</form>
-		<!-- <input type="button" value="Change Photo" ng-click="photo=true">
-		<form ng-controller="photo" ng-show="photo" ng-submit="savephoto()">
-			<input type="file">
-			<button type="submit"> Update Photo</button>
-		</form> -->
-		<br/>
-		<input type="button" value="Change password" ng-click="checked=true">
-		<form ng-controller="changePassword" ng-show="checked" ng-submit="save()">
-			<input type="password" placeholder="old password" ng-model="password.old" required><br/>
-			<input type="password" minlength ="6" placeholder="new password" ng-model="password.new" required>
-			<span ng-bind="errorNewPassword"></span><br/>
-			<input type="password" minlength ="6" placeholder="repeat new password" ng-model="password.repeat" required>
-			<span ng-bind="errorPassword"></span><br/>
-			<button type="submit">Update password</button>
-			<span ng-bind="message"></span>
+
+		<% include includes/header.ejs %>
+
+
+		<form name="outerForm">
+			<uib-tabset>
+				<uib-tab heading="Личные данные">
+					<ng-form name="formA" ng-controller="EditCtrl" class="form-horizontal">
+			
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Your Name is:</label>
+							<div class="col-sm-5">
+								<input type="text" ng-model="user.name" class="form-control" value="<%= data[0].Name %>">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Your Lastname is: </label>
+							<div class="col-sm-5">
+								<input type="text" ng-model="user.lastName"  class="form-control" value="<%= data[0].LastName %>">
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error' : formA.email.$error.required || formA.email.$error.email}">
+							<label class="col-sm-3 control-label">Your Email is: </label>
+							<div class="col-sm-5">
+								<input type="email" name="email" class="form-control" ng-model="user.email" value="<%= data[0].Email%>" required>
+							</div>
+						</div>
+
+						<!-- The date of your birth is: <input type="date" ng-model="user.date" value="<%= data[0].BirthData %>"><br/> -->
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-5">
+								<button  ng-click="send()" class="btn btn-default">Save</button>
+							</div>
+						</div>
+						<span ng-bind="message"></span>
+					</ng-form>
+				</uib-tab>
+
+				<uib-tab heading="Изменить пароль">
+					<ng-form ng-controller="PasswordCtrl" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Your old password is:</label>
+							<div class="col-sm-5">
+								<input type="password" placeholder="old password" class="form-control" ng-model="password.old" required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">New password:</label>
+							<div class="col-sm-5">
+								<input type="password" minlength ="6" class="form-control" placeholder="new password" ng-model="password.new" required>
+							</div>
+						</div>
+						<span ng-bind="errorNewPassword"></span>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Repeat new password:</label>
+							<div class="col-sm-5">
+								<input type="password" minlength ="6" class="form-control" placeholder="repeat new password" ng-model="password.repeat" required>
+							</div>
+						</div>
+						<span ng-bind="errorPassword"></span>
+
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-5">
+								<button ng-click="save()" class="btn btn-default">Update</button>
+							</div>
+						</div>
+						<span ng-bind="message"></span>
+					</ng-form>
+				</uib-tab>
+			</uib-tabset>
 		</form>
 
 		<script>
@@ -37,7 +88,9 @@
 				/*date: "<%= data[0].BirthData %>"*/
 			};
 		</script>
-		<script src="/angular.min.js"></script>
- 		<script src="/editscript.js"></script>
+		
+		<% include includes/scripts.ejs %>
+
+		<script src="/js/edit.js"></script>
 	</body>
 </html>
