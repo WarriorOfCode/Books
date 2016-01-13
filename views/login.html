@@ -4,8 +4,10 @@
 	
 	<% include	includes/header.ejs %>
 		
+
 		<div class="container">
 			<form ng-controller="LoginCtrl" ng-submit="sendData()" class="form-horizontal">
+			<div ng-bind="message" ng-show="message" class="alert alert-danger" role="alert"></div>
 				<div class="form-group">
 					<label for="login" class="col-sm-3 control-label">Login</label>
 					<div class="col-sm-5">
@@ -24,7 +26,6 @@
 		  				<button type="submit" class="btn btn-default">Вход</button>
 		  			</div>
 		  		</div>
-		 		<span ng-bind="message"></span>
 			</form>
 		</div>
 

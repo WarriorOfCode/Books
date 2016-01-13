@@ -37,10 +37,6 @@
 
 /* STYLES FOR EDIT */
 
-.form-horizontal div:first-child{
+.down{
 	margin-top: 15px;
-}
-
-form{
-	margin: 3px;
 }

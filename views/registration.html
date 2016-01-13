@@ -5,7 +5,7 @@
 <% include includes/header.ejs%>
 <div class="container">
 	<form name="formA" ng-controller="RegistrationCtrl" ng-submit="sendData()" class="form-horizontal">
-
+		<div ng-bind="message" ng-show="message" class="alert alert-danger"  role="alert"></div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Login</label>
 			<div class="col-sm-5">
@@ -19,12 +19,13 @@
 				<input name="email" type="email" ng-model="user.email" class="form-control" placeholder="Введите email" required>
 			</div>
 		</div>
-			<span ng-bind="emailError" ></span>
+			<!-- <span ng-bind="emailError" ></span> -->
+			
 
 		<div class="form-group" >
 			<label class="col-sm-3 control-label">Password</label>
 			<div class="col-sm-5">
-				<input type="password" ng-model="user.password" class="form-control" placeholder="Введите пароль" minlength="7" required><br/>
+				<input type="password" ng-model="user.password" class="form-control" placeholder="Введите пароль" minlength="7" required>
 			</div>
 		</div>
 
@@ -34,7 +35,7 @@
 			</div>
 		</div>
 		
-		<span ng-bind="message"></span>
+		
 	</form>
 </div>
 

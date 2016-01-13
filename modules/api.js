@@ -33,7 +33,7 @@ router.post('/book/user', function(req, res){
 
 router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
-	var success = {"error": true, "message": 'Password changed'}
+	var success = {"error": false, "message": 'Password changed'}
 	connection.query("SELECT password FROM Users WHERE id = ?", req.session.id, function(err, rows){
 		if (err) throw err;
 		if (rows[0].password == req.body.old) {
