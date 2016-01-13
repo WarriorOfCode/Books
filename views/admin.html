@@ -1,44 +1,147 @@
-<html ng-app="booksregistration">
+<html>
 <head>
-	<title> Registration of book or author</title>	
-</head>
-<body>
-<h3>Регистрация книги</h3>
-<form name="formA" ng-controller="registrationBook" ng-submit="sendData()">
-  <input type="text" ng-model="book.name" placeholder="Введите название книги" required><br/>
-  <input type="text" ng-model="book.description" placeholder="Введите описание книги" required><br/>
-  <input type="number" ng-model="book.page" min="1" placeholder="Количество страниц"><br/>
-  <input type="date" ng-model="book.age" placeholder="Год рождения" required><br/>
-  Без ISBN <input type="checkbox" ng-model="checked">
-  <input name="isbn" ng-model="book.isbn"  ng-hide="checked" type="number" ng-minlength="13" min="1" max="9999999999999" ng-maxlength="13" placeholder = "ISBN">
-  <span ng-show="!formA.isbn.$valid">Не валидное значение</span><br/>
+	<title> Registration of book or author</title>
+<% include includes/header %>
 
-  <select ng-model="book.author" required>
-  <option value="" disabled>-Выберите-</option>
-    <% authors.forEach(function(author) { %>
-    <option value = "<%= author.id %>">
-        <%= author.Name %> <%= author.Last_Name %>
-      </option>
-    <% }) %>
-  </select><br/>
-  <input type="text" ng-model="book.link" placeholder="Ссылка на обложку" requared><br/>
-  <button type="submit">Регистрация</button>
-  <span ng-bind="messageBook"></span>
-</form>     
-<h3>Регистрация автора</h3>
-<form ng-controller="registrationAuthor" ng-submit="sendAuthor()">
-  <input type="text" ng-model="author.name" placeholder="Введите имя автора" required><br/>
-  <input type="text" ng-model="author.lastname" placeholder="Введите фамилию автора" required><br/>
-  <input type="text" ng-model="author.patronymic" placeholder="Введите отчество автора"><br/>
-  <input type="text" ng-model="author.description" placeholder="Введите биографию"><br/>
-  <input type="date" ng-model="author.age" max="2010-12-31" placeholder="Год рождения"><br/>
- <input type="text" ng-model="author.country" placeholder="Введите страну происхождения автора" required><br/>
- <input type="text" ng-model="author.link" placeholder="Ссылка на портрет" requared><br/>
-  <button type="submit">Регистрация</button>
-  <span ng-bind="messageAuthor"></span>
+<form name="outerForm">
+	<uib-tabset>
+		<uib-tab heading="Регистрация книги">
+			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Название книги:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Описание книги:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="book.description" class="form-control" placeholder="Введите описание книги" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Дата первой публикации:</label>
+					<div class="col-sm-5">
+						<input type="number" ng-model="book.age" class="form-control" placeholder="Год рождения" max="2016" ng-maxlength="4" required>
+					</div>
+				</div>
+
+				
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">ISBN:</label>
+					<div class="col-sm-5" ng-hide="checked">
+						<input name="isbn" ng-model="book.isbn" class="form-control" type="number" ng-minlength="13" min="1" max="9999999999999" ng-maxlength="13" placeholder = "ISBN">
+					</div>
+					<div class="checkbox">
+					<label>
+					 <input type="checkbox" ng-model="checked">Без ISBN
+					</label>
+				</div>
+				</div>
+	<span ng-show="!formA.isbn.$valid">Не валидное значение</span>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Автор:</label>
+					<div class="col-sm-5">
+						<select  class="form-control" ng-model="book.author" required>
+						<option value="" disabled>-Выберите-</option>
+							<% authors.forEach(function(author) { %>
+							<option value = "<%= author.id %>">
+									<%= author.Name %> <%= author.Last_Name %>
+								</option>
+							<% }) %>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Ссылка на обложку:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="book.link" class="form-control" placeholder="Ссылка на обложку" requared>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-5">
+						<button  ng-click="send()" class="btn btn-default">Save</button>
+					</div>
+				</div>
+
+				<span ng-bind="messageBook"></span>
+			</ng-form>
+		</uib-tab>
+
+
+
+		<uib-tab heading="Регистрация автора">
+			<ng-form ng-controller="AuthorRegisterCtrl" class="form-horizontal">
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Имя:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="author.name" class="form-control" placeholder="Введите имя автора" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Фамилия:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="author.lastname" class="form-control" placeholder="Введите фамилию автора" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Отчество, если есть:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="author.patronymic" class="form-control" placeholder="Введите отчество автора">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Биография:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="author.description" class="form-control" placeholder="Введите биографию">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Дата рождения:</label>
+					<div class="col-sm-5">
+						<input type="date" ng-model="author.age" class="form-control" max="2010-12-31" placeholder="Год рождения">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Место рождения:</label>
+					<div class="col-sm-5">
+ 						<input type="text" ng-model="author.country" class="form-control" placeholder="Введите страну происхождения автора" required>
+ 					</div>
+ 				</div>
+
+ 				<div class="form-group">
+					<label class="col-sm-3 control-label">Ссылка на портрет:</label>
+					<div class="col-sm-5">
+						<input type="text" ng-model="author.link" class="form-control" placeholder="Ссылка на портрет" requared>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-5">
+						<button ng-click="save()" class="btn btn-default">Сохранить</button>
+					</div>
+				</div>
+				<span ng-bind="messageAuthor"></span>
+			</ng-form>
+		</uib-tab>
+	</uib-tabset>
 </form>
-<a href="/">На главную</a>
- <script src="/angular.min.js"></script>
- <script src="/scriptAdmin.js"></script>
+	
+
+	<% include includes/scripts%>
+ <script src="/js/admin.js"></script>
 </body>
 </html>

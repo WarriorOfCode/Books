@@ -1,10 +1,10 @@
-var app = angular.module('booksregistration', []);
-app.controller('showAuthors', ['$scope', function($scope){
-	var date = new Date();
-	$scope.bitch = date;
-}]);
-app.controller('registrationBook', ['$scope', '$http', function($scope, $http) {
-    $scope.sendData = function() {
+angular
+	.module('Books')
+	.controller('BookRegisterCtrl', ['$scope', '$http', BookRegisterCtrl])
+	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl]);
+
+function BookRegisterCtrl($scope, $http) {
+    $scope.send = function() {
 		$http.post('/api/book', $scope.book)
 		.success(function(data){
 			$scope.messageBook = data["message"];
@@ -15,10 +15,10 @@ app.controller('registrationBook', ['$scope', '$http', function($scope, $http) {
 			console.log(data);
 		});
     };
-}]);
+}
 
-app.controller('registrationAuthor', ['$scope', '$http', function($scope, $http) {
-	$scope.sendAuthor = function() {
+function AuthorRegisterCtrl($scope, $http) {
+	$scope.save = function() {
 		$http.post('/api/author', $scope.author)
 		.success(function(data){
 			$scope.messageAuthor = data["message"];
@@ -29,4 +29,4 @@ app.controller('registrationAuthor', ['$scope', '$http', function($scope, $http)
 			console.log(data);
 		});
     };
-}]);
+}
