@@ -6,10 +6,37 @@
 	
 	<% include includes/header.ejs%>
 
-	<span> Ведь и мы хотим жить и летать!</span>
-		
+	
+	<h3>Популярные</h3>
+
 	<% include includes/booksList.ejs %>
 
+	<h3>Новые</h3>
+
+	<div class="books">
+		<% newbooks.forEach(function(book) { %>
+			<div class="col-sm-3">
+				<a href='/book/<%= book.id %>'>
+					<img src="<%= book.image_url %>">
+					<div><%= book.Name %></div>
+				</a>
+			</div>
+		<% }) %>
+	</div>
+
+	<h3>Классика</h3>
+	<div class="books">
+		<% classic.forEach(function(book) { %>
+			<div class="col-sm-3">
+				<a href='/book/<%= book.id %>'>
+					<img src="<%= book.image_url %>">
+					<div><%= book.Name %></div>
+				</a>
+			</div>
+		<% }) %>
+	</div>
+
 	<% include includes/scripts.ejs %>
+
 </body>
 </html>

@@ -65,10 +65,20 @@ router.get('/user/:id', function (req, res){
 });
 
 router.get('/', function(req, res){
-	connection.query('SELECT * FROM Books', function(err, rows) {
+	var selectPop = 'SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
+	connection.query('SELECT * FROM Books GROUP BY id DESC LIMIT 4; ', function(err, rows) {
 		if (err) throw err;
-		res.render('index.html', {books: rows, login: req.session.login});
-  });
+		connection.query(selectPop, function(err, rows1){
+			if (err) throw err;
+			connection.query('SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_groups WHERE id_group = 1)', function(err, rows2){
+				if (err) throw err;
+				connection.query('SELECT * FROM Books', function(err, rows3){
+					if (err) throw err;
+					res.render('index.html', {books: rows1, login: req.session.login, newbooks: rows, classic: rows2, allbooks: rows3});
+				});
+			});
+		});
+	});
 });
 
 router.get('/registration', function(req, res){

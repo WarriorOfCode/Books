@@ -40,3 +40,20 @@
 .down{
 	margin-top: 15px;
 }
+
+/* STYLES FOR BOOKLIST*/
+
+.books img {
+
+	width: 200px;
+	height: 250px;
+}
+
+.books{
+	margin-left: 20px;
+}
+
+.books div{
+	margin-bottom: 20px;
+	text-align: center;
+}

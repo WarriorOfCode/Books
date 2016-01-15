@@ -135,7 +135,7 @@ router.post('/book', function(req, res){
 	var insertSqlBook = "INSERT INTO Books (Name, Description, Birth_data, image_url) VALUES (?,?,?,?)";
 	var insertSqlISBN = "INSERT INTO Books (Name, Description, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?)";
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
-	var insertParams = [req.body.name, req.body.description,  req.body.page, req.body.age, req.body.link];
+	var insertParams = [req.body.name, req.body.description, req.body.age, req.body.link];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
