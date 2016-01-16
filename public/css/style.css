@@ -49,9 +49,6 @@
 	height: 250px;
 }
 
-.left{
-	margin-left: 20px;
-}
 
 .books div{
 	margin-bottom: 20px;
@@ -59,4 +56,6 @@
 }
 
 /* STYLES FOR INDEX AND SEARCH*/
-{}
+.left{
+	margin-left: 20px;
+}

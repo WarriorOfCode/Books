@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><%= author[0].Name%> <%= author[0].Last_Name%></title>
+
+	<% include	includes/header.ejs %>
+
+	<div class="row-fluid">
+		<div class="col-sm-3 book-image">
+			<img src="<%= author[0].image_url %>" class="img-rounded" alt="<%= author[0].Last_Name %>">
+			
+		</div>
+		<div class="col-sm-9">
+			<h1><%= author[0].Name %>
+			<% if (author[0].patronymic) {%>
+				<%= author[0].patronymic %> 
+			<% } %>
+			<%= author[0].Last_Name %></h1>
+			<p><%= author[0].Biography %></p><br/>
+			<!-- <p><b>Дата рождения:</b> <%= author[0].Birth_data %></p><br/> -->
+		</div>
+	</div>
+
+	<% if (books != null && books.length > 0) { %>
+		<h3> Является автором следующих книг: </h3>
+
+		<% include includes/booksList.ejs %>
+
+	<% } %>
+
+	
+	
+	<% include includes/scripts.ejs %>
+ 	<script src="/js/book.js"></script>
+
+</body>
+</html>

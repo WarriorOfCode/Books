@@ -214,7 +214,7 @@ router.post('/user', function (req, res) {
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
-	var success = {"error": false, "message": "Подтвердите почту!"};
+	var success = {"error": false, "message": "Регистрация прошла успешно!"};
 
 	connection.query(selectSql, selectParams, function (err, rows1) {
 		if (err) throw err;

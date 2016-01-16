@@ -4,17 +4,43 @@ var connection = require('./db');
 
 router.get('/book/:id', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user =?";
+	var selectauthor = "SELECT Name, Last_Name, patronymic, id FROM  authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
 	if (req.params.id == null) res.redirect('/');
 	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
-			connection.query(selectSql, [req.params.id, req.session.id], function(err, rows1){
+			connection.query(selectauthor, req.params.id, function(err, rows1){
 				if (err) throw err;
-				res.render('book.html', {book: rows, login: req.session.login,	flag: rows1});
+				connection.query(selectSql, [req.params.id, req.session.id], function(err, rows2){
+					if (err) throw err;
+					res.render('book.html', {book: rows, author: rows1, login: req.session.login,	flag: rows2});
+				});
 			});
 		} else {
 			res.redirect('/');
 		}		
+	});
+});
+router.get('/author/:id', function(req, res){
+	connection.query('SELECT * FROM Authors WHERE id = ?', req.params.id, function(err, rows){
+		if (err) throw err;
+		if (rows !== null && rows.length > 0){
+			var selectbooks = 'SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_authors WHERE id_author = ?)';
+			connection.query(selectbooks, req.params.id, function(err, rows1){
+				if (err) throw err;
+
+				res.render('author.html', {author:rows, login: req.session.login, books: rows1});
+			});
+		} else {
+			res.redirect('/');
+		}
+	});
+});
+
+router.get('/authors', function(req, res){
+	connection.query('SELECT * FROM Authors', function(err, rows){
+		if (err) throw err;
+		res.render('authors.html', {books: rows, login: req.session.login})
 	});
 });
 

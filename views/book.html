@@ -8,7 +8,7 @@
 	
 	<div class="row-fluid">
 		<div class="col-sm-3 book-image">
-			<img src="<%= book[0].image_url %>" class="img-rounded" alt="= book[0].Name">
+			<img src="<%= book[0].image_url %>" class="img-rounded" alt="<%= book[0].Name %>">
 			<div ng-controller="ReadCtrl">
 				<% if (login) { %>
 					<% if (flag.length > 0 && flag !== null ) { %>
@@ -23,6 +23,15 @@
 			<h1><%= book[0].Name %></h1>
 			<p><%= book[0].Description %></p><br/>
 			<p><b>Дата первого издания:</b> <%= book[0].Birth_data %></p><br/>
+				<p><b>Автор: </b>
+				<a href='/author/<%= author[0].id %>'>
+				<%= author[0].Name %>
+				<% if (author[0].patronymic) {%>
+					<%= author[0].patronymic %> 
+				<% } %>
+				<%= author[0].Last_Name %>
+				</p>
+			</a>
 		</div>
 	</div>
 
