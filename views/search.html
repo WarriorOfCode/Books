@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Search</title>
+	<% include includes/header.ejs%>
+	<% include includes/booksList.ejs %>
+	<% if (books.length == 0) { %>
+		<h4 class="left"> Введите название книги, которую хотите найти </h4>
+	<% } %>
+	<% include includes/scripts.ejs %>
+
+</body>
+</html>

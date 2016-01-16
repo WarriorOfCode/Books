@@ -1,10 +1,11 @@
 angular
 	.module('Books', ['ngAnimate', 'ui.bootstrap'])
-	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl]);
+	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl])
+	.controller('QuestCtrl', ['$scope', '$http', QuestCtrl]);
 
 
 function LogoutCtrl($scope, $http) {
-	$scope.send = function() {
+	$scope.send = function () {
 		$http.get('/api/out')
 		.success(function(data){
 			location.reload();
@@ -12,5 +13,11 @@ function LogoutCtrl($scope, $http) {
 		.error(function (data) {
 			console.log(data);
 		});
+	};
+}
+
+function QuestCtrl($scope, $http){
+	$scope.search = function () {
+		$http.get('/search')
 	};
 }

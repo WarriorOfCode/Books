@@ -72,10 +72,7 @@ router.get('/', function(req, res){
 			if (err) throw err;
 			connection.query('SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_groups WHERE id_group = 1)', function(err, rows2){
 				if (err) throw err;
-				connection.query('SELECT * FROM Books', function(err, rows3){
-					if (err) throw err;
-					res.render('index.html', {books: rows1, login: req.session.login, newbooks: rows, classic: rows2, allbooks: rows3});
-				});
+				res.render('index.html', {books: rows1, login: req.session.login, newbooks: rows, classic: rows2});
 			});
 		});
 	});
@@ -92,5 +89,18 @@ router.get('/login', function(req, res){
 		res.render('login.html', { login: null });
 	else res.redirect('/');
 });
+
+router.get('/search', function(req, res){
+	if (req.query.query) {
+		connection.query('SELECT * FROM Books WHERE Name LIKE ?', req.query.query+"%", function(err, rows){
+			if (err) throw err;
+			
+			res.render('search.html', {login: req.session.login, books: rows});	
+		});
+	} else {
+		res.render('search.html', {login: req.session.login, books: []})
+	}
+	
+})
 
 module.exports = router;
