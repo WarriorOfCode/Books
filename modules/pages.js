@@ -4,9 +4,9 @@ var connection = require('./db');
 
 router.get('/book/:id', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user =?";
-	var selectauthor = "SELECT Name, Last_Name, patronymic, id FROM  Authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
+	var selectauthor = "SELECT Name, Last_Name, patronymic, id FROM  authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
 	if (req.params.id == null) res.redirect('/');
-	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
+	connection.query('SELECT * FROM books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
 			connection.query(selectauthor, req.params.id, function(err, rows1){
@@ -22,10 +22,10 @@ router.get('/book/:id', function(req, res){
 	});
 });
 router.get('/author/:id', function(req, res){
-	connection.query('SELECT * FROM Authors WHERE id = ?', req.params.id, function(err, rows){
+	connection.query('SELECT * FROM authors WHERE id = ?', req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
-			var selectbooks = 'SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_authors WHERE id_author = ?)';
+			var selectbooks = 'SELECT * FROM books WHERE id IN (SELECT id_book FROM books_authors WHERE id_author = ?)';
 			connection.query(selectbooks, req.params.id, function(err, rows1){
 				if (err) throw err;
 
@@ -38,7 +38,7 @@ router.get('/author/:id', function(req, res){
 });
 
 router.get('/authors', function(req, res){
-	connection.query('SELECT * FROM Authors', function(err, rows){
+	connection.query('SELECT * FROM authors', function(err, rows){
 		if (err) throw err;
 		res.render('authors.html', {books: rows, login: req.session.login})
 	});
@@ -46,7 +46,7 @@ router.get('/authors', function(req, res){
 
 router.get('/setting', function(req, res){
 	if (req.session.id){
-		connection.query("SELECT * FROM Users WHERE id = ?", req.session.id, function(err, rows){
+		connection.query("SELECT * FROM users WHERE id = ?", req.session.id, function(err, rows){
 			if (err) throw err;
 			res.render('edit.html', {data: rows, login: req.session.login});
 		});
@@ -59,7 +59,7 @@ router.get('/user/:id', function (req, res){
 	if (isFinite(req.params.id)) {
 		user(req.params.id);
 	} else {
-		connection.query("SELECT id FROM Users WHERE NickName = ?", req.params.id, function(err, rows3){
+		connection.query("SELECT id FROM users WHERE NickName = ?", req.params.id, function(err, rows3){
 			if (err) throw err;
 			if (rows3 !==null && rows3.length > 0){
 				user(rows3[0].id);
@@ -69,10 +69,10 @@ router.get('/user/:id', function (req, res){
 		});
 	};
 	function user(params) {
-		var selectSql = "SELECT Books.* FROM Books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
+		var selectSql = "SELECT Books.* FROM books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
 		var selectFriendSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
 		if (params == null) res.redirect('/');
-		connection.query("SELECT * FROM Users WHERE id = ? LIMIT 1", params, function(err, rows){
+		connection.query("SELECT * FROM users WHERE id = ? LIMIT 1", params, function(err, rows){
 			if (err) throw err;
 			if (rows !== null && rows.length > 0){
 				connection.query(selectSql, params, function(err, rows1){
@@ -90,12 +90,12 @@ router.get('/user/:id', function (req, res){
 });
 
 router.get('/', function(req, res){
-	var selectPop = 'SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
-	connection.query('SELECT * FROM Books GROUP BY id DESC LIMIT 4', function(err, rows) {
+	var selectPop = 'SELECT * FROM books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
+	connection.query('SELECT * FROM books GROUP BY id DESC LIMIT 4', function(err, rows) {
 		if (err) throw err;
 		connection.query(selectPop, function(err, rows1){
 			if (err) throw err;
-			connection.query('SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_groups WHERE id_group = 1)', function(err, rows2){
+			connection.query('SELECT * FROM books WHERE id IN (SELECT id_book FROM books_groups WHERE id_group = 1)', function(err, rows2){
 				if (err) throw err;
 				res.render('index.html', {books: rows1, login: req.session.login, newbooks: rows, classic: rows2});
 			});
@@ -117,7 +117,7 @@ router.get('/login', function(req, res){
 
 router.get('/search', function(req, res){
 	if (req.query.query) {
-		connection.query('SELECT * FROM Books WHERE Name LIKE ?', req.query.query+"%", function(err, rows){
+		connection.query('SELECT * FROM books WHERE Name LIKE ?', req.query.query+"%", function(err, rows){
 			if (err) throw err;
 			
 			res.render('search.html', {login: req.session.login, books: rows});	

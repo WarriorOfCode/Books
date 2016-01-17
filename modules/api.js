@@ -3,7 +3,7 @@ var router = express.Router();
 var connection = require('./db');
 
 router.get('/users', function (req, res){
-	connection.query('SELECT * FROM Users', function(err, rows) {
+	connection.query('SELECT * FROM users', function(err, rows) {
 		if (err) throw err;
   		res.json(rows);
 	});
@@ -23,7 +23,7 @@ router.post('/book/user', function(req, res){
 				res.send(" ");
 			});
 		} else {
-			connection.query(insertSql,params, function(err, rows1){
+			connection.query(insertSql, params, function(err, rows1){
 				if (err) throw err;
 				res.send(" ");
 			});
@@ -34,10 +34,10 @@ router.post('/book/user', function(req, res){
 router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
 	var success = {"error": false, "message": 'Password changed'}
-	connection.query("SELECT password FROM Users WHERE id = ?", req.session.id, function(err, rows){
+	connection.query("SELECT password FROM users WHERE id = ?", req.session.id, function(err, rows){
 		if (err) throw err;
 		if (rows[0].password == req.body.old) {
-			connection.query("UPDATE Users SET password = ? WHERE id = ?", [req.body.new, req.session.id])
+			connection.query("UPDATE users SET password = ? WHERE id = ?", [req.body.new, req.session.id])
 			res.json(success);
 		} else {
 			res.json(error);
@@ -49,7 +49,7 @@ router.post('/friend', function(req, res){
 	if (isFinite(req.body.userId)){
 		friend(req.body.userId);
 	} else {
-		connection.query("SELECT id FROM Users WHERE NickName = ?", req.body.userId, function (err, rows0){
+		connection.query("SELECT id FROM users WHERE NickName = ?", req.body.userId, function (err, rows0){
 			if (err) throw err;
 		friend(rows0[0].id);
 		});
@@ -81,7 +81,7 @@ router.post('/friend', function(req, res){
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
-	connection.query("SELECT * FROM Users WHERE NickName = ?", req.body.nickName, function(err, rows){
+	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
 		if (rows.length>0 && rows[0].password==req.body.password){
@@ -105,10 +105,10 @@ router.get('/out', function(req, res){
 router.post('/author', function(req, res){
 	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
 	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
-	var insertSql = "INSERT INTO Authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth, image_url) VALUES (?,?,?,?,?,?,?)";
+	var insertSql = "INSERT INTO authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth, image_url) VALUES (?,?,?,?,?,?,?)";
 	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link];
 	var overlap;
-	connection.query("SELECT * FROM Authors WHERE Name = ?", req.body.name, function(err, rows){
+	connection.query("SELECT * FROM authors WHERE Name = ?", req.body.name, function(err, rows){
 		if (err) throw err;
 		for (var i = 0; i < rows.length; i++){
 			if (rows[i].Last_Name == req.body.lastname)
@@ -129,11 +129,11 @@ router.post('/author', function(req, res){
 router.post('/book', function(req, res){
 	var irows = 0;
 	var bol = 0;
-	var selectBooks = "SELECT * FROM Books WHERE Name = ?";
+	var selectBooks = "SELECT * FROM books WHERE Name = ?";
 	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
-	var selectAuthors = "SELECT * FROM Authors WHERE id = ?";
-	var insertSqlBook = "INSERT INTO Books (Name, Description, Birth_data, image_url) VALUES (?,?,?,?)";
-	var insertSqlISBN = "INSERT INTO Books (Name, Description, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?)";
+	var selectAuthors = "SELECT * FROM authors WHERE id = ?";
+	var insertSqlBook = "INSERT INTO books (Name, Description, Birth_data, image_url) VALUES (?,?,?,?)";
+	var insertSqlISBN = "INSERT INTO books (Name, Description, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?)";
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
 	var insertParams = [req.body.name, req.body.description, req.body.age, req.body.link];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
@@ -141,7 +141,7 @@ router.post('/book', function(req, res){
 
 	if (req.body.isbn!= null && req.body.isbn > 0)
 	{
-		connection.query("SELECT * FROM Books WHERE ISBN = ?", req.body.isbn, function(err, rows){
+		connection.query("SELECT * FROM books WHERE ISBN = ?", req.body.isbn, function(err, rows){
 			if (err) throw err;
 			if (rows!= null && rows.length > 0){
 				res.json(errorbook);
@@ -149,7 +149,7 @@ router.post('/book', function(req, res){
 				insertParams.push(req.body.isbn)
 				connection.query(insertSqlISBN, insertParams, function(err, rows3){
 					if (err) throw err;
-					connection.query("SELECT * FROM Books WHERE ISBN = ?", req.body.isbn, function(err, rows4){	
+					connection.query("SELECT * FROM books WHERE ISBN = ?", req.body.isbn, function(err, rows4){	
 						if (err) throw err;				
 						connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
 							if (err) throw err;
@@ -206,10 +206,10 @@ router.post('/book', function(req, res){
 
 router.post('/user', function (req, res) {
 
-	var selectSql = "SELECT Email FROM Users WHERE Email = ? OR NickName =?";
+	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
 	var selectParams = [req.body.email, req.body.nickName];
 
-	var insertSql = "INSERT INTO Users (Email, password, NickName) VALUES (?,?,?)";
+	var insertSql = "INSERT INTO users (Email, password, NickName) VALUES (?,?,?)";
 	var insertParams = [req.body.email, req.body.password,  req.body.nickName];
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
@@ -228,7 +228,7 @@ router.post('/user', function (req, res) {
 		} else {
 			connection.query(insertSql, insertParams, function (err, rows2) {
 				if (err) throw err;
-				connection.query("SELECT * FROM Users WHERE NickName = ?", req.body.nickName, function(err, rows3){
+				connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows3){
 					if (err) throw err;
 					req.session.login = rows3[0].NickName;
 					req.session.id =rows3[0].id;
@@ -242,8 +242,8 @@ router.post('/user', function (req, res) {
 
 
 router.post('/edit', function(req, res){
-	var updateSql = "UPDATE Users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
-	var selectSql = "SELECT * FROM Users WHERE Email = ? AND id != ?";
+	var updateSql = "UPDATE users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
+	var selectSql = "SELECT * FROM users WHERE Email = ? AND id != ?";
 	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id];
 	var selectParams = [req.body.email, req.session.id]
 	connection.query(selectSql, selectParams, function(err, rows1){
