@@ -8,6 +8,7 @@ function BookRegisterCtrl($scope, $http) {
 		$http.post('/api/book', $scope.book)
 		.success(function(data){
 			$scope.messageBook = data["message"];
+			$scope.errorIsbn = data["error"];
 			if(!data["error"])
 				$scope.book = {};
 		})

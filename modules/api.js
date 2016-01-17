@@ -243,11 +243,21 @@ router.post('/user', function (req, res) {
 
 router.post('/edit', function(req, res){
 	var updateSql = "UPDATE Users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
-	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id]
-	connection.query(updateSql, params, function(err, rows){
+	var selectSql = "SELECT * FROM Users WHERE Email = ? AND id != ?";
+	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id];
+	var selectParams = [req.body.email, req.session.id]
+	connection.query(selectSql, selectParams, function(err, rows1){
 		if (err) throw err;
-		res.json({"message": 'Saved!'})
+		if (rows1 != null && rows1.length > 0){
+			res.json({"message": 'Такая почта уже зарегистрированна!', "error": true});
+		} else {
+			connection.query(updateSql, params, function(err, rows){
+				if (err) throw err;
+				res.json({"message": 'Saved!'})
+			});
+		}
 	});
+	
 });
 
 module.exports = router;

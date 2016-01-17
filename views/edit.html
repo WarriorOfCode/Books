@@ -10,7 +10,8 @@
 			<uib-tabset>
 				<uib-tab heading="Личные данные">
 					<ng-form name="formA" ng-controller="EditCtrl" class="form-horizontal">
-					<div class="alert alert-success" role="alert" ng-bind="message" ng-show="message"></div>
+					<div class="alert alert-success" role="alert" ng-bind="message" ng-show="message && !error"></div>
+					<div class="alert alert-danger" role="alert" ng-bind="message" ng-show="message && error"></div>
 					<div class="alert alert-danger" role="alert" ng-bind="errorEmail" ng-show="errorEmail"></div>
 						<div class="form-group down">
 							<label class="col-sm-3 control-label">Your Name is:</label>

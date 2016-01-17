@@ -51,7 +51,6 @@ router.get('/setting', function(req, res){
 			res.render('edit.html', {data: rows, login: req.session.login});
 		});
 	} else {
-		console.log(req.session.id)
 		res.redirect('/');
 	}
 });
@@ -92,7 +91,7 @@ router.get('/user/:id', function (req, res){
 
 router.get('/', function(req, res){
 	var selectPop = 'SELECT * FROM Books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
-	connection.query('SELECT * FROM Books GROUP BY id DESC LIMIT 4; ', function(err, rows) {
+	connection.query('SELECT * FROM Books GROUP BY id DESC LIMIT 4', function(err, rows) {
 		if (err) throw err;
 		connection.query(selectPop, function(err, rows1){
 			if (err) throw err;

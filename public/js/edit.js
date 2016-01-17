@@ -11,6 +11,7 @@ function EditCtrl($scope, $http, $window){
 			.success(function(data){
 				$scope.message = data["message"];
 				$scope.errorEmail = null;
+				$scope.error = data["error"];
 			})
 			.error(function (data) {
 				console.log(data);

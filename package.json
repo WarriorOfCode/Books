@@ -8,7 +8,8 @@
     "cookie-session": "^1.2.0",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
-    "mysql": "^2.10.0"
+    "mysql": "^2.10.0",
+    "node-mysql-connect": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {
