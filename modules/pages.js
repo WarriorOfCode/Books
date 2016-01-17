@@ -69,7 +69,7 @@ router.get('/user/:id', function (req, res){
 		});
 	};
 	function user(params) {
-		var selectSql = "SELECT Books.* FROM books, books_users WHERE books_users.id_user = ? AND books_users.id_book = Books.id";
+		var selectSql = "SELECT books.* FROM books, books_users WHERE books_users.id_user = ? AND books_users.id_book = books.id";
 		var selectFriendSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
 		if (params == null) res.redirect('/');
 		connection.query("SELECT * FROM users WHERE id = ? LIMIT 1", params, function(err, rows){
