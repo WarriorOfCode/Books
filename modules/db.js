@@ -1,9 +1,2 @@
-var config = {
-  
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'Books_DB'
-};
-
+var config = require('./config');
 module.exports = require('node-mysql-connect')(config);

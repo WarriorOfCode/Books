@@ -3,7 +3,7 @@ var router = express.Router();
 var connection = require('./db');
 
 router.get('/users', function (req, res){
-	connection.query('SELECT * FROM users', function(err, rows) {
+	connection.query('SELECT * FROM Users', function(err, rows) {
 		if (err) throw err;
   		res.json(rows);
 	});
@@ -81,7 +81,7 @@ router.post('/friend', function(req, res){
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
-	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
+	connection.query("SELECT * FROM Users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
 
 		if (rows.length>0 && rows[0].password==req.body.password){
@@ -206,10 +206,10 @@ router.post('/book', function(req, res){
 
 router.post('/user', function (req, res) {
 
-	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
+	var selectSql = "SELECT Email FROM Users WHERE Email = ? OR NickName =?";
 	var selectParams = [req.body.email, req.body.nickName];
 
-	var insertSql = "INSERT INTO users (Email, password, NickName) VALUES (?,?,?)";
+	var insertSql = "INSERT INTO Users (Email, password, NickName) VALUES (?,?,?)";
 	var insertParams = [req.body.email, req.body.password,  req.body.nickName];
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};

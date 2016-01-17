@@ -4,7 +4,7 @@ var connection = require('./db');
 
 router.get('/book/:id', function(req, res){
 	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user =?";
-	var selectauthor = "SELECT Name, Last_Name, patronymic, id FROM  authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
+	var selectauthor = "SELECT Name, Last_Name, patronymic, id FROM  Authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
 	if (req.params.id == null) res.redirect('/');
 	connection.query('SELECT * FROM Books WHERE id = ? LIMIT 1', req.params.id, function(err, rows){
 		if (err) throw err;
