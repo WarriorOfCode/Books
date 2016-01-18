@@ -6,6 +6,7 @@ function RegistrationCtrl($scope, $http) {
     	if ($scope.user.nickName && $scope.user.email && $scope.user.password && $scope.user.nickName.length<21){
 			$http.post('/api/user', $scope.user)
 			.success(function(data){
+				$scope.error = data["error"];
 				if(!data["error"])
 					location.href = '/';
 				$scope.message = data["message"];
