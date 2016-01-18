@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('./db');
+var crypto = require ('crypto');
+
 
 router.get('/users', function (req, res){
 	connection.query('SELECT * FROM users', function(err, rows) {
@@ -33,11 +35,20 @@ router.post('/book/user', function(req, res){
 
 router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
-	var success = {"error": false, "message": 'Password changed'}
-	connection.query("SELECT password FROM users WHERE id = ?", req.session.id, function(err, rows){
+	var success = {"error": false, "message": 'Password changed'};
+	
+	connection.query("SELECT password, salt FROM users WHERE id = ?", req.session.id, function(err, rows){
 		if (err) throw err;
-		if (rows[0].password == req.body.old) {
-			connection.query("UPDATE users SET password = ? WHERE id = ?", [req.body.new, req.session.id])
+
+		var newhash = crypto.createHash('sha512')
+					.update(rows[0].salt+req.body.old)
+					.digest('hex');
+		var hashpassword = crypto.createHash('sha512')
+					.update(rows[0].salt + req.body.new)
+					.digest('hex');
+
+		if (rows[0].password == newhash) {
+			connection.query("UPDATE users SET password = ? WHERE id = ?", [hashpassword, req.session.id])
 			res.json(success);
 		} else {
 			res.json(error);
@@ -83,8 +94,11 @@ router.post('/login', function(req, res){
 	var success = {"error": false};
 	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
 		if (err) throw err;
+		var newhash = crypto.createHash('sha512')
+					.update(rows[0].salt+req.body.password)
+					.digest('hex');
 
-		if (rows.length>0 && rows[0].password==req.body.password){
+		if (rows.length>0 && rows[0].password==newhash){
 			req.session.login = rows[0].NickName;
 			req.session.id = rows[0].id;
 			req.session.permissions = rows[0].permissions;
@@ -209,13 +223,19 @@ router.post('/user', function (req, res) {
 	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
 	var selectParams = [req.body.email, req.body.nickName];
 
-	var insertSql = "INSERT INTO users (Email, password, NickName) VALUES (?,?,?)";
-	var insertParams = [req.body.email, req.body.password,  req.body.nickName];
+	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
+	var hashpassword = crypto.createHash('sha512')
+					.update(salt + req.body.password)
+					.digest('hex');
+
+
+	var insertSql = "INSERT INTO users (Email, password, NickName, salt) VALUES (?,?,?,?)";
+	var insertParams = [req.body.email, hashpassword,  req.body.nickName, salt];
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
 	var success = {"error": false, "message": "Регистрация прошла успешно!"};
-
+	
 	connection.query(selectSql, selectParams, function (err, rows1) {
 		if (err) throw err;
 
