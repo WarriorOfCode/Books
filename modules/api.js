@@ -2,42 +2,39 @@ var express = require('express');
 var router = express.Router();
 var connection = require('./db');
 var crypto = require ('crypto');
-
+var userService = require('./services/userService');
 
 router.get('/users', function (req, res){
-	connection.query('SELECT * FROM users', function(err, rows) {
+	userService.getUsers(function (err, data) {
 		if (err) throw err;
-  		res.json(rows);
+		res.json(rows);
 	});
-
 });
 
 router.post('/book/user', function(req, res){
-	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
-	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
-	var deleteSql = "DELETE FROM books_users WHERE id_book = ? AND id_user = ?";
-	var params = [req.body.bookId, req.session.id]; 
-	connection.query(selectSql, params, function(err, rows){
+
+	var defaultResponse = function(err, rows){
+		if (err) throw err;
+		res.send(" ");
+	};
+
+	userService.findUserBook(req.body.bookId, req.session.id, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0){
-			connection.query(deleteSql, params, function(err, rows1){
-				if (err) throw err;
-				res.send(" ");
-			});
+			userService.deleteUserBook(req.body.bookId, req.session.id, defaultResponse);
 		} else {
-			connection.query(insertSql, params, function(err, rows1){
-				if (err) throw err;
-				res.send(" ");
-			});
-		};
+			userService.addUserBook(req.body.bookId, req.session.id, defaultResponse);
+		}
 	});
+
 });
 
 router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
 	var success = {"error": false, "message": 'Password changed'};
+
+	userService.getUserInformation(req.session.id, function(err, rows){
 	
-	connection.query("SELECT password, salt FROM users WHERE id = ?", req.session.id, function(err, rows){
 		if (err) throw err;
 
 		var newhash = crypto.createHash('sha512')
@@ -48,38 +45,36 @@ router.post('/password', function(req, res){
 					.digest('hex');
 
 		if (rows[0].password == newhash) {
-			connection.query("UPDATE users SET password = ? WHERE id = ?", [hashpassword, req.session.id])
-			res.json(success);
+			userService.updateUserPassword(hashpassword, req.session.id, function(err, rows){
+				if (err) throw err;
+				res.json(success);
+			});
 		} else {
 			res.json(error);
 		};
-	})
+	});
 });
 
 router.post('/friend', function(req, res){
 	if (isFinite(req.body.userId)){
 		friend(req.body.userId);
 	} else {
-		connection.query("SELECT id FROM users WHERE NickName = ?", req.body.userId, function (err, rows0){
+		userService.getUserId(req.body.userId, function (err, rows0){
 			if (err) throw err;
-		friend(rows0[0].id);
+			friend(rows0[0].id);
 		});
 	};
 
-	function friend(id){
-		var params = [req.session.id, id];
-		var selectSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
-		var deleteSql = "DELETE FROM friends WHERE id_follower = ? AND id_following = ?";
-		var insertSql = "INSERT INTO friends (id_follower, id_following) VALUES (?,?)";
-		connection.query(selectSql, params, function(err, rows){
+	function friend(id){		
+		userService.getFriend(req.session.id, id, function(err, rows){
 			if (err) throw err;
 			if (rows != null && rows.length > 0){
-				connection.query(deleteSql, params, function (err, rows1){
+				userService.deleteFriend(req.session.id, id, function (err, rows1){
 					if (err) throw err;
 					res.send(" ");
 				});
 			} else {
-				connection.query(insertSql, params, function (err, rows1){
+				userService.addfriend(req.session.id, id, function (err, rows1){
 					if (err) throw err;
 					res.send(" ");
 				});
@@ -92,17 +87,22 @@ router.post('/friend', function(req, res){
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
-	connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows){
-		if (err) throw err;
-		var newhash = crypto.createHash('sha512')
-					.update(rows[0].salt+req.body.password)
-					.digest('hex');
 
-		if (rows.length>0 && rows[0].password==newhash){
-			req.session.login = rows[0].NickName;
-			req.session.id = rows[0].id;
-			req.session.permissions = rows[0].permissions;
-			res.json(success);
+	userService.getInformationFromLogin(req.body.nickName, function(err, rows){
+		if (err) throw err;
+		if (rows.length>0){
+			var newhash = crypto.createHash('sha512')
+						.update(rows[0].salt+req.body.password)
+						.digest('hex');
+
+			if (rows[0].password==newhash){
+				req.session.login = rows[0].NickName;
+				req.session.id = rows[0].id;
+				req.session.permissions = rows[0].permissions;
+				res.json(success);
+			} else {
+				res.json(errorLogin);
+			}
 		} else {
 			res.json(errorLogin);
 		}
@@ -119,9 +119,12 @@ router.get('/out', function(req, res){
 router.post('/author', function(req, res){
 	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
 	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
+
 	var insertSql = "INSERT INTO authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth, image_url) VALUES (?,?,?,?,?,?,?)";
 	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link];
 	var overlap;
+
+
 	connection.query("SELECT * FROM authors WHERE Name = ?", req.body.name, function(err, rows){
 		if (err) throw err;
 		for (var i = 0; i < rows.length; i++){
@@ -219,24 +222,16 @@ router.post('/book', function(req, res){
 });
 
 router.post('/user', function (req, res) {
-
-	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
-	var selectParams = [req.body.email, req.body.nickName];
-
 	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
 	var hashpassword = crypto.createHash('sha512')
 					.update(salt + req.body.password)
 					.digest('hex');
 
-
-	var insertSql = "INSERT INTO users (Email, password, NickName, salt) VALUES (?,?,?,?)";
-	var insertParams = [req.body.email, hashpassword,  req.body.nickName, salt];
-
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
 	var success = {"error": false, "message": "Регистрация прошла успешно!"};
 	
-	connection.query(selectSql, selectParams, function (err, rows1) {
+	userService.getUser(req.body.email, req.body.nickName, function (err, rows1) {
 		if (err) throw err;
 
 		if (rows1 != null && rows1.length > 0) {
@@ -246,9 +241,9 @@ router.post('/user', function (req, res) {
 				res.json(errorLogin);
 			}
 		} else {
-			connection.query(insertSql, insertParams, function (err, rows2) {
+			userService.insertUser(req.body.email, hashpassword, req.body.nickName, salt, function (err, rows2) {
 				if (err) throw err;
-				connection.query("SELECT * FROM users WHERE NickName = ?", req.body.nickName, function(err, rows3){
+				userService.getInformationFromLogin(req.body.nickName, function(err, rows3){
 					if (err) throw err;
 					req.session.login = rows3[0].NickName;
 					req.session.id =rows3[0].id;
@@ -262,22 +257,17 @@ router.post('/user', function (req, res) {
 
 
 router.post('/edit', function(req, res){
-	var updateSql = "UPDATE users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
-	var selectSql = "SELECT * FROM users WHERE Email = ? AND id != ?";
-	var params = [req.body.name, req.body.lastName, req.body.email, req.session.id];
-	var selectParams = [req.body.email, req.session.id]
-	connection.query(selectSql, selectParams, function(err, rows1){
+	userService.checkEmailUniqueness(req.body.email, req.session.id, function(err, rows1){
 		if (err) throw err;
 		if (rows1 != null && rows1.length > 0){
 			res.json({"message": 'Такая почта уже зарегистрированна!', "error": true});
 		} else {
-			connection.query(updateSql, params, function(err, rows){
+			userService.updateUserInformation(req.body.name, req.body.lastName, req.body.email, req.session.id, function(err, rows){
 				if (err) throw err;
 				res.json({"message": 'Saved!'})
 			});
 		}
 	});
-	
 });
 
 module.exports = router;
