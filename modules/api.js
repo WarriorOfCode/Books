@@ -3,9 +3,11 @@ var router = express.Router();
 var connection = require('./db');
 var crypto = require ('crypto');
 var userService = require('./services/userService');
+var authorService = require('./services/authorService');
+var bookService = require('./services/bookService');
 
 router.get('/users', function (req, res){
-	userService.getUsers(function (err, data) {
+	userService.getUsers(function (err, rows) {
 		if (err) throw err;
 		res.json(rows);
 	});
@@ -120,19 +122,16 @@ router.post('/author', function(req, res){
 	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
 	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
 
-	var insertSql = "INSERT INTO authors (Name, Last_Name, patronymic, Birth_date, Biography, Counry_of_birth, image_url) VALUES (?,?,?,?,?,?,?)";
-	var insertParams = [req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link];
 	var overlap;
 
-
-	connection.query("SELECT * FROM authors WHERE Name = ?", req.body.name, function(err, rows){
+	authorService.getAuthorByName(req.body.name, function(err, rows){
 		if (err) throw err;
 		for (var i = 0; i < rows.length; i++){
 			if (rows[i].Last_Name == req.body.lastname)
 				overlap = 1;
 		}
 		if (!overlap) {
-			connection.query(insertSql, insertParams, function(err, rows1){
+			authorService.addAuthor(req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link, function(err, rows1){
 				if (err) throw err;
 				res.json(success);
 			});
@@ -146,54 +145,47 @@ router.post('/author', function(req, res){
 router.post('/book', function(req, res){
 	var irows = 0;
 	var bol = 0;
-	var selectBooks = "SELECT * FROM books WHERE Name = ?";
-	var selectBA = "SELECT * FROM books_authors WHERE id_book = ?";
-	var selectAuthors = "SELECT * FROM authors WHERE id = ?";
-	var insertSqlBook = "INSERT INTO books (Name, Description, Birth_data, image_url) VALUES (?,?,?,?)";
-	var insertSqlISBN = "INSERT INTO books (Name, Description, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?)";
-	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
-	var insertParams = [req.body.name, req.body.description, req.body.age, req.body.link];
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
 	if (req.body.isbn!= null && req.body.isbn > 0)
 	{
-		connection.query("SELECT * FROM books WHERE ISBN = ?", req.body.isbn, function(err, rows){
+		bookService.getBookByISBN(req.body.isbn, function(err, rows){
 			if (err) throw err;
 			if (rows!= null && rows.length > 0){
 				res.json(errorbook);
 			} else {
-				insertParams.push(req.body.isbn)
-				connection.query(insertSqlISBN, insertParams, function(err, rows3){
+				console.log(req.body.isbn)
+				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
-					connection.query("SELECT * FROM books WHERE ISBN = ?", req.body.isbn, function(err, rows4){	
-						if (err) throw err;				
-						connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+					bookService.getBookByISBN(req.body.isbn, function(err, rows4){	
+						if (err) throw err;
+						bookService.addConnectionBookAuthor(rows4[rows4.length-1].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 							res.json(success);
 						});
 					});
 				});
-	
 			};
 		});
 	} else {
-		connection.query(selectBooks, req.body.name, function(err, rows){
+		bookService.getBookByName(req.body.name, function(err, rows){
 			if (err) throw err;
 			if (rows != null && rows.length > 0){
 				for (var i = 0; i<rows.length; i++){
-					connection.query(selectBA, rows[i].id, function(err, rows1){
+					authorService.getAuthorsIdByBookId(rows[i].id, function(err, rows1){
 						if(err) throw err;
 						bol++;
 						if (req.body.author != rows1[0].id_author){
 							irows++;
 						}
 						if (irows == rows.length){
-							connection.query(insertSqlBook, insertParams, function(err, rows3){
+							console.log("book")
+							bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 								if (err) throw err;
-								connection.query(selectBooks, req.body.name, function(err, rows4){	
-									if (err) throw err;				
-									connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+								bookService.getBookByName(req.body.name, function(err, rows4){	
+									if (err) throw err;
+									bookService.addConnectionBookAuthor(rows4[rows4.length-1].id, req.body.author, function(err, rows5){
 										if (err) throw err;
 										res.json(success);
 									});
@@ -206,11 +198,11 @@ router.post('/book', function(req, res){
 				}
 				
 			} else {
-				connection.query(insertSqlBook, insertParams, function(err, rows3){
+				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
-					connection.query(selectBooks, req.body.name, function(err, rows4){	
+					bookService.getBookByName(req.body.name, function(err, rows4){	
 						if (err) throw err;				
-						connection.query(insertSqlBA, [rows4[rows4.length-1].id, req.body.author], function(err, rows5){
+						bookService.addConnectionBookAuthor(rows4[rows4.length-1].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 							res.json(success);
 						});
