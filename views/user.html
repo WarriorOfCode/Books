@@ -5,7 +5,7 @@
 	
 	<% include 	includes/header.ejs %>
 
-	<div ng-controller="FriendCtrl" class="row-fluid">
+	<div  class="row-fluid">
 		<div class="col-xs-offset-1">
 			<h1> <%= user[0].NickName %> </h1>
 			<% if (user[0].Name) { %>
@@ -15,23 +15,33 @@
 					<% } %>
 				</p><br/>
 			<% } %>
-			<% if (login) { %>
-				<% if (login == user[0].NickName) { %>
-					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a><br/>
-				<% } else { %>
-					<% if (flag.length > 0 && flag !== null ) { %>
-						<input type="button" value="Отписаться" class="btn btn-primary btn-large" ng-click="follow()"><br/>
+			<div ng-controller="FriendCtrl" >
+				<% if (login) { %>
+					<% if (login == user[0].NickName) { %>
+						<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a><br/>
 					<% } else { %>
-						<input type="button" value = "Подписаться" class="btn btn-default btn-large" ng-click="follow()"><br/>
+						<% if (flag.length > 0 && flag !== null ) { %>
+							<input type="button" value="Отписаться" class="btn btn-primary btn-large" ng-click="follow()"><br/>
+						<% } else { %>
+							<input type="button" value = "Подписаться" class="btn btn-default btn-large" ng-click="follow()"><br/>
+						<% } %>
 					<% } %>
 				<% } %>
-			<% } %>
-			<% if (books != null && books.length > 0) { %>
-				<h3> Прочитанные книги: </h3>
-
-				<% include includes/booksList.ejs %>
-
-			<% } %>
+			</div>
+			<div ng-controller="UserBooks">
+				<div ng-hide="books">Loading...</div>
+				<div ng-show="books.length" class="Books">
+					<h3>Прочитанные книги: </h3>
+					<div class="books">
+						<div ng-repeat="book in books" class="col-sm-3">
+							<a ng-href="/book/{{book.id}}">
+								<img ng-src="{{book.image_url}}">
+								<div> {{book.Name}} </div>
+							</a>
+						</div>
+					</div>
+				 </div>
+			</div>
 		</div>
 	</div>
 	

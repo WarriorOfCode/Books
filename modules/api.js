@@ -13,6 +13,23 @@ router.get('/users', function (req, res){
 	});
 });
 
+router.get('/user/books/:id', function(req, res){
+	if (isFinite(req.params.id)) {
+		bookService.getBooksByUserId(req.params.id, function(err, rows){
+			if (err) throw err;
+			res.json(rows);
+		});
+	} else {
+		userService.getInformationFromLogin(req.params.id, function(err, rows3){
+			if (err) throw err;
+			bookService.getBooksByUserId(rows3[0].id, function(err, rows){
+				if (err) throw err;
+				res.json(rows);
+			});
+		});
+	}
+});
+
 router.post('/book/user', function(req, res){
 
 	var defaultResponse = function(err, rows){
@@ -155,7 +172,6 @@ router.post('/book', function(req, res){
 			if (rows!= null && rows.length > 0){
 				res.json(errorbook);
 			} else {
-				console.log(req.body.isbn)
 				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
 					bookService.getBookByISBN(req.body.isbn, function(err, rows4){	
@@ -180,7 +196,6 @@ router.post('/book', function(req, res){
 							irows++;
 						}
 						if (irows == rows.length){
-							console.log("book")
 							bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 								if (err) throw err;
 								bookService.getBookByName(req.body.name, function(err, rows4){	

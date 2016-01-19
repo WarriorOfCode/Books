@@ -78,12 +78,9 @@ router.get('/user/:id', function (req, res){
 		userService.getUserInformation(params, function(err, rows){
 			if (err) throw err;
 			if (rows !== null && rows.length > 0){
-				bookService.getBooksByUserId(params, function(err, rows1){
+				userService.getFriend(req.session.id, params, function(err, rows1){
 					if (err) throw err;
-					userService.getFriend(req.session.id, params, function(err, rows2){
-						if (err) throw err;
-						res.render('user.html', {login: req.session.login, user: rows, books: rows1, flag: rows2});
-					});
+					res.render('user.html', {login: req.session.login, user: rows, flag: rows1});
 				});
 			} else {
 				res.redirect('/');

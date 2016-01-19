@@ -1,6 +1,8 @@
 angular
 	.module('Books')
-	.controller('FriendCtrl', ['$scope', '$http', FriendCtrl]);
+	.controller('FriendCtrl', ['$scope', '$http', FriendCtrl])
+	.controller('UserBooks', ['$scope', '$http', UserBooks]);
+
 function FriendCtrl($scope, $http){
 	$scope.follow = function () {
 		var userId = location.pathname.replace("/user/", "");
@@ -13,4 +15,15 @@ function FriendCtrl($scope, $http){
 			console.log(data);
 		});
 	};
+}
+
+function UserBooks($scope, $http){
+	var userId = location.pathname.replace("/user/", "");
+	$http.get('/api/user/books/'+userId)
+	.success(function(data){
+		$scope.books = data;
+	})
+	.error(function(data){
+		console.log(data);
+	})
 }
