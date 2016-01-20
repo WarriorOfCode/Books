@@ -1,11 +1,25 @@
 var connection = require('../db');
-
+var crypto = require ('crypto');
 
 /**
  * Get all users from database.
  */
 function getUsers(callback) {
 	connection.query('SELECT * FROM users', callback);
+}
+/**
+ *  Encryption of password
+ */
+function passwordEncryption(salt, password) {
+	var hash = crypto.createHash('sha512')
+					.update(salt+password)
+					.digest('hex');
+	return hash;
+}
+
+function getSalt() {
+	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
+	return salt;
 }
 
 /**
@@ -34,7 +48,7 @@ function getUserInformation(userId, callback) {
 }
 
 function updateUserPassword(password, userId, callback) {
-	connection.query("UPDATE users SET password = ? WHERE id = ?", [password, userId], callback);
+		connection.query("UPDATE users SET password = ? WHERE id = ?", [password, userId], callback);
 }
 
 function getInformationFromLogin(login, callback) {
@@ -96,5 +110,7 @@ module.exports = {
 	getUser: getUser,
 	insertUser: insertUser,
 	checkEmailUniqueness: checkEmailUniqueness,
-	updateUserInformation: updateUserInformation
+	updateUserInformation: updateUserInformation,
+	passwordEncryption: passwordEncryption,
+	getSalt: getSalt
 };

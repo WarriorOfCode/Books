@@ -56,15 +56,11 @@ router.post('/password', function(req, res){
 	
 		if (err) throw err;
 
-		var newhash = crypto.createHash('sha512')
-					.update(rows[0].salt+req.body.old)
-					.digest('hex');
-		var hashpassword = crypto.createHash('sha512')
-					.update(rows[0].salt + req.body.new)
-					.digest('hex');
+		var oldPassword = userService.passwordEncryption(rows[0].salt, req.body.old);
+		var newPassword = userService.passwordEncryption(rows[0].salt, req.body.new);
 
-		if (rows[0].password == newhash) {
-			userService.updateUserPassword(hashpassword, req.session.id, function(err, rows){
+		if (rows[0].password == oldPassword) {
+			userService.updateUserPassword(newPassword, req.session.id, function(err, rows){
 				if (err) throw err;
 				res.json(success);
 			});
@@ -110,11 +106,10 @@ router.post('/login', function(req, res){
 	userService.getInformationFromLogin(req.body.nickName, function(err, rows){
 		if (err) throw err;
 		if (rows.length>0){
-			var newhash = crypto.createHash('sha512')
-						.update(rows[0].salt+req.body.password)
-						.digest('hex');
+			
+			var password = userService.passwordEncryption(rows[0].salt, req.body.password)
 
-			if (rows[0].password==newhash){
+			if (rows[0].password==password){
 				req.session.login = rows[0].NickName;
 				req.session.id = rows[0].id;
 				req.session.permissions = rows[0].permissions;
@@ -229,10 +224,9 @@ router.post('/book', function(req, res){
 });
 
 router.post('/user', function (req, res) {
-	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
-	var hashpassword = crypto.createHash('sha512')
-					.update(salt + req.body.password)
-					.digest('hex');
+	
+	var salt = userService.getSalt();
+	var password = userService.passwordEncryption(salt, req.body.password);
 
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
@@ -248,7 +242,7 @@ router.post('/user', function (req, res) {
 				res.json(errorLogin);
 			}
 		} else {
-			userService.insertUser(req.body.email, hashpassword, req.body.nickName, salt, function (err, rows2) {
+			userService.insertUser(req.body.email, password, req.body.nickName, salt, function (err, rows2) {
 				if (err) throw err;
 				userService.getInformationFromLogin(req.body.nickName, function(err, rows3){
 					if (err) throw err;
