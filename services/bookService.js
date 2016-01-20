@@ -4,7 +4,7 @@ var connection = require('../db');
  * Search book
  */
 function searchBook(name, callback) {
-	connection.query('SELECT * FROM books WHERE Name LIKE ?', name, callback);
+	connection.query('SELECT * FROM books WHERE Name LIKE ?', name+"%", callback);
 }
 
 /**

@@ -2,9 +2,9 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
-var api = require('./modules/api');
-var admin = require('./modules/admin');
-var pages = require('./modules/pages')
+var api = require('./controllers/api');
+var admin = require('./controllers/admin');
+var pages = require('./controllers/pages')
 
 app.engine('html', require('ejs').renderFile);
 
