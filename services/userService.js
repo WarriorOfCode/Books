@@ -7,6 +7,7 @@ var crypto = require ('crypto');
 function getUsers(callback) {
 	connection.query('SELECT * FROM users', callback);
 }
+
 /**
  *  Encryption of password
  */

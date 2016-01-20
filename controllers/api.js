@@ -45,7 +45,6 @@ router.post('/book/user', function(req, res){
 			userService.addUserBook(req.body.bookId, req.session.id, defaultResponse);
 		}
 	});
-
 });
 
 router.post('/password', function(req, res){
@@ -96,7 +95,6 @@ router.post('/friend', function(req, res){
 			}
 		});
 	};
-	
 });
 
 router.post('/login', function(req, res){
