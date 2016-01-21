@@ -23,9 +23,13 @@ function addBook(name, description, birthDate, image, callback) {
 /**
  * Add connection between book and author
  */
-function addConnectionBookAuthor(bookId, authorId, callback) {
-	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)"; 
-	connection.query(insertSqlBA, [bookId, authorId], callback);
+
+function addConnectionBookAuthor(authorId, callback) {
+	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
+	connection.query("SELECT id FROM books ORDER BY id DESC LIMIT 1", function(err, rows0){
+		if (err) throw err;
+		connection.query(insertSqlBA, [rows0[0].id, authorId], callback);
+	});
 }
 
 /**
