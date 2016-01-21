@@ -1,5 +1,11 @@
 var connection = require('../db');
 
+function checkBookUniqueness(bookName, authorId, callback){
+	var selectSql = "SELECT * FROM books_authors WHERE id_book IN (SELECT id FROM books WHERE Name = ?) AND id_author = ?";
+	console.log(bookName, authorId)
+	connection.query(selectSql, [bookName, authorId], callback);
+}
+
 /**
  * Search book
  */
@@ -83,5 +89,6 @@ module.exports = {
 	getBooksByUserId: getBooksByUserId,
 	getNewBooks: getNewBooks,
 	getPopBooks: getPopBooks,
-	getBookByGroupId: getBookByGroupId	
+	getBookByGroupId: getBookByGroupId,
+	checkBookUniqueness: checkBookUniqueness
 }

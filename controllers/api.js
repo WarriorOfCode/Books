@@ -153,8 +153,6 @@ router.post('/author', function(req, res){
 });
 
 router.post('/book', function(req, res){
-	var irows = 0;
-	var bol = 0;
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
@@ -175,30 +173,10 @@ router.post('/book', function(req, res){
 			};
 		});
 	} else {
-		bookService.getBookByName(req.body.name, function(err, rows){
+		bookService.checkBookUniqueness(req.body.name, req.body.author, function(err, rows){
 			if (err) throw err;
-			if (rows != null && rows.length > 0){
-				for (var i = 0; i<rows.length; i++){
-					authorService.getAuthorsIdByBookId(rows[i].id, function(err, rows1){
-						if(err) throw err;
-						bol++;
-						if (req.body.author != rows1[0].id_author){
-							irows++;
-						}
-						if (irows == rows.length){
-							bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
-								if (err) throw err;
-								bookService.addConnectionBookAuthor(req.body.author, function(err, rows5){
-									if (err) throw err;
-									res.json(success);
-								});
-							});
-						} else if (bol == rows.length && irows != rows.length){
-							res.json(errorbook);
-						}
-					});
-				}
-				
+			if (rows != null && rows.length>1){
+				res.json(errorbook);
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
@@ -207,7 +185,7 @@ router.post('/book', function(req, res){
 						res.json(success);
 					});
 				});
-			};
+			}
 		});
 	};
 });
