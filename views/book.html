@@ -11,11 +11,9 @@
 			<img src="<%= book[0].image_url %>" class="img-rounded" alt="<%= book[0].Name %>">
 			<div ng-controller="ReadCtrl">
 				<% if (login) { %>
-					<% if (flag.length > 0 && flag !== null ) { %>
-						<input class="btn btn-large btn-block btn-primary" type="button" value="Не читал" ng-click="confirm()">
-					<% } else { %>
-						<input class="btn btn-default btn-large btn-block" type="button" value="Читал" ng-click="confirm()">
-					<% } %>
+
+				<button class="btn btn-primary" ng-click="action()">{{ text }}</button>
+
 				<% } %>
 			</div>
 		</div>
@@ -35,6 +33,11 @@
 		</div>
 	</div>
 
+	<script>
+		window.App = {
+			isReaded: <%= isReaded %>
+		}
+	</script>
 	
 	
 	<% include includes/scripts.ejs %>

@@ -16,7 +16,14 @@ router.get('/book/:id', function(req, res){
 
 				userService.findUserBook(req.params.id, req.session.id, function(err, rows2){
 					if (err) throw err;
-					res.render('book.html', {book: rows, author: rows1, login: req.session.login,	flag: rows2});
+
+					var isReaded = rows2 != null && rows2.length > 0;
+					res.render('book.html', {
+						book: rows,
+						author: rows1,
+						login: req.session.login,
+						isReaded: isReaded
+					});
 				});
 			});
 		} else {
@@ -62,7 +69,7 @@ router.get('/user/:id', function (req, res){
 	if (isFinite(req.params.id)) {
 		user(req.params.id);
 	} else {
-		userService.getInformationFromLogin(req.params.id, function(err, rows3){
+		userService.getInformationByLogin(req.params.id, function(err, rows3){
 			if (err) throw err;
 			if (rows3 !==null && rows3.length > 0){
 				user(rows3[0].id);

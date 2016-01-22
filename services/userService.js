@@ -52,7 +52,7 @@ function updateUserPassword(password, userId, callback) {
 		connection.query("UPDATE users SET password = ? WHERE id = ?", [password, userId], callback);
 }
 
-function getInformationFromLogin(login, callback) {
+function getInformationByLogin(login, callback) {
 	connection.query("SELECT * FROM users WHERE NickName = ?", login, callback);
 }
 
@@ -104,7 +104,7 @@ module.exports = {
 	deleteUserBook: deleteUserBook,
 	getUserInformation: getUserInformation,
 	updateUserPassword: updateUserPassword,
-	getInformationFromLogin: getInformationFromLogin,
+	getInformationByLogin: getInformationByLogin,
 	getFriend: getFriend,
 	deleteFriend: deleteFriend,
 	addfriend: addfriend,

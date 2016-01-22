@@ -1,8 +1,10 @@
 var connection = require('../db');
 
+/**
+ * Check that db have book with input params
+ */
 function checkBookUniqueness(bookName, authorId, callback){
 	var selectSql = "SELECT * FROM books_authors WHERE id_book IN (SELECT id FROM books WHERE Name = ?) AND id_author = ?";
-	console.log(bookName, authorId)
 	connection.query(selectSql, [bookName, authorId], callback);
 }
 
@@ -45,10 +47,6 @@ function getBookByISBN (ISBN, callback) {
 	connection.query("SELECT * FROM books WHERE ISBN = ?", ISBN, callback);
 }
 
-function getBookByName(name, callback) {
-	connection.query("SELECT * FROM books WHERE Name = ?", name, callback);
-}
-
 function getBookById(bookId, callback) {
 	connection.query('SELECT * FROM books WHERE id = ?', bookId, callback);
 }
@@ -83,7 +81,6 @@ module.exports = {
 	addBook: addBook,
 	addConnectionBookAuthor: addConnectionBookAuthor,
 	getBookByISBN: getBookByISBN,
-	getBookByName: getBookByName,
 	getBookById: getBookById,
 	getBooksByAuthorId: getBooksByAuthorId,
 	getBooksByUserId: getBooksByUserId,

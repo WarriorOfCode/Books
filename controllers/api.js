@@ -20,7 +20,7 @@ router.get('/user/books/:id', function(req, res){
 			res.json(rows);
 		});
 	} else {
-		userService.getInformationFromLogin(req.params.id, function(err, rows3){
+		userService.getInformationByLogin(req.params.id, function(err, rows3){
 			if (err) throw err;
 			bookService.getBooksByUserId(rows3[0].id, function(err, rows){
 				if (err) throw err;
@@ -30,20 +30,17 @@ router.get('/user/books/:id', function(req, res){
 	}
 });
 
-router.post('/book/user', function(req, res){
-
-	var defaultResponse = function(err, rows){
+router.put('/book/user', function(req, res){
+	userService.addUserBook(req.body.bookId, req.session.id, function(err, rows){
 		if (err) throw err;
 		res.send(" ");
-	};
+	});
+});
 
-	userService.findUserBook(req.body.bookId, req.session.id, function(err, rows){
+router.delete('/book/user/:id', function(req, res){
+	userService.deleteUserBook(req.params.id, req.session.id, function(err, rows){
 		if (err) throw err;
-		if (rows != null && rows.length > 0){
-			userService.deleteUserBook(req.body.bookId, req.session.id, defaultResponse);
-		} else {
-			userService.addUserBook(req.body.bookId, req.session.id, defaultResponse);
-		}
+		res.send(" ");
 	});
 });
 
@@ -69,39 +66,48 @@ router.post('/password', function(req, res){
 	});
 });
 
-router.post('/friend', function(req, res){
-	if (isFinite(req.body.userId)){
-		friend(req.body.userId);
+router.delete('/friend/:id', function(req, res){
+	if (isFinite(req.params.id)){
+		unsubscribe(req.params.id);
 	} else {
-		userService.getUserId(req.body.userId, function (err, rows0){
+		userService.getInformationByLogin(req.params.id, function (err, rows){
 			if (err) throw err;
-			friend(rows0[0].id);
+			unsubscribe(rows[0].id);
 		});
-	};
+	}
 
-	function friend(id){		
-		userService.getFriend(req.session.id, id, function(err, rows){
+	function unsubscribe(id){
+		userService.deleteFriend(req.session.id, id, function (err, rows1){
 			if (err) throw err;
-			if (rows != null && rows.length > 0){
-				userService.deleteFriend(req.session.id, id, function (err, rows1){
-					if (err) throw err;
-					res.send(" ");
-				});
-			} else {
-				userService.addfriend(req.session.id, id, function (err, rows1){
-					if (err) throw err;
-					res.send(" ");
-				});
-			}
+			res.send(" ");
 		});
-	};
+	}
+
+});
+
+router.put('/friend', function(req, res){
+	if (isFinite(req.body.userId)){
+		subscribe(req.body.userId);
+	} else {
+		userService.getInformationByLogin(req.body.userId, function (err, rows){
+			if (err) throw err;
+			subscribe(rows[0].id);
+		});
+	}
+
+	function subscribe(id){
+		userService.addfriend(req.session.id, id, function (err, rows1){
+			if (err) throw err;
+			res.send(" ");
+		});
+	}
 });
 
 router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
 
-	userService.getInformationFromLogin(req.body.nickName, function(err, rows){
+	userService.getInformationByLogin(req.body.nickName, function(err, rows){
 		if (err) throw err;
 		if (rows.length>0){
 			
@@ -211,7 +217,7 @@ router.post('/user', function (req, res) {
 		} else {
 			userService.insertUser(req.body.email, password, req.body.nickName, salt, function (err, rows2) {
 				if (err) throw err;
-				userService.getInformationFromLogin(req.body.nickName, function(err, rows3){
+				userService.getInformationByLogin(req.body.nickName, function(err, rows3){
 					if (err) throw err;
 					req.session.login = rows3[0].NickName;
 					req.session.id =rows3[0].id;

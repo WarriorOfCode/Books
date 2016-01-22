@@ -4,10 +4,20 @@ angular
 	.controller('UserBooks', ['$scope', '$http', UserBooks]);
 
 function FriendCtrl($scope, $http){
-	$scope.follow = function () {
+	$scope.subscribe = function () {
 		var userId = location.pathname.replace("/user/", "");
 		var data ={userId: userId};
-		$http.post('/api/friend', data)
+		$http.put('/api/friend', data)
+		.success(function(data){
+			location.reload();
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	};
+	$scope.unsubscribe = function () {
+		var userId = location.pathname.replace("/user/", "");
+		$http.delete('/api/friend/'+userId)
 		.success(function(data){
 			location.reload();
 		})

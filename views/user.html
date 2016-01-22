@@ -21,9 +21,9 @@
 						<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a><br/>
 					<% } else { %>
 						<% if (flag.length > 0 && flag !== null ) { %>
-							<input type="button" value="Отписаться" class="btn btn-primary btn-large" ng-click="follow()"><br/>
+							<input type="button" value="Отписаться" class="btn btn-primary btn-large" ng-click="unsubscribe()"><br/>
 						<% } else { %>
-							<input type="button" value = "Подписаться" class="btn btn-default btn-large" ng-click="follow()"><br/>
+							<input type="button" value = "Подписаться" class="btn btn-default btn-large" ng-click="subscribe()"><br/>
 						<% } %>
 					<% } %>
 				<% } %>
