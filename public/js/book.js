@@ -6,8 +6,9 @@ function ReadCtrl($scope, $http, $window) {
 
 	var readText = "Читал",
 		unReadText = "Не читал",
-		isReaded = $window.App.isReaded,
 		inProgress = false;
+
+	$scope.isReaded = $window.App.isReaded
 
 	updateText(); // called when page loaded and ready
 
@@ -16,32 +17,33 @@ function ReadCtrl($scope, $http, $window) {
 		inProgress = true;
 
 		var bookId = location.pathname.replace("/book/", "");
-		var data = { bookId: bookId };
 
-		if (isReaded) {
+		if ($scope.isReaded) {
 			$http.delete('/api/book/user/' + bookId)
-			.success(success)
-			.error(error);
+			.success(successHandler)
+			.error(errorHandler);
 		} else {
-			$http.put('/api/book/user', data)
-			.success(success)
-			.error(error);
+			$http.put('/api/book/user', { bookId: bookId })
+			.success(successHandler)
+			.error(errorHandler);
 		}
 	};
 
 	function updateText()
 	{
-		$scope.text = isReaded ? unReadText : readText;	
+		$scope.text = $scope.isReaded ? unReadText : readText;	
 	}
 
-	function success(response)
+	// called when http request ended with success response 
+	function successHandler(response)
 	{
-		isReaded = !isReaded;
+		$scope.isReaded = !$scope.isReaded;
 		updateText();
 		inProgress = false;
 	}
 
-	function error(data) {
+	// called when http request ended with error
+	function errorHandler(data) {
 		console.log(data);
 		inProgress = false;
 	}
