@@ -23,6 +23,7 @@ function AuthorRegisterCtrl($scope, $http) {
 		$http.put('/api/author', $scope.author)
 		.success(function(data){
 			$scope.messageAuthor = data["message"];
+			$scope.errorAuthor = data["error"];
 			if(!data["error"])
 				$scope.author = {};
 		})

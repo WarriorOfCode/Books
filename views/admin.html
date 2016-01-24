@@ -8,7 +8,7 @@
 		<uib-tab heading="Регистрация книги">
 			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
 				<div class="alert alert-success " role="alert" ng-bind="messageBook" ng-show="messageBook && !errorIsbn"></div>
-					<div class="alert alert-danger" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
+				<div class="alert alert-danger" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
 				<div class="form-group down">
 					<label class="col-sm-3 control-label">Название книги:</label>
 					<div class="col-sm-5">
@@ -79,8 +79,9 @@
 
 		<uib-tab heading="Регистрация автора">
 			<ng-form ng-controller="AuthorRegisterCtrl" class="form-horizontal">
-
-				<div class="form-group">
+			<div class="alert alert-success " role="alert" ng-bind="messageAuthor" ng-show="messageAuthor && !errorAuthor"></div>
+			<div class="alert alert-danger" role="alert" ng-bind="messageAuthor" ng-show="errorAuthor"></div>
+				<div class="form-group down">
 					<label class="col-sm-3 control-label">Имя:</label>
 					<div class="col-sm-5 down">
 						<input type="text" ng-model="author.name" class="form-control" placeholder="Введите имя автора" required>
@@ -134,7 +135,6 @@
 						<button ng-click="save()" class="btn btn-default">Сохранить</button>
 					</div>
 				</div>
-				<span ng-bind="messageAuthor"></span>
 			</ng-form>
 		</uib-tab>
 	</uib-tabset>
