@@ -4,7 +4,7 @@ angular
 function RegistrationCtrl($scope, $http) {
 	$scope.sendData = function () {
     	if ($scope.user.nickName && $scope.user.email && $scope.user.password && $scope.user.nickName.length<21){
-			$http.post('/api/user', $scope.user)
+			$http.put('/api/user', $scope.user)
 			.success(function(data){
 				$scope.error = data["error"];
 				if(!data["error"])

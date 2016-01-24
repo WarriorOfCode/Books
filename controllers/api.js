@@ -134,31 +134,23 @@ router.get('/out', function(req, res){
 	res.send("");
 });
 
-router.post('/author', function(req, res){
+router.put('/author', function(req, res){
 	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
 	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
-
-	var overlap;
-
-	authorService.getAuthorByName(req.body.name, function(err, rows){
+	authorService.getAuthorByName(req.body.name, req.body.lastname, function(err, rows){
 		if (err) throw err;
-		for (var i = 0; i < rows.length; i++){
-			if (rows[i].Last_Name == req.body.lastname)
-				overlap = 1;
-		}
-		if (!overlap) {
+		if (rows != null && rows.length > 0) {
+			res.json(error);
+		} else {
 			authorService.addAuthor(req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link, function(err, rows1){
 				if (err) throw err;
 				res.json(success);
 			});
-		} else {
-			res.json(error);
 		}
-
 	});
 });
 
-router.post('/book', function(req, res){
+router.put('/book', function(req, res){
 	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
 	var success = {"error": false, "message": "Книга успешно добавлена!"};
 
@@ -181,7 +173,7 @@ router.post('/book', function(req, res){
 	} else {
 		bookService.checkBookUniqueness(req.body.name, req.body.author, function(err, rows){
 			if (err) throw err;
-			if (rows != null && rows.length>1){
+			if (rows != null && rows.length>1) {
 				res.json(errorbook);
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
@@ -196,7 +188,7 @@ router.post('/book', function(req, res){
 	};
 });
 
-router.post('/user', function (req, res) {
+router.put('/user', function (req, res) {
 	
 	var salt = userService.getSalt();
 	var password = userService.passwordEncryption(salt, req.body.password);

@@ -5,7 +5,7 @@ angular
 
 function BookRegisterCtrl($scope, $http) {
     $scope.send = function() {
-		$http.post('/api/book', $scope.book)
+		$http.put('/api/book', $scope.book)
 		.success(function(data){
 			$scope.messageBook = data["message"];
 			$scope.errorIsbn = data["error"];
@@ -20,11 +20,11 @@ function BookRegisterCtrl($scope, $http) {
 
 function AuthorRegisterCtrl($scope, $http) {
 	$scope.save = function() {
-		$http.post('/api/author', $scope.author)
+		$http.put('/api/author', $scope.author)
 		.success(function(data){
 			$scope.messageAuthor = data["message"];
 			if(!data["error"])
-				$scope.book = {};
+				$scope.author = {};
 		})
 		.error(function (data) {
 			console.log(data);

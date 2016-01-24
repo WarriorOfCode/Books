@@ -10,8 +10,8 @@ function getAuthors(callback) {
 /**
  * Get information about author.
  */
-function getAuthorByName(name, callback) {
-	connection.query("SELECT * FROM authors WHERE Name = ?", name, callback);
+function getAuthorByName(name, lastName, callback) {
+	connection.query("SELECT * FROM authors WHERE Name = ? AND Last_Name = ?", [name, lastName], callback);
 }
 
 function getAuthorByBookId(bookId, callback) {
