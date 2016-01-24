@@ -87,7 +87,11 @@ router.get('/user/:id', function (req, res){
 			if (rows !== null && rows.length > 0){
 				userService.getFriend(req.session.id, params, function(err, rows1){
 					if (err) throw err;
-					res.render('user.html', {login: req.session.login, user: rows, flag: rows1});
+					var isFriend = rows1 != null && rows1.length > 0;
+					res.render('user.html', {
+						login: req.session.login,
+						user: rows,
+						isFriend: isFriend});
 				});
 			} else {
 				res.redirect('/');

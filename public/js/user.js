@@ -1,30 +1,51 @@
 angular
 	.module('Books')
-	.controller('FriendCtrl', ['$scope', '$http', FriendCtrl])
+	.controller('FriendCtrl', ['$scope', '$http', '$window', FriendCtrl])
 	.controller('UserBooks', ['$scope', '$http', UserBooks]);
 
-function FriendCtrl($scope, $http){
-	$scope.subscribe = function () {
+function FriendCtrl($scope, $http, $window){
+
+	var friendText = "Подписаться",
+		unFriendText = "Отписаться",
+		inProgress = false;
+
+	$scope.isFriend = $window.App.isFriend;
+
+	updateText();
+
+	$scope.action = function () {
+		if (inProgress) return;
+		inProgress = true;
+
 		var userId = location.pathname.replace("/user/", "");
-		var data ={userId: userId};
-		$http.put('/api/friend', data)
-		.success(function(data){
-			location.reload();
-		})
-		.error(function(data){
-			console.log(data);
-		});
+
+		if ($scope.isFriend) {
+			$http.delete('/api/friend/' + userId)
+			.success(successHandler)
+			.error(errorHandler);
+		} else {
+			$http.put('/api/friend/', { userId: userId })
+			.success(successHandler)
+			.error(errorHandler);
+		}
 	};
-	$scope.unsubscribe = function () {
-		var userId = location.pathname.replace("/user/", "");
-		$http.delete('/api/friend/'+userId)
-		.success(function(data){
-			location.reload();
-		})
-		.error(function(data){
-			console.log(data);
-		});
-	};
+
+	function successHandler(response)
+	{
+		$scope.isFriend = !$scope.isFriend;
+		updateText();
+		inProgress = false;
+	}
+
+	function errorHandler(data) {
+		console.log(data);
+		inProgress = false;
+	}
+
+	function updateText()
+	{
+		$scope.text = $scope.isFriend ? friendText : unFriendText;	
+	}
 }
 
 function UserBooks($scope, $http){

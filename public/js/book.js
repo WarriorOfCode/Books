@@ -8,7 +8,7 @@ function ReadCtrl($scope, $http, $window) {
 		unReadText = "Не читал",
 		inProgress = false;
 
-	$scope.isReaded = $window.App.isReaded
+	$scope.isReaded = $window.App.isReaded;
 
 	updateText(); // called when page loaded and ready
 
