@@ -9,60 +9,8 @@
 			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
 				<div class="alert alert-success " role="alert" ng-bind="messageBook" ng-show="messageBook && !errorIsbn"></div>
 				<div class="alert alert-danger" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
-				<div class="form-group down">
-					<label class="col-sm-3 control-label">Название книги:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Описание книги:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="book.description" class="form-control" placeholder="Введите описание книги" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Дата первой публикации:</label>
-					<div class="col-sm-5">
-						<input type="number" ng-model="book.age" class="form-control" placeholder="Год рождения" max="2016" ng-maxlength="4" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">ISBN:</label>
-					<div class="col-sm-5" ng-hide="checked">
-						<input name="isbn" ng-model="book.isbn" class="form-control" type="text" ng-minlength="13" placeholder = "ISBN">
-					</div>
-					<div class="checkbox">
-					<label>
-					 <input type="checkbox" ng-model="checked">Без ISBN
-					</label>
-				</div>
-				</div>
-	<span ng-show="!formA.isbn.$valid">Не валидное значение</span>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Автор:</label>
-					<div class="col-sm-5">
-						<select  class="form-control" ng-model="book.author" required>
-						<option value="" disabled>-Выберите-</option>
-							<% authors.forEach(function(author) { %>
-							<option value = "<%= author.id %>">
-									<%= author.id%> <%= author.Name %> <%= author.Last_Name %>
-								</option>
-							<% }) %>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Ссылка на обложку:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="book.link" class="form-control" placeholder="Ссылка на обложку" requared>
-					</div>
-				</div>
+				
+				<% include includes/bookForm %>
 
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-5">
@@ -70,8 +18,8 @@
 					</div>
 				</div>
 
-			</ng-form>
-		</uib-tab>
+			</ng-form>	
+		</uib-tab>		
 
 
 
@@ -141,7 +89,7 @@
 
 				<div class="panel-heading">
 				<form class="navbar-form navbar-left" role="search">
-  					<div class="form-group">
+					<div class="form-group">
 						<input type="text" ng-model="predicate" class="form-control" placeholder="Search">
 						</div>
 					</form>
@@ -186,22 +134,42 @@
 						<td>{{book.image_url}}</td>
 						<td>{{book.Description}}</td>
 						<td>
-							<button class="btn btn-default">Редактировать</button>
+							<button  type="button" class="btn btn-default" ng-click="openModal(book)">Редактировать</button>
 							<button ng-click="action(book.id)" type="button" class="btn btn-default">
 								Удалить
 							</button>
 						</td>
 					</tr>
 				</table>
+
+				
+				<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+					<ng-form class="form-horizontal">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-body">
+
+								<% include includes/bookForm %>
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save changes</button>
+								</div>
+							</div>
+						</div>
+					</ng-form>
+				</div>
+
 			</div>
 		</uib-tab>
 
 
 	</uib-tabset>
 </form>
-	
 
-	<% include includes/scripts%>
- <script src="/js/admin.js"></script>
+<% include includes/scripts%>
+
+<script src="/js/admin.js"></script>
 </body>
 </html>

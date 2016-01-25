@@ -17,10 +17,17 @@ router.get('/books', function (req, res){
 	bookService.getBooks(function(err, rows){
 		if (err) throw err;
 		res.json(rows);
-	})
+	});
 });
 
-router.get('/user/books/:id', function(req, res){
+router.post('/book/:id', function (req, res){
+	bookService.updateBook(req.params.id, req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows){
+		if (err) throw err;
+		res.send(" ");
+	});
+});
+
+router.get('/user/books/:id', function (req, res){
 	if (isFinite(req.params.id)) {
 		bookService.getBooksByUserId(req.params.id, function(err, rows){
 			if (err) throw err;

@@ -43,13 +43,20 @@ function addBook(name, description, birthDate, image, callback) {
 /**
  * Add connection between book and author
  */
-
 function addConnectionBookAuthor(authorId, callback) {
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
 	connection.query("SELECT id FROM books ORDER BY id DESC LIMIT 1", function(err, rows0){
 		if (err) throw err;
 		connection.query(insertSqlBA, [rows0[0].id, authorId], callback);
 	});
+}
+
+/**
+* Update information about book
+*/
+function updateBook(id, name, description, birthDate, image, isbn, callback) {
+	var updateSql = "UPDATE books SET Name=?, Description=?, Birth_data=?, image_url=?, ISBN=? WHERE id=?";
+	connection.query(updateSql, [name, description, birthDate, image, isbn, id], callback);
 }
 
 /**
@@ -94,6 +101,7 @@ module.exports = {
 	addBookWithISBN: addBookWithISBN,
 	addBook: addBook,
 	addConnectionBookAuthor: addConnectionBookAuthor,
+	updateBook: updateBook,
 	getBookByISBN: getBookByISBN,
 	getBookById: getBookById,
 	getBooksByAuthorId: getBooksByAuthorId,
