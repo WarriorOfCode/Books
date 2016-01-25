@@ -1,9 +1,21 @@
 var connection = require('../db');
 
 /**
+ * Get all books
+ */
+function getBooks(callback) {
+	connection.query("SELECT * FROM books", callback);
+}
+/**
+* Delete book by id
+*/
+function deleteBook(bookId, callback) {
+	connection.query("DELETE FROM books WHERE id = ?", bookId, callback);
+}
+/**
  * Check that db have book with input params
  */
-function checkBookUniqueness(bookName, authorId, callback){
+function checkBookUniqueness(bookName, authorId, callback) {
 	var selectSql = "SELECT * FROM books_authors WHERE id_book IN (SELECT id FROM books WHERE Name = ?) AND id_author = ?";
 	connection.query(selectSql, [bookName, authorId], callback);
 }
@@ -76,6 +88,8 @@ function getBookByGroupId(callback) {
 }
 
 module.exports = {
+	getBooks: getBooks,
+	deleteBook: deleteBook,
 	searchBook: searchBook,
 	addBookWithISBN: addBookWithISBN,
 	addBook: addBook,

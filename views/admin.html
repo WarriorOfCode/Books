@@ -3,7 +3,7 @@
 	<title> Registration of book or author</title>
 <% include includes/header %>
 
-<form name="outerForm">
+<form name="outerForm" novalidate>
 	<uib-tabset>
 		<uib-tab heading="Регистрация книги">
 			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
@@ -117,11 +117,11 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Место рождения:</label>
 					<div class="col-sm-5">
- 						<input type="text" ng-model="author.country" class="form-control" placeholder="Введите страну происхождения автора" required>
- 					</div>
- 				</div>
+						<input type="text" ng-model="author.country" class="form-control" placeholder="Введите страну происхождения автора" required>
+					</div>
+				</div>
 
- 				<div class="form-group">
+				<div class="form-group">
 					<label class="col-sm-3 control-label">Ссылка на портрет:</label>
 					<div class="col-sm-5">
 						<input type="text" ng-model="author.link" class="form-control" placeholder="Ссылка на портрет" requared>
@@ -135,6 +135,68 @@
 				</div>
 			</ng-form>
 		</uib-tab>
+
+	<uib-tab heading="Изменение данных книги">
+			<div ng-controller="ChangeBooksCtrl" class="books panel panel-default">
+
+				<div class="panel-heading">
+				<form class="navbar-form navbar-left" role="search">
+  					<div class="form-group">
+						<input type="text" ng-model="predicate" class="form-control" placeholder="Search">
+						</div>
+					</form>
+				
+				</div>
+				<!-- Table -->
+				<table class="table table-bordered	">
+					<tr> 
+						<th>
+							<a href="" ng-click="order='id'; reverse=!reverse">id</a>
+						</th>
+
+						<th>
+							<a href="" ng-click="order='Name'; reverse=!reverse">Название</a>
+						</th>
+
+						<th>
+							<a href="" ng-click="order='Birth_data'; reverse=!reverse">Дата первой публикации</a>
+						</th>
+
+						<th>
+							<a href="" ng-click="order='ISBN'; reverse=!reverse">ISBN</a>
+						</th>
+
+						<th>
+							<a href="" ng-click="order='image_url'; reverse=!reverse">Ссылка на обложку</a>
+						</th>
+
+						<th>
+							<a href="" ng-click="order='Description'; reverse=!reverse">Описание</a>
+						</th>
+
+						<th>
+							Действия
+						</th>
+					</tr>
+					<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
+						<td ng-model="deleteBook">{{book.id}}</td>
+						<td>{{book.Name}}</td>
+						<td>{{book.Birth_data}}</td>
+						<td>{{book.ISBN}}</td>
+						<td>{{book.image_url}}</td>
+						<td>{{book.Description}}</td>
+						<td>
+							<button class="btn btn-default">Редактировать</button>
+							<button ng-click="action(book.id)" type="button" class="btn btn-default">
+								Удалить
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</uib-tab>
+
+
 	</uib-tabset>
 </form>
 	

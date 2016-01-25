@@ -13,6 +13,13 @@ router.get('/users', function (req, res){
 	});
 });
 
+router.get('/books', function (req, res){
+	bookService.getBooks(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	})
+});
+
 router.get('/user/books/:id', function(req, res){
 	if (isFinite(req.params.id)) {
 		bookService.getBooksByUserId(req.params.id, function(err, rows){
@@ -148,6 +155,14 @@ router.put('/author', function(req, res){
 			});
 		}
 	});
+});
+
+router.delete('/book/:id', function(req, res){
+	console.log(req.params.id)
+	bookService.deleteBook(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json({"message": 'Книга успешно удалена!'});
+	})
 });
 
 router.put('/book', function(req, res){
