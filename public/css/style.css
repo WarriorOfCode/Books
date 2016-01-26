@@ -59,3 +59,7 @@
 .left{
 	margin-left: 20px;
 }
+
+.modal-body div{
+	margin: 5px 0;
+}

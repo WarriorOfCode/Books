@@ -1,10 +1,18 @@
 var connection = require('../db');
 
 /**
- * Get all books
+ * Get all books with authors
  */
-function getBooks(callback) {
-	connection.query("SELECT * FROM books", callback);
+function getBooksWithAuthors(callback) {
+	selectSql = "SELECT books.*, authors.id AS authorId, authors.Name AS authorName, authors.Last_Name AS authorLastname FROM books_authors, authors, books WHERE books_authors.id_author=authors.id AND books.id=books_authors.id_book";
+	connection.query(selectSql, callback);
+}
+
+/**
+ * Get connections between books and authors
+ */
+function getConnections(callback) {
+	connection.query("SELECT * FROM books_authors", callback);
 }
 /**
 * Delete book by id
@@ -12,6 +20,7 @@ function getBooks(callback) {
 function deleteBook(bookId, callback) {
 	connection.query("DELETE FROM books WHERE id = ?", bookId, callback);
 }
+
 /**
  * Check that db have book with input params
  */
@@ -95,7 +104,8 @@ function getBookByGroupId(callback) {
 }
 
 module.exports = {
-	getBooks: getBooks,
+	getBooksWithAuthors: getBooksWithAuthors,
+	getConnections: getConnections,
 	deleteBook: deleteBook,
 	searchBook: searchBook,
 	addBookWithISBN: addBookWithISBN,

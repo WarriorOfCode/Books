@@ -29,7 +29,7 @@
 			<div class="alert alert-danger" role="alert" ng-bind="messageAuthor" ng-show="errorAuthor"></div>
 				<div class="form-group down">
 					<label class="col-sm-3 control-label">Имя:</label>
-					<div class="col-sm-5 down">
+					<div class="col-sm-5">
 						<input type="text" ng-model="author.name" class="form-control" placeholder="Введите имя автора" required>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Биография:</label>
 					<div class="col-sm-5">
-						<input type="text" ng-model="author.description" class="form-control" placeholder="Введите биографию">
+						<textarea type="text" ng-model="author.description" class="form-control" placeholder="Введите биографию"></textarea>
 					</div>
 				</div>
 
@@ -107,6 +107,10 @@
 						</th>
 
 						<th>
+							<a href="" ng-click="order='author'; reverse=!reverse">Автор</a>
+						</th>
+
+						<th>
 							<a href="" ng-click="order='Birth_data'; reverse=!reverse">Дата первой публикации</a>
 						</th>
 
@@ -129,6 +133,7 @@
 					<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
 						<td ng-model="deleteBook">{{book.id}}</td>
 						<td>{{book.Name}}</td>
+						<td>{{book.authorName}} {{book.authorLastname}}</td>
 						<td>{{book.Birth_data}}</td>
 						<td>{{book.ISBN}}</td>
 						<td>{{book.image_url}}</td>

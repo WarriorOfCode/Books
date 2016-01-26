@@ -2,7 +2,7 @@ angular
 	.module('Books')
 	.controller('BookRegisterCtrl', ['$scope', '$http', BookRegisterCtrl])
 	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl])
-	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', '$uibModal', ChangeBooksCtrl]);
+	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', ChangeBooksCtrl]);
 
 function BookRegisterCtrl($scope, $http) {
     $scope.send = function() {
@@ -34,10 +34,10 @@ function AuthorRegisterCtrl($scope, $http) {
     };
 }
 
-function ChangeBooksCtrl($scope, $http, $window, $uibModal) {
+function ChangeBooksCtrl($scope, $http, $window) {
 
 	getBook();
-	
+
 	function getBook() {
 		$http.get('/api/books')
 		.success(function(data){
@@ -79,8 +79,10 @@ function ChangeBooksCtrl($scope, $http, $window, $uibModal) {
 				"isbn": book["ISBN"],
 				"link": book["image_url"],
 				"age": book["Birth_data"],
-				"id": book["id"]};
+				"id": book["id"],
+				"author": "a"+book["authorId"]};
 		$scope.book = data;
+		console.log(data)
 	}
 
 	function updateBook(bookId){

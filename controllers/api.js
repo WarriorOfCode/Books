@@ -14,7 +14,14 @@ router.get('/users', function (req, res){
 });
 
 router.get('/books', function (req, res){
-	bookService.getBooks(function(err, rows){
+	bookService.getBooksWithAuthors(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/connections', function (req, res){
+	bookService.getConnections(function(err, rows){
 		if (err) throw err;
 		res.json(rows);
 	});
