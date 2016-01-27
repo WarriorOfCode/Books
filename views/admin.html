@@ -27,54 +27,7 @@
 			<ng-form ng-controller="AuthorRegisterCtrl" class="form-horizontal">
 			<div class="alert alert-success " role="alert" ng-bind="messageAuthor" ng-show="messageAuthor && !errorAuthor"></div>
 			<div class="alert alert-danger" role="alert" ng-bind="messageAuthor" ng-show="errorAuthor"></div>
-				<div class="form-group down">
-					<label class="col-sm-3 control-label">Имя:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="author.name" class="form-control" placeholder="Введите имя автора" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Фамилия:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="author.lastname" class="form-control" placeholder="Введите фамилию автора" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Отчество, если есть:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="author.patronymic" class="form-control" placeholder="Введите отчество автора">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Биография:</label>
-					<div class="col-sm-5">
-						<textarea type="text" ng-model="author.description" class="form-control" placeholder="Введите биографию"></textarea>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Дата рождения:</label>
-					<div class="col-sm-5">
-						<input type="date" ng-model="author.age" class="form-control" max="2010-12-31" placeholder="Год рождения">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Место рождения:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="author.country" class="form-control" placeholder="Введите страну происхождения автора" required>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Ссылка на портрет:</label>
-					<div class="col-sm-5">
-						<input type="text" ng-model="author.link" class="form-control" placeholder="Ссылка на портрет" requared>
-					</div>
-				</div>
+				<% include includes/authorForm %>
 
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-5">
@@ -85,89 +38,175 @@
 		</uib-tab>
 
 	<uib-tab heading="Изменение данных книги">
-			<div ng-controller="ChangeBooksCtrl" class="books panel panel-default">
-
-				<div class="panel-heading">
+		<div ng-controller="ChangeBooksCtrl" class="panel panel-default">
+			<div class="panel-heading">
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
 						<input type="text" ng-model="predicate" class="form-control" placeholder="Search">
-						</div>
-					</form>
+					</div>
+				</form>
+			</div>
+
+			<!-- Table -->
+			<table class="table table-bordered	">
+				<tr> 
+					<th>
+						<a href="" ng-click="order='id'; reverse=!reverse">id</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Name'; reverse=!reverse">Название</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='author'; reverse=!reverse">Автор</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Birth_data'; reverse=!reverse">Дата первой публикации</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='ISBN'; reverse=!reverse">ISBN</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='image_url'; reverse=!reverse">Ссылка на обложку</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Description'; reverse=!reverse">Описание</a>
+					</th>
+
+					<th>
+						Действия
+					</th>
+				</tr>
+				<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
+					<td ng-model="deleteBook">{{book.id}}</td>
+					<td>{{book.Name}}</td>
+					<td>{{book.authorName}} {{book.authorLastname}}</td>
+					<td>{{book.Birth_data}}</td>
+					<td>{{book.ISBN}}</td>
+					<td>{{book.image_url}}</td>
+					<td>{{book.Description}}</td>
+					<td>
+						<button  type="button" class="btn btn-default" ng-click="openModal(book)">Редактировать</button>
+						<button ng-click="action(book.id)" type="button" class="btn btn-default">
+							Удалить
+						</button>
+					</td>
+				</tr>
+			</table>
+
 				
-				</div>
-				<!-- Table -->
-				<table class="table table-bordered	">
-					<tr> 
-						<th>
-							<a href="" ng-click="order='id'; reverse=!reverse">id</a>
-						</th>
+			<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+				<ng-form class="form-horizontal">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-body">
 
-						<th>
-							<a href="" ng-click="order='Name'; reverse=!reverse">Название</a>
-						</th>
+							<% include includes/bookForm %>
 
-						<th>
-							<a href="" ng-click="order='author'; reverse=!reverse">Автор</a>
-						</th>
-
-						<th>
-							<a href="" ng-click="order='Birth_data'; reverse=!reverse">Дата первой публикации</a>
-						</th>
-
-						<th>
-							<a href="" ng-click="order='ISBN'; reverse=!reverse">ISBN</a>
-						</th>
-
-						<th>
-							<a href="" ng-click="order='image_url'; reverse=!reverse">Ссылка на обложку</a>
-						</th>
-
-						<th>
-							<a href="" ng-click="order='Description'; reverse=!reverse">Описание</a>
-						</th>
-
-						<th>
-							Действия
-						</th>
-					</tr>
-					<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
-						<td ng-model="deleteBook">{{book.id}}</td>
-						<td>{{book.Name}}</td>
-						<td>{{book.authorName}} {{book.authorLastname}}</td>
-						<td>{{book.Birth_data}}</td>
-						<td>{{book.ISBN}}</td>
-						<td>{{book.image_url}}</td>
-						<td>{{book.Description}}</td>
-						<td>
-							<button  type="button" class="btn btn-default" ng-click="openModal(book)">Редактировать</button>
-							<button ng-click="action(book.id)" type="button" class="btn btn-default">
-								Удалить
-							</button>
-						</td>
-					</tr>
-				</table>
-
-				
-				<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-					<ng-form class="form-horizontal">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class="modal-body">
-
-								<% include includes/bookForm %>
-
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save changes</button>
-								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save changes</button>
 							</div>
 						</div>
-					</ng-form>
+					</div>
+				</ng-form>
+			</div>
+		</div>
+	</uib-tab>
+
+
+	<uib-tab heading="Изменение информации об авторах">
+		<div ng-controller="ChangeAuthorsCtrl" class="panel panel-default">
+				<div class="navbar-default" role="search">
+					<div class="form-group col-sm-10">
+						<input type="text" ng-model="predicate" class="form-control" placeholder="Search">
+					</div>
 				</div>
 
+			<!-- Table -->
+			<table class="table table-bordered	">
+				<tr> 
+					<th>
+						<a href="" ng-click="order='id'; reverse=!reverse">id</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Name'; reverse=!reverse">Имя</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Last_Name'; reverse=!reverse">Фамилия</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='patronymic'; reverse=!reverse">Отчество</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Birth_date'; reverse=!reverse">Дата рождения</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Counry_of_birth'; reverse=!reverse">Страна рождения</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='Biography'; reverse=!reverse">Биография</a>
+					</th>
+
+					<th>
+						<a href="" ng-click="order='image_url'; reverse=!reverse">Ссылка на портрет</a>
+					</th>
+
+					<th>
+						Действия
+					</th>
+				</tr>
+				<tr ng-repeat="author in authors | filter: predicate | orderBy:order:reverse">
+					<td>{{author.id}}</td>
+					<td>{{author.Name}}</td>
+					<td>{{author.Last_Name}}</td>
+					<td>{{author.patronymic}}</td>
+					<td>{{author.Birth_date}}</td>
+					<td>{{author.Counry_of_birth}}</td>
+					<td>{{author.Biography}}</td>
+					<td>{{author.image_url}}</td>
+					<td>
+						<button  type="button" class="btn btn-default" ng-click="openModal(author)">Редактировать</button>
+						<button ng-click="action(author.id)" type="button" class="btn btn-default">
+							Удалить
+						</button>
+					</td>
+				</tr>
+			</table>
+
+			
+			<div class="modal fade bs-example-modal-lg" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+				<ng-form class="form-horizontal">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-body">
+			
+							<% include includes/authorForm %>
+			
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</ng-form>
 			</div>
-		</uib-tab>
+
+		</div>
+	</uib-tab>
 
 
 	</uib-tabset>

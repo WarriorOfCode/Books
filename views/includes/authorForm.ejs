@@ -1,0 +1,48 @@
+<div class="form-group down">
+	<label class="col-sm-3 control-label">Имя:</label>
+	<div class="col-sm-5">
+		<input type="text" ng-model="author.name" class="form-control" placeholder="Введите имя автора" required>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Фамилия:</label>
+	<div class="col-sm-5">
+		<input type="text" ng-model="author.lastname" class="form-control" placeholder="Введите фамилию автора" required>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Отчество, если есть:</label>
+	<div class="col-sm-5">
+		<input type="text" ng-model="author.patronymic" class="form-control" placeholder="Введите отчество автора">
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Биография:</label>
+	<div class="col-sm-5">
+		<textarea type="text" rows = "6" ng-model="author.description" class="form-control" placeholder="Введите биографию"></textarea>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Дата рождения:</label>
+	<div class="col-sm-5">
+		<input type="date" ng-model="author.age" class="form-control" max="2010-12-31" placeholder="Год рождения">
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Место рождения:</label>
+	<div class="col-sm-5">
+		<input type="text" ng-model="author.country" class="form-control" placeholder="Введите страну происхождения автора" required>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">Ссылка на портрет:</label>
+	<div class="col-sm-5">
+		<input type="text" ng-model="author.link" class="form-control" placeholder="Ссылка на портрет" requared>
+	</div>
+</div>

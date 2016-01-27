@@ -8,6 +8,17 @@ function getAuthors(callback) {
 }
 
 /**
+* Delete author by id
+*/
+function deleteAuthor(authorId, callback) {
+	connection.query("DELETE FROM authors WHERE id=?", authorId, callback);
+}
+
+function updateAuthor(authorId, name, lastName, patronymic, biography, birthCountry, image, callback) {
+	var updateSql = "UPDATE authors SET Name=?, Last_Name=?, patronymic=?, Biography=?, Counry_of_birth=?, image_url=? WHERE id=?";
+	connection.query(updateSql, [name, lastName, patronymic, biography, birthCountry, image, authorId], callback);
+}
+/**
  * Get information about author.
  */
 function getAuthorByName(name, lastName, callback) {
@@ -26,6 +37,7 @@ function getAuthorInformationById(authorId, callback) {
 function getAuthorsIdByBookId(bookId, callback) {
 	connection.query("SELECT * FROM books_authors WHERE id_book = ?", bookId, callback);
 }
+
 /**
  * Add author
  */
@@ -37,6 +49,8 @@ function addAuthor(name, lastName, patronymic, birthDate, biography, birthCountr
 
 module.exports = {
 	getAuthors: getAuthors,
+	deleteAuthor: deleteAuthor,
+	updateAuthor: updateAuthor,
 	getAuthorByName:getAuthorByName,
 	getAuthorByBookId: getAuthorByBookId,
 	getAuthorInformationById: getAuthorInformationById,

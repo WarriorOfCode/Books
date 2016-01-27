@@ -24,7 +24,21 @@ router.get('/authors', function(req, res){
 	authorService.getAuthors(function(err, rows){
 		if (err) throw err;
 		res.json(rows);
-	})
+	});
+});
+
+router.delete('/author/:id', function(req, res){
+	authorService.deleteAuthor(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(" ");
+	});
+});
+
+router.post('/author/:id', function(req, res){
+	authorService.updateAuthor(req.params.id, req.body.name, req.body.lastname, req.body.patronymic, req.body.description, req.body.country, req.body.link, function(err, rows){
+		if (err) throw err;
+		res.json(" ");
+	});
 });
 
 router.get('/connections', function (req, res){

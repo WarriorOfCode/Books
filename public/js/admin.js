@@ -2,7 +2,8 @@ angular
 	.module('Books')
 	.controller('BookRegisterCtrl', ['$scope', '$http', BookRegisterCtrl])
 	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl])
-	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', ChangeBooksCtrl]);
+	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', ChangeBooksCtrl])
+	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', ChangeAuthorsCtrl]);
 
 function BookRegisterCtrl($scope, $http) {
     $scope.send = function() {
@@ -18,9 +19,9 @@ function BookRegisterCtrl($scope, $http) {
 		});
     };
 
-    getAuthors();
+   getAuthors();
 
-    function getAuthors() {
+	function getAuthors() {
 		$http.get('/api/authors')
 		.success(function(data){
 			$scope.authors = data;
@@ -91,8 +92,8 @@ function ChangeBooksCtrl($scope, $http, $window) {
 		})
 		.error(function (data) {
 			console.log(data)
-		})
-	}	
+		});
+	};
 
 	$scope.openModal = function(book){
 		$('#myModal').modal();
@@ -114,7 +115,7 @@ function ChangeBooksCtrl($scope, $http, $window) {
 			"author": chooseauthor
 		};
 		$scope.book = data;
-	}
+	};
 
 	function updateBook(bookId){
 		for (var i = 0; i < $scope.existingBooks.length; i++) {
@@ -123,5 +124,69 @@ function ChangeBooksCtrl($scope, $http, $window) {
 			}
 		}
 	}
+
+}
+
+function ChangeAuthorsCtrl ($scope, $http, $window){
+	getAuthors();
+
+    function getAuthors() {
+		$http.get('/api/authors')
+		.success(function(data){
+			$scope.authors = data;
+		})
+		.error(function(data){
+			console.log(data)
+		})
+	}
+
+	$scope.action = function(authorId){
+		var deleteConfirm = $window.confirm("Are you sure that you want it?");
+		if (deleteConfirm) {
+			$http.delete('/api/author/'+ authorId)
+			.success(function (data){
+				updateAuthors(authorId);
+			})
+			.error(function (data) {
+				console.log(data)
+			})
+		} 
+	}
+
+	$scope.openModal = function(author){
+		$('#authorModal').modal();
+
+		var data = {
+			"id": author["id"],
+			"name": author["Name"],
+			"lastname": author["Last_Name"],
+			"patronymic": author["patronymic"],
+			"description": author["Biography"],
+			"age": author["Birth_data"],
+			"country": author["Counry_of_birth"],
+			"link": author["image_url"]
+		};
+		$scope.author = data;
+	};
+
+	$scope.save = function(){
+		$http.post('/api/author/'+$scope.author["id"], $scope.author)
+		.success(function (data){
+			getAuthors();
+		})
+		.error(function (data) {
+			console.log(data)
+		});
+	};
+
+
+	function updateAuthors(authorId){
+		for (var i = 0; i < $scope.authors.length; i++) {
+			if ($scope.authors[i]["id"] == authorId) {
+				$scope.authors.splice(i, 1);
+			}
+		}
+	}
+
 
 }
