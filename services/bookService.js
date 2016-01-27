@@ -68,6 +68,10 @@ function updateBook(id, name, description, birthDate, image, isbn, callback) {
 	connection.query(updateSql, [name, description, birthDate, image, isbn, id], callback);
 }
 
+function updateConnection(bookId, authorId, callback) {
+	connection.query("UPDATE books_authors SET id_author=? WHERE id_book =?", [authorId, bookId], callback);
+}
+
 /**
  * Get book
  */
@@ -112,6 +116,7 @@ module.exports = {
 	addBook: addBook,
 	addConnectionBookAuthor: addConnectionBookAuthor,
 	updateBook: updateBook,
+	updateConnection: updateConnection,
 	getBookByISBN: getBookByISBN,
 	getBookById: getBookById,
 	getBooksByAuthorId: getBooksByAuthorId,

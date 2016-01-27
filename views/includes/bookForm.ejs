@@ -39,13 +39,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Автор:</label>
 			<div class="col-sm-6">
-				<select  class="form-control" ng-model="book.author" required>
-				<option value="" disabled>-Выберите-</option>
-					<% authors.forEach(function(author) { %>
-					<option value = "<%= author.id %>" ng-selected="<%=author.id%>==book.author">
-							<%= author.id%> <%= author.Name %> <%= author.Last_Name %>
-					</option>
-					<% }) %>
+				<select class="form-control" ng-model="book.author" ng-options="b.Name+' '+b.Last_Name for b in authors">
+					<option value="" disabled>-- choose author --</option>
 				</select>
 			</div>
 		</div>

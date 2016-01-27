@@ -17,6 +17,18 @@ function BookRegisterCtrl($scope, $http) {
 			console.log(data);
 		});
     };
+
+    getAuthors();
+
+    function getAuthors() {
+		$http.get('/api/authors')
+		.success(function(data){
+			$scope.authors = data;
+		})
+		.error(function(data){
+			console.log(data)
+		})
+	}
 }
 
 function AuthorRegisterCtrl($scope, $http) {
@@ -37,6 +49,7 @@ function AuthorRegisterCtrl($scope, $http) {
 function ChangeBooksCtrl($scope, $http, $window) {
 
 	getBook();
+	getAuthors();
 
 	function getBook() {
 		$http.get('/api/books')
@@ -44,6 +57,16 @@ function ChangeBooksCtrl($scope, $http, $window) {
 			$scope.existingBooks = data;
 		})
 		.error(function (data){
+			console.log(data)
+		})
+	}
+
+	function getAuthors() {
+		$http.get('/api/authors')
+		.success(function(data){
+			$scope.authors = data;
+		})
+		.error(function(data){
 			console.log(data)
 		})
 	}
@@ -73,16 +96,24 @@ function ChangeBooksCtrl($scope, $http, $window) {
 
 	$scope.openModal = function(book){
 		$('#myModal').modal();
-		var data;
-		data = {"name": book["Name"],
-				"description": book["Description"],
-				"isbn": book["ISBN"],
-				"link": book["image_url"],
-				"age": book["Birth_data"],
-				"id": book["id"],
-				"author": "a"+book["authorId"]};
+
+		for (var key in $scope.authors){
+			if ($scope.authors[key].id == book["authorId"]){
+				var chooseauthor = $scope.authors[key];
+				break;
+			}
+		}
+
+		var data = {
+			"name": book["Name"],
+			"description": book["Description"],
+			"isbn": book["ISBN"],
+			"link": book["image_url"],
+			"age": book["Birth_data"],
+			"id": book["id"],
+			"author": chooseauthor
+		};
 		$scope.book = data;
-		console.log(data)
 	}
 
 	function updateBook(bookId){

@@ -20,6 +20,13 @@ router.get('/books', function (req, res){
 	});
 });
 
+router.get('/authors', function(req, res){
+	authorService.getAuthors(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	})
+});
+
 router.get('/connections', function (req, res){
 	bookService.getConnections(function(err, rows){
 		if (err) throw err;
@@ -30,7 +37,10 @@ router.get('/connections', function (req, res){
 router.post('/book/:id', function (req, res){
 	bookService.updateBook(req.params.id, req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows){
 		if (err) throw err;
-		res.send(" ");
+		bookService.updateConnection(req.params.id, req.body.author.id, function(err, rows1){
+			if (err) throw err;
+			res.send(" ");
+		});
 	});
 });
 
