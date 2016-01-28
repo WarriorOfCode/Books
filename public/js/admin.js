@@ -1,12 +1,25 @@
 angular
 	.module('Books')
-	.controller('BookRegisterCtrl', ['$scope', '$http', BookRegisterCtrl])
+	.factory('AuthorService', ['$http', AuthorService])
+	.controller('BookRegisterCtrl', ['$scope', '$http', 'AuthorService', BookRegisterCtrl])
 	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl])
-	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', ChangeBooksCtrl])
-	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', ChangeAuthorsCtrl]);
+	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeBooksCtrl])
+	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeAuthorsCtrl]);
 
-function BookRegisterCtrl($scope, $http) {
-    $scope.send = function() {
+function AuthorService($http) {
+	return {
+		getAuthors: function(callback) {
+			$http.get('/api/authors')
+			.success(callback)
+			.error(function(data){
+				console.log(data)
+			})
+		}
+	}
+}
+
+function BookRegisterCtrl($scope, $http, AuthorService) {
+	$scope.send = function() {
 		$http.put('/api/book', $scope.book)
 		.success(function(data){
 			$scope.messageBook = data["message"];
@@ -17,19 +30,13 @@ function BookRegisterCtrl($scope, $http) {
 		.error(function (data) {
 			console.log(data);
 		});
-    };
+	};
 
-   getAuthors();
+	AuthorService.getAuthors(function(data){
+		$scope.authors = data;
+	});
 
-	function getAuthors() {
-		$http.get('/api/authors')
-		.success(function(data){
-			$scope.authors = data;
-		})
-		.error(function(data){
-			console.log(data)
-		})
-	}
+	
 }
 
 function AuthorRegisterCtrl($scope, $http) {
@@ -44,13 +51,16 @@ function AuthorRegisterCtrl($scope, $http) {
 		.error(function (data) {
 			console.log(data);
 		});
-    };
+	};
 }
 
-function ChangeBooksCtrl($scope, $http, $window) {
+function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 
 	getBook();
-	getAuthors();
+
+	AuthorService.getAuthors(function(data){
+		$scope.authors = data;
+	});
 
 	function getBook() {
 		$http.get('/api/books')
@@ -58,16 +68,6 @@ function ChangeBooksCtrl($scope, $http, $window) {
 			$scope.existingBooks = data;
 		})
 		.error(function (data){
-			console.log(data)
-		})
-	}
-
-	function getAuthors() {
-		$http.get('/api/authors')
-		.success(function(data){
-			$scope.authors = data;
-		})
-		.error(function(data){
 			console.log(data)
 		})
 	}
@@ -127,18 +127,11 @@ function ChangeBooksCtrl($scope, $http, $window) {
 
 }
 
-function ChangeAuthorsCtrl ($scope, $http, $window){
-	getAuthors();
-
-    function getAuthors() {
-		$http.get('/api/authors')
-		.success(function(data){
-			$scope.authors = data;
-		})
-		.error(function(data){
-			console.log(data)
-		})
-	}
+function ChangeAuthorsCtrl ($scope, $http, $window, AuthorService){
+	
+	AuthorService.getAuthors(function(data){
+		$scope.authors = data;
+	});
 
 	$scope.action = function(authorId){
 		var deleteConfirm = $window.confirm("Are you sure that you want it?");
@@ -172,7 +165,9 @@ function ChangeAuthorsCtrl ($scope, $http, $window){
 	$scope.save = function(){
 		$http.post('/api/author/'+$scope.author["id"], $scope.author)
 		.success(function (data){
-			getAuthors();
+			AuthorService.getAuthors(function(data){
+				$scope.authors = data;
+			});
 		})
 		.error(function (data) {
 			console.log(data)

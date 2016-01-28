@@ -63,3 +63,13 @@
 .modal-body div{
 	margin: 5px 0;
 }
+
+.backsearch {
+	height: 70px;
+	width: 100%;
+}
+
+.backsearch input{
+	margin: 15px 0 0;
+
+}
