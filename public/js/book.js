@@ -1,7 +1,8 @@
 angular
 	.module('Books')
 	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
-	.controller('ListCtrl', ['$scope', '$http', ListCtrl]);
+	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
+	.controller('ReviewCtrl', ['$scope', '$http', ReviewCtrl]);
 
 function ReadCtrl($scope, $http, $window) {
 
@@ -61,4 +62,31 @@ function ListCtrl($scope, $http){
 	.error(function(data){
 		console.log(data);
 	})
+}
+
+function ReviewCtrl($scope, $http){
+
+	var bookId = location.pathname.replace("/book/", "");
+
+	$http.get('/api/book/'+bookId+'/review')
+	.success(function(data){
+		if (data.length>0)
+			$scope.buttonHide = true;
+	})
+	.error(function(data){
+		console.log(data);
+	})
+
+	$scope.send = function(){
+		if ($scope.review != null && $scope.review.body){
+			$http.put('/api/book/'+bookId+'/review', $scope.review)
+			.success(function(data){
+				$scope.checked = !$scope.checked;
+			})
+			.error(function(data){
+				console.log(data);
+			})
+		}
+	}
+	
 }

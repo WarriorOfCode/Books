@@ -310,4 +310,17 @@ router.post('/edit', function(req, res){
 	});
 });
 
+router.put('/book/:id/review', function(req, res){
+	bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows){
+		if (err) throw err;
+		res.json("saved")
+	});
+});
+
+router.get('/book/:id/review', function(req, res){
+	bookService.getReview(req.params.id, req.session.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows)
+	});
+});
 module.exports = router;

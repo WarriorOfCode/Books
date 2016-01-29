@@ -17,7 +17,8 @@
 				<% } %>
 			</div>
 		</div>
-		<div class="col-sm-9" ng-controller="ListCtrl">
+
+		<div class="col-sm-9">
 			<h1><%= book[0].Name %></h1>
 			<p><%= book[0].Description %></p><br/>
 			<p><b>Дата первого издания:</b> <%= book[0].Birth_data %></p><br/>
@@ -30,9 +31,41 @@
 					<%= author[0].Last_Name %>
 				</a>
 			</p>
-			<div ng-show="lists"><b>Списки:</b>
+			<div ng-controller="ListCtrl" ng-show="lists"><b>Списки:</b>
 					<span ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
 			</div>
+
+			<% if (login) { %>
+				<div ng-controller="ReviewCtrl">
+					<input type="button" ng-hide="buttonHide" class="btn btn-default" value="Оставить отзыв" ng-click="checked=!checked">
+
+	 				<form ng-show="checked" class="form-horizontal">
+
+		 				<div class="form-group">
+		 					<label class="col-sm-3 control-label">Загаловок отзыва:</label>
+							<div class="col-sm-6">
+		 						<input type="text" class="form-control" ng-model="review.head" placeholder="Загаловок отзыва">
+		 					</div>
+		 				</div>
+
+		 				<div class="form-group">
+							<label class="col-sm-3 control-label">Отзыв:</label>
+							<div class="col-sm-6">
+								<textarea type="text" ng-model="review.body" class="form-control" placeholder="Введите описание книги" rows = "6"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-5">
+								<button  ng-click="send()" class="btn btn-default">Save</button>
+								<button  ng-click="review=null" class="btn btn-default">Cancel</button>
+							</div>
+						</div>
+
+					</form>
+				</div>
+
+			<% } %>
 		</div>
 	</div>
 

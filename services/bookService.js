@@ -107,6 +107,18 @@ function getBookByGroupId(callback) {
 	connection.query(selectSql, callback);
 }
 
+/**
+ * Operation with reviews
+ */
+function addReview(bookId, userId, title, text, callback) {
+	var insertSql = "INSERT INTO reviews (id_book, id_user, title, text) VALUES (?,?,?,?)";
+	connection.query(insertSql, [bookId,userId, title, text], callback)
+}
+
+function getReview(bookId, userId, callback) {
+	connection.query("SELECT * FROM reviews WHERE id_book=? AND id_user=?", [bookId, userId], callback);
+}
+
 module.exports = {
 	getBooksWithAuthors: getBooksWithAuthors,
 	getConnections: getConnections,
@@ -124,5 +136,7 @@ module.exports = {
 	getNewBooks: getNewBooks,
 	getPopBooks: getPopBooks,
 	getBookByGroupId: getBookByGroupId,
-	checkBookUniqueness: checkBookUniqueness
+	checkBookUniqueness: checkBookUniqueness,
+	addReview: addReview,
+	getReview: getReview
 }
