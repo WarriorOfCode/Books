@@ -5,6 +5,7 @@ var crypto = require ('crypto');
 var userService = require('../services/userService');
 var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');
+var listService = require('../services/listService');
 
 router.get('/users', function (req, res){
 	userService.getUsers(function (err, rows) {
@@ -22,6 +23,20 @@ router.get('/books', function (req, res){
 
 router.get('/authors', function(req, res){
 	authorService.getAuthors(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/lists', function(req, res){
+	listService.getLists(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/lists/books', function(req, res){
+	listService.getBooksInLists(function(err, rows){
 		if (err) throw err;
 		res.json(rows);
 	});
@@ -196,7 +211,6 @@ router.put('/author', function(req, res){
 });
 
 router.delete('/book/:id', function(req, res){
-	console.log(req.params.id)
 	bookService.deleteBook(req.params.id, function(err, rows){
 		if (err) throw err;
 		res.json({"message": 'Книга успешно удалена!'});
@@ -216,7 +230,7 @@ router.put('/book', function(req, res){
 			} else {
 				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
-					bookService.addConnectionBookAuthor(req.body.author, function(err, rows5){
+					bookService.addConnectionBookAuthor(req.body.author.id, function(err, rows5){
 						if (err) throw err;
 						res.json(success);
 					});
@@ -224,14 +238,14 @@ router.put('/book', function(req, res){
 			};
 		});
 	} else {
-		bookService.checkBookUniqueness(req.body.name, req.body.author, function(err, rows){
+		bookService.checkBookUniqueness(req.body.name, req.body.author.id, function(err, rows){
 			if (err) throw err;
 			if (rows != null && rows.length>1) {
 				res.json(errorbook);
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
-					bookService.addConnectionBookAuthor(req.body.author, function(err, rows5){
+					bookService.addConnectionBookAuthor(req.body.author.id, function(err, rows5){
 						if (err) throw err;
 						res.json(success);
 					});

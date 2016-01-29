@@ -54,6 +54,10 @@ router.get('/authors', function(req, res){
 	});
 });
 
+router.get('/lists', function(req, res){
+	res.render('lists.html', {login: req.session.login});
+})
+
 router.get('/setting', function(req, res){
 	if (req.session.id){
 		userService.getUserInformation(req.session.id, function(err, rows){

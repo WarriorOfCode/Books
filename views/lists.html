@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Lists</title>
+
+	<% include	includes/header.ejs %>
+	<div ng-controller="ListCtrl" class="left">
+		<div ng-repeat="list in lists">
+			<h3>{{list.Name}}</h3>
+
+			<div ng-repeat="book in booksShow[list.id]" class="books">
+				<div class="col-sm-3">
+					<a href='/book/{{book.id}}'>
+						<img src={{book.image_url}}>
+						<div>{{book.Name}}</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<% include includes/scripts.ejs %>
+ 	<script src="/js/lists.js"></script>
+
+</body>
+</html>
