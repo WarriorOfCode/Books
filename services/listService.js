@@ -11,12 +11,18 @@ function getBooksInLists(callback) {
 }
 
 function getList(listId, callback){
-	var selectSql = "SELECT groups.Name as listName, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=? AND groups.id=?";
+	var selectSql = "SELECT groups.Name AS listName, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=? AND groups.id=?";
 	connection.query(selectSql, [listId, listId], callback)
+}
+
+function getBookLists(bookId, callback){
+	var selectSql = "SELECT groups.* FROM groups, books_groups WHERE books_groups.id_book=? AND groups.id=books_groups.id_group";
+	connection.query(selectSql, bookId, callback);
 }
 
 module.exports = {
 	getLists: getLists,
 	getBooksInLists: getBooksInLists,
-	getList: getList
+	getList: getList,
+	getBookLists: getBookLists
 }

@@ -17,19 +17,22 @@
 				<% } %>
 			</div>
 		</div>
-		<div class="col-sm-9">
+		<div class="col-sm-9" ng-controller="ListCtrl">
 			<h1><%= book[0].Name %></h1>
 			<p><%= book[0].Description %></p><br/>
 			<p><b>Дата первого издания:</b> <%= book[0].Birth_data %></p><br/>
-				<p><b>Автор: </b>
+			<p><b>Автор: </b>
 				<a href='/author/<%= author[0].id %>'>
-				<%= author[0].Name %>
-				<% if (author[0].patronymic) { %>
-					<%= author[0].patronymic %> 
-				<% } %>
-				<%= author[0].Last_Name %>
-				</p>
-			</a>
+					<%= author[0].Name %>
+					<% if (author[0].patronymic) { %>
+						<%= author[0].patronymic %> 
+					<% } %>
+					<%= author[0].Last_Name %>
+				</a>
+			</p>
+			<div ng-show="lists"><b>Списки:</b>
+					<span ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
+			</div>
 		</div>
 	</div>
 

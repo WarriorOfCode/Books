@@ -42,6 +42,13 @@ router.get('/lists/books', function(req, res){
 	});
 });
 
+router.get('/book/lists/:id', function(req, res){
+	listService.getBookLists(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.delete('/author/:id', function(req, res){
 	authorService.deleteAuthor(req.params.id, function(err, rows){
 		if (err) throw err;

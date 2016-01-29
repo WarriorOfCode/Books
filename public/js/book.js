@@ -1,6 +1,7 @@
 angular
 	.module('Books')
-	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl]);
+	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
+	.controller('ListCtrl', ['$scope', '$http', ListCtrl]);
 
 function ReadCtrl($scope, $http, $window) {
 
@@ -48,4 +49,16 @@ function ReadCtrl($scope, $http, $window) {
 		inProgress = false;
 	}
 
+}
+
+function ListCtrl($scope, $http){
+	var bookId = location.pathname.replace("/book/", "");
+
+	$http.get('/api/book/lists/'+bookId)
+	.success(function(data){
+		$scope.lists = data;
+	})
+	.error(function(data){
+		console.log(data);
+	})
 }
