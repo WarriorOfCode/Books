@@ -4,6 +4,7 @@ var connection = require('../db.js');
 var userService = require('../services/userService');
 var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');
+var listService = require('../services/listService');
 
 router.get('/book/:id', function(req, res){
 	
@@ -67,6 +68,17 @@ router.get('/setting', function(req, res){
 	} else {
 		res.redirect('/');
 	}
+});
+
+router.get('/list/:id', function (req, res){
+	listService.getList(req.params.id, function(err, rows){
+		if (err) throw err;
+		if (rows !==null && rows.length > 0){
+			res.render('list.html', {books: rows, login: req.session.login});
+		} else {
+			res.redirect('/');
+		}
+	})
 });
 
 router.get('/user/:id', function (req, res){

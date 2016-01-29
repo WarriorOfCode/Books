@@ -5,9 +5,10 @@
 	<title>Lists</title>
 
 	<% include	includes/header.ejs %>
+	
 	<div ng-controller="ListCtrl" class="left">
 		<div ng-repeat="list in lists">
-			<h3>{{list.Name}}</h3>
+			<a href="/list/{{list.id}}"><h3>{{list.Name}}</h3></a>
 
 			<div ng-repeat="book in booksShow[list.id]" class="books">
 				<div class="col-sm-3">
@@ -19,7 +20,6 @@
 			</div>
 
 		</div>
-
 	</div>
 
 	<% include includes/scripts.ejs %>
