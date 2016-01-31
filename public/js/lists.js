@@ -7,7 +7,6 @@ function ListCtrl ($scope, $http, $window) {
 		$http.get('/api/lists')
 		.success(function (data){
 			$scope.lists = data;
-			console.log(data);
 		})
 		.error(function (data){
 			console.log(data)
@@ -29,6 +28,7 @@ function ListCtrl ($scope, $http, $window) {
 			});
 
 			$scope.booksShow = booksShow;
+			console.log(booksShow)
 		})
 		.error(function (data){
 			console.log(data);

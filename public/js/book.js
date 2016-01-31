@@ -2,7 +2,7 @@ angular
 	.module('Books')
 	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
 	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
-	.controller('ReviewCtrl', ['$scope', '$http', ReviewCtrl]);
+	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl]);
 
 function ReadCtrl($scope, $http, $window) {
 
@@ -64,14 +64,21 @@ function ListCtrl($scope, $http){
 	})
 }
 
-function ReviewCtrl($scope, $http){
+function ReviewCtrl($scope, $http, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
 
 	$http.get('/api/book/'+bookId+'/review')
 	.success(function(data){
-		if (data.length>0)
-			$scope.buttonHide = true;
+		if (data.length>0){
+			$scope.reviews = data;
+			data.forEach(function(data){
+				if (data.NickName == $window.App.login){
+					$scope.buttonHide = true;
+					return;
+				}
+			});
+		}
 	})
 	.error(function(data){
 		console.log(data);

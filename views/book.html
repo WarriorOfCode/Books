@@ -35,8 +35,9 @@
 					<span ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
 			</div>
 
-			<% if (login) { %>
-				<div ng-controller="ReviewCtrl">
+
+			<div ng-controller="ReviewCtrl">
+				<% if (login) { %>
 					<input type="button" ng-hide="buttonHide" class="btn btn-default" value="Оставить отзыв" ng-click="checked=!checked">
 
 	 				<form ng-show="checked" class="form-horizontal">
@@ -63,15 +64,29 @@
 						</div>
 
 					</form>
+				<% } %>
+
+				<div ng-show="reviews"><h3>Отзывы: </h3>
+					<div ng-repeat="review in reviews">
+						<blockquote>
+							<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
+							<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
+						<h4><b>{{review.title}}</b></h4>
+						<div>
+							{{review.text}}
+						</div>
+					</blockquote>
 				</div>
 
-			<% } %>
+			</div>
+
 		</div>
 	</div>
 
 	<script>
 		window.App = {
-			isReaded: <%= isReaded %>
+			isReaded: <%= isReaded %>,
+			login: "<%= login %>"
 		}
 	</script>
 	

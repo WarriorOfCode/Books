@@ -318,9 +318,9 @@ router.put('/book/:id/review', function(req, res){
 });
 
 router.get('/book/:id/review', function(req, res){
-	bookService.getReview(req.params.id, req.session.id, function(err, rows){
+	bookService.getReviews(req.params.id, function(err, rows){
 		if (err) throw err;
-		res.json(rows)
+		res.json(rows);
 	});
 });
 module.exports = router;
