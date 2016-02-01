@@ -237,8 +237,11 @@ router.put('/book', function(req, res){
 			} else {
 				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
-					bookService.addConnectionBookAuthor(req.body.author.id, function(err, rows5){
+					bookService.getBookId(function(err, rows4){
 						if (err) throw err;
+						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
+							if (err) throw err;
+						});
 						res.json(success);
 					});
 				});
@@ -252,8 +255,11 @@ router.put('/book', function(req, res){
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
-					bookService.addConnectionBookAuthor(req.body.author.id, function(err, rows5){
+					bookService.getBookId(function(err, rows4){
 						if (err) throw err;
+						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
+							if (err) throw err;
+						});
 						res.json(success);
 					});
 				});

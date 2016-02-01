@@ -50,15 +50,21 @@ function addBook(name, description, birthDate, image, callback) {
 }
 
 /**
+*Get last book id
+*/
+function getBookId(callback) {
+	connection.query("SELECT id FROM books ORDER BY id DESC LIMIT 1", callback);
+}
+
+/**
  * Add connection between book and author
  */
-function addConnectionBookAuthor(authorId, callback) {
+function addConnectionBookAuthor(bookId, authors, callback) {
 	var insertSqlBA = "INSERT INTO books_authors (id_book, id_author) VALUES (?,?)";
-	connection.query("SELECT id FROM books ORDER BY id DESC LIMIT 1", function(err, rows0){
-		if (err) throw err;
-		connection.query(insertSqlBA, [rows0[0].id, authorId], callback);
+	authors.forEach(function(author){
+		connection.query(insertSqlBA, [bookId, author.id], callback);
 	});
-}
+};
 
 /**
 * Update information about book
@@ -127,6 +133,7 @@ module.exports = {
 	searchBook: searchBook,
 	addBookWithISBN: addBookWithISBN,
 	addBook: addBook,
+	getBookId: getBookId,
 	addConnectionBookAuthor: addConnectionBookAuthor,
 	updateBook: updateBook,
 	updateConnection: updateConnection,

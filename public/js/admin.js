@@ -19,6 +19,7 @@ function AuthorService($http) {
 }
 
 function BookRegisterCtrl($scope, $http, AuthorService) {
+	$scope.selects = [[]];
 	$scope.send = function() {
 		$http.put('/api/book', $scope.book)
 		.success(function(data){
@@ -55,6 +56,8 @@ function AuthorRegisterCtrl($scope, $http) {
 }
 
 function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
+
+	$scope.selects = [[0]];
 
 	getBook();
 
