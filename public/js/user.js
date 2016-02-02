@@ -13,6 +13,20 @@ function FriendCtrl($scope, $http, $window){
 
 	updateText();
 
+	$scope.openModal = function(){
+		$('#myModal').modal();
+	};
+
+	$scope.send = function(){
+		$http.put('/api/offer', $scope.book)
+		.success(function(data){
+			console.log(data);
+			$scope.message = data["message"];
+		})
+		.error(function(data){
+			console.log(data);
+		})
+	}
 	$scope.action = function () {
 		if (inProgress) return;
 		inProgress = true;

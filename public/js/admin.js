@@ -4,7 +4,8 @@ angular
 	.controller('BookRegisterCtrl', ['$scope', '$http', 'AuthorService', BookRegisterCtrl])
 	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl])
 	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeBooksCtrl])
-	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeAuthorsCtrl]);
+	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeAuthorsCtrl])
+	.controller('OffersCtrl', ['$scope', '$http', OffersCtrl]);
 
 function AuthorService($http) {
 	return {
@@ -12,14 +13,13 @@ function AuthorService($http) {
 			$http.get('/api/authors')
 			.success(callback)
 			.error(function(data){
-				console.log(data)
+				console.log(data);
 			})
 		}
 	}
 }
 
 function BookRegisterCtrl($scope, $http, AuthorService) {
-	$scope.selects = [[]];
 	$scope.send = function() {
 		$http.put('/api/book', $scope.book)
 		.success(function(data){
@@ -56,8 +56,6 @@ function AuthorRegisterCtrl($scope, $http) {
 }
 
 function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
-
-	$scope.selects = [[0]];
 
 	getBook();
 
@@ -182,9 +180,40 @@ function ChangeAuthorsCtrl ($scope, $http, $window, AuthorService){
 		for (var i = 0; i < $scope.authors.length; i++) {
 			if ($scope.authors[i]["id"] == authorId) {
 				$scope.authors.splice(i, 1);
+				break;
 			}
 		}
 	}
 
+}
 
+function OffersCtrl($scope, $http){
+	
+	$http.get('/api/offers')
+	.success(function(data){
+		if (data.length>0)
+			$scope.offers = data;
+	})
+	.error(function(data){
+		console.log(data);
+	})
+
+	$scope.delete = function(bookName){
+		$http.delete('/api/offer/'+bookName)
+		.success(function(data){
+			updateOffers(bookName);
+		})
+		.error(function(data){
+			console.log(data)
+		})
+	}
+
+	function updateOffers(bookName){
+		for (var i = 0; i < $scope.offers.length; i++) {
+			if ($scope.offers[i]["name"] == bookName) {
+				$scope.offers.splice(i, 1);
+				break;
+			}
+		}
+	}
 }

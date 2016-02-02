@@ -14,6 +14,24 @@ router.get('/users', function (req, res){
 	});
 });
 
+router.put('/offer', function (req, res){
+	bookService.addOffer(req.body.name, req.body.author, req.session.id, function(err, rows){
+		res.json({"message": 'Книга скоро будет добавлена!'});
+	});
+});
+
+router.get('/offers', function(req, res){
+	bookService.getOffers(function(err, rows){
+		res.json(rows);
+	});
+});
+
+router.delete('/offer/:name', function(req, res){
+	bookService.deleteOffer(req.params.name, function(err, rows){
+		res.json("");
+	});
+});
+
 router.get('/books', function (req, res){
 	bookService.getBooksWithAuthors(function(err, rows){
 		if (err) throw err;

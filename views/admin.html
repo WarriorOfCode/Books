@@ -3,12 +3,12 @@
 	<title> Registration of book or author</title>
 <% include includes/header %>
 
-<form name="outerForm" novalidate>
+<form name="outerForm" novalidate ng-controller="OffersCtrl">
 	<uib-tabset>
 		<uib-tab heading="Регистрация книги">
 			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
-				<div class="alert alert-success " role="alert" ng-bind="messageBook" ng-show="messageBook && !errorIsbn"></div>
-				<div class="alert alert-danger" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
+				<div class="alert alert-success collapse" role="alert" ng-bind="messageBook" ng-show="messageBook && !errorIsbn"></div>
+				<div class="alert alert-danger collapse" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
 				
 				<% include includes/bookForm %>
 
@@ -21,12 +21,10 @@
 			</ng-form>	
 		</uib-tab>		
 
-
-
 		<uib-tab heading="Регистрация автора">
 			<ng-form ng-controller="AuthorRegisterCtrl" class="form-horizontal">
-			<div class="alert alert-success " role="alert" ng-bind="messageAuthor" ng-show="messageAuthor && !errorAuthor"></div>
-			<div class="alert alert-danger" role="alert" ng-bind="messageAuthor" ng-show="errorAuthor"></div>
+			<div class="alert alert-success collapse" role="alert" ng-bind="messageAuthor" ng-show="messageAuthor && !errorAuthor"></div>
+			<div class="alert alert-danger collapse" role="alert" ng-bind="messageAuthor" ng-show="errorAuthor"></div>
 				<% include includes/authorForm %>
 
 				<div class="form-group">
@@ -130,7 +128,7 @@
 			</div>
 
 			<!-- Table -->
-			<table class="table table-bordered	">
+			<table class="table table-bordered">
 				<tr> 
 					<th>
 						<a href="" ng-click="order='id'; reverse=!reverse">id</a>
@@ -208,6 +206,41 @@
 		</div>
 	</uib-tab>
 
+	<uib-tab>
+		<uib-tab-heading>
+			Предложения от пользователей <span class="badge">{{offers.length}}</span>
+		</uib-tab-heading>
+		<div >
+			<table class="table table-bordered">
+				<tr> 
+					<th>
+						<a href="" ng-click="order='name'; reverse=!reverse">Название</a>
+					</th>
+					<th>
+						<a href="" ng-click="order='author'; reverse=!reverse">Автор</a>
+					</th>
+					<th>
+						<a href="" ng-click="order='id_user'; reverse=!reverse">Пользователь</a>
+					</th>
+					<th>
+						Действия
+					</th>
+				</tr>
+				<tr ng-repeat="offer in offers | orderBy:order:reverse">
+					<td>{{offer.name}}</td>
+					<td>{{offer.author}}</td>
+					<td>{{offer.id_user}}</td>
+					<td>
+						<button ng-click="delete(offer.name)" type="button" class="btn btn-default">
+							Удалить
+						</button>
+					</td>
+
+				</tr>
+			</table>
+		</div>
+		
+	</uib-tab>
 
 	</uib-tabset>
 </form>
