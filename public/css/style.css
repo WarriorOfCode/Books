@@ -74,3 +74,16 @@
 .backsearch input{
 	margin: 15px 0 0;
 }
+
+/*STYLES FOR RATING STARS*/
+.glyphicon.ng-scope.glyphicon-star {
+	font-size: 22px;
+}
+
+.glyphicon.ng-scope.glyphicon-star-empty {
+	font-size: 22px;
+}
+
+.book-image .label{
+	font-size: 13px;
+}

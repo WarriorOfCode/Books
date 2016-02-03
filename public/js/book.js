@@ -6,6 +6,55 @@ angular
 
 function ReadCtrl($scope, $http, $window) {
 
+	var bookId = location.pathname.replace("/book/", "");
+
+	$scope.rate = 4.5;
+	$scope.isReadonly = false;
+
+	$scope.hoveringOver = function(value) {
+	$scope.overStar = value;
+	};
+
+	$scope.ratingStates = [
+		{stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+		{stateOff: 'glyphicon-off'}
+	];
+
+	$scope.sendMark = function(rate){
+		if (!$scope.oldmark){
+			$http.put('/api/book/'+bookId+'/mark', {rate: rate})
+			.success(function(data){
+				$scope.oldmark = rate;
+				$scope.isReadonly = true;
+			})
+			.error(function(data){
+				console.log(data);
+			})
+		} else if ($scope.oldmark!=rate){
+			$http.post('/api/book/'+bookId+'/mark', {rate: rate})
+			.success(function(data){
+				$scope.isReadonly = true;
+				$scope.oldmark = rate;
+			})
+			.error(function(data){
+				console.log(data)
+			})
+		}
+		
+	}
+
+	$scope.deleteMark = function(){
+		$http.delete('/api/book/'+bookId+'/mark')
+		.success(function(data){
+			$scope.isReadonly = false;
+			$scope.rate = 4.5;
+			$scope.oldmark = false;
+		})
+		.error(function(data){
+			console.log(data)
+		})
+	}
+
 	var readText = "Читал",
 		unReadText = "Не читал",
 		inProgress = false;
@@ -13,15 +62,14 @@ function ReadCtrl($scope, $http, $window) {
 	$scope.isReaded = $window.App.isReaded;
 
 	updateText(); // called when page loaded and ready
+	getAssessment();
 
 	$scope.action = function () {
 		if (inProgress) return;
 		inProgress = true;
 
-		var bookId = location.pathname.replace("/book/", "");
-
 		if ($scope.isReaded) {
-			$http.delete('/api/book/user/' + bookId)
+			$http.delete('/api/book/user/'+bookId)
 			.success(successHandler)
 			.error(errorHandler);
 		} else {
@@ -34,6 +82,20 @@ function ReadCtrl($scope, $http, $window) {
 	function updateText()
 	{
 		$scope.text = $scope.isReaded ? unReadText : readText;	
+	}
+
+	function getAssessment(){
+		$http.get('/api/book/'+bookId+'/mark')
+		.success(function(data){
+			if (data.length>0){
+				$scope.rate = data[0]["assessment"];
+				$scope.oldmark = data[0]["assessment"];
+				$scope.isReadonly = true;
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		})
 	}
 
 	// called when http request ended with success response 

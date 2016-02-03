@@ -13,6 +13,14 @@
 				<% if (login) { %>
 
 				<button class="btn btn-default btn-block" ng-class="{'btn-primary':isReaded}" ng-click="action()">{{ text }}</button>
+				
+				<uib-rating ng-model="rate" max="10" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" aria-labelledby="default-rating" ng-click="sendMark(rate)"></uib-rating>
+				<span class="label" ng-class="{'label-danger': overStar<=3, 'label-warning': overStar>3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
+
+				<span class="label" ng-class="{'label-danger': oldmark<=3, 'label-warning': oldmark>3 && oldmark<7, 'label-success': oldmark>=7}" ng-show="oldmark && isReadonly">{{oldmark}}</span><br/>
+
+				<button type="button" class="btn btn-sm btn-danger" ng-click="deleteMark()" ng-disabled="!isReadonly">Delete mark</button>
+    			<button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = false">change mark </button>
 
 				<% } %>
 			</div>
@@ -52,7 +60,7 @@
 		 				<div class="form-group">
 							<label class="col-sm-3 control-label">Отзыв:</label>
 							<div class="col-sm-6">
-								<textarea type="text" ng-model="review.body" class="form-control" placeholder="Введите описание книги" rows = "6"></textarea>
+								<textarea type="text" ng-model="review.body" class="form-control" placeholder="Отзыв" rows = "6"></textarea>
 							</div>
 						</div>
 

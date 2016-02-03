@@ -67,6 +67,33 @@ router.get('/book/lists/:id', function(req, res){
 	});
 });
 
+router.put('/book/:id/mark', function(req,res){
+	bookService.addMark(req.session.id, req.params.id, req.body.rate, function(err, rows){
+		if (err) throw err;
+		res.send("");
+	});
+});
+
+router.post('/book/:id/mark', function(req, res){
+	bookService.updateMark(req.session.id, req.params.id, req.body.rate, function(err, rows){
+		if (err) throw err;
+		res.send("");
+	})
+})
+
+router.delete('/book/:id/mark', function(req, res){
+	bookService.deleteMark(req.session.id, req.params.id, function(err, rows){
+		if (err) throw err;
+		res.send("");
+	})
+})
+
+router.get('/book/:id/mark', function(req, res){
+	bookService.getMarkBook(req.session.id, req.params.id, function(err, rows){
+		res.json(rows);
+	});
+});
+
 router.delete('/author/:id', function(req, res){
 	authorService.deleteAuthor(req.params.id, function(err, rows){
 		if (err) throw err;
