@@ -32,8 +32,8 @@ function checkBookUniqueness(bookName, authorId, callback) {
 /**
  * Search book
  */
-function searchBook(name, callback) {
-	connection.query('SELECT * FROM books WHERE Name LIKE ?', name+"%", callback);
+function searchBooks(name, callback) {
+	connection.query('SELECT * FROM books WHERE Name LIKE ?', "%"+name+"%", callback);
 }
 
 /**
@@ -167,7 +167,7 @@ module.exports = {
 	getBooksWithAuthors: getBooksWithAuthors,
 	getConnections: getConnections,
 	deleteBook: deleteBook,
-	searchBook: searchBook,
+	searchBooks: searchBooks,
 	addBookWithISBN: addBookWithISBN,
 	addBook: addBook,
 	getBookId: getBookId,

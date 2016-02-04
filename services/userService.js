@@ -96,26 +96,6 @@ function updateUserInformation(name, lastName, email, userId, callback) {
 	var updateSql = "UPDATE users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
 	connection.query(updateSql, [name, lastName, email, userId], callback);
 }
-/**
- * Operations with assessment.
- */
-function addMark(userId, bookId, mark, callback) {
-	var insertSql = "INSERT INTO assessments (id_user, id_book, assessment) VALUES (?,?,?)";
-	connection.query(insertSql, [userId, bookId, mark], callback);
-}
-
-function getMarkBook(userId, bookId, callback) {
-	connection.query("SELECT * FROM assessments WHERE id_user=? AND id_book=?", [userId, bookId], callback);
-}
-
-function updateMark(userId, bookId, mark, callback) {
-	var updateSql = "UPDATE assessments SET assessment=? WHERE id_user=? AND id_book=?";
-	connection.query(updateSql,[mark, userId, bookId], callback);
-}
-
-function deleteMark(userId, bookId, callback) {
-	connection.query("DELETE FROM assessments WHERE id_user =? AND id_book=?", [userId, bookId], callback);
-}
 
 module.exports = {
 	getUsers: getUsers,
@@ -133,9 +113,5 @@ module.exports = {
 	checkEmailUniqueness: checkEmailUniqueness,
 	updateUserInformation: updateUserInformation,
 	passwordEncryption: passwordEncryption,
-	getSalt: getSalt,
-	addMark: addMark,
-	getMarkBook: getMarkBook,
-	updateMark: updateMark,
-	deleteMark: deleteMark
+	getSalt: getSalt
 };

@@ -151,6 +151,7 @@ function ReviewCtrl($scope, $http, $window){
 			$http.put('/api/book/'+bookId+'/review', $scope.review)
 			.success(function(data){
 				$scope.checked = !$scope.checked;
+				location.reload();
 			})
 			.error(function(data){
 				console.log(data);

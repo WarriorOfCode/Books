@@ -1,7 +1,7 @@
 angular
 	.module('Books', ['ngAnimate', 'ui.bootstrap'])
 	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl])
-	.controller('QuestCtrl', ['$scope', '$http', QuestCtrl]);
+	.controller('SearchCtrl', ['$scope', SearchCtrl]);
 
 
 function LogoutCtrl($scope, $http) {
@@ -16,8 +16,6 @@ function LogoutCtrl($scope, $http) {
 	};
 }
 
-function QuestCtrl($scope, $http){
-	$scope.search = function () {
-		$http.get('/search')
-	};
+function SearchCtrl($scope) {
+	$scope.query =  decodeURIComponent(location.search.replace("?query=", ""));
 }

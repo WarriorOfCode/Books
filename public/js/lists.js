@@ -16,11 +16,9 @@ function ListCtrl ($scope, $http, $window) {
 	function getBook() {
 		$http.get('/api/lists/books')
 		.success(function (data){
-			$scope.books = data;
-
 			var booksShow = [];
 
-			$scope.books.reverse().forEach (function (book){
+			data.reverse().forEach (function (book){
 				if (!booksShow[book.id_group]) 
 					booksShow[book.id_group] = [];
 				if (booksShow[book.id_group].length<4)
@@ -28,7 +26,6 @@ function ListCtrl ($scope, $http, $window) {
 			});
 
 			$scope.booksShow = booksShow;
-			console.log(booksShow)
 		})
 		.error(function (data){
 			console.log(data);

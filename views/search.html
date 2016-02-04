@@ -4,11 +4,38 @@
 	<meta charset="UTF-8">
 	<title>Search</title>
 	<% include includes/header.ejs%>
-	<% include includes/booksList.ejs %>
-	<% if (books.length == 0) { %>
-		<h4 class="left"> По вашему запросу ничего не найдено </h4>
-	<% } %>
-	<% include includes/scripts.ejs %>
+	<uib-tabset>
+		<uib-tab heading="Все результаты:">
+			<% if (books.length == 0) { %>
+				<h4 class="left down"> По вашему запросу не найдена ни одна книга </h4>
+			<% } else { %>
+				<% include includes/booksList.ejs %>
+			<% } %>
 
+			<% include includes/authors.ejs %>
+		</uib-tab>
+
+		<uib-tab heading="Книги:">
+			<div class="down">
+				<% if (books.length == 0) { %>
+					<h4 class="left down">По вашему запросу не найдена ни одна книга </h4>
+				<% } else { %>
+					<% include includes/booksList.ejs %>
+				<% } %>
+			</div>
+		</uib-tab>
+
+		<uib-tab heading="Авторы:">
+			<% include includes/authors.ejs %>
+		</uib-tab>
+
+		<uib-tab heading="Списки:">
+			<% include includes/lists.ejs %>
+		</uib-tab>
+</uib-tabset>
+
+
+	<% include includes/scripts.ejs %>
+	<script src="/js/search.js"></script>
 </body>
 </html>

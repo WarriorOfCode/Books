@@ -7,15 +7,15 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href ="/">
-					<img alt="Brand" src="/book.gif">
+					<img alt="inbooks" src="/book.gif">
 				</a>
 			</div>
 
 			<div class="head">
-				<div class="col-lg-5 col-lg-offset-2">
-					<form ng-controller="QuestCtrl" action="/search" >
+				<div class="col-lg-5 col-lg-offset-2" ng-controller="SearchCtrl">
+					<form action="/search" >
 						<div class="input-group">
-							<input type="text" ng-model="searchParams" name="query" class="form-control" placeholder="Search for...">
+							<input type="text" ng-model="query" name="query" class="form-control" placeholder="Search for...">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="submit">Search!</button>
 							</span>

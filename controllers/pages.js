@@ -49,10 +49,7 @@ router.get('/author/:id', function(req, res){
 });
 
 router.get('/authors', function(req, res){
-	authorService.getAuthors(function(err, rows){
-		if (err) throw err;
-		res.render('authors.html', {books: rows, login: req.session.login})
-	});
+	res.render('authors.html', {login: req.session.login})
 });
 
 router.get('/lists', function(req, res){
@@ -143,10 +140,9 @@ router.get('/login', function(req, res){
 
 router.get('/search', function(req, res){
 	if (req.query.query) {
-		bookService.searchBook(req.query.query+"%", function(err, rows){
+		bookService.searchBooks(req.query.query, function(err, rows){
 			if (err) throw err;
-			
-			res.render('search.html', {login: req.session.login, books: rows});	
+			res.render('search.html', {login: req.session.login, books: rows, search: req.query.query});	
 		});
 	} else {
 		res.render('search.html', {login: req.session.login, books: []})

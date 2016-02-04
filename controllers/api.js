@@ -67,6 +67,13 @@ router.get('/book/lists/:id', function(req, res){
 	});
 });
 
+router.get('/lists/search/:query', function(req, res){
+	listService.searchLists(req.params.query, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.put('/book/:id/mark', function(req,res){
 	bookService.addMark(req.session.id, req.params.id, req.body.rate, function(err, rows){
 		if (err) throw err;
@@ -153,6 +160,13 @@ router.delete('/book/user/:id', function(req, res){
 	userService.deleteUserBook(req.params.id, req.session.id, function(err, rows){
 		if (err) throw err;
 		res.send(" ");
+	});
+});
+
+router.get('/authors/search/:query', function(req, res){
+	authorService.searchAuthors(req.params.query, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
 	});
 });
 

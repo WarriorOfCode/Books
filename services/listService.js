@@ -1,7 +1,7 @@
 var connection = require('../db');
 
 function getLists(callback) {
-	var selectSql = "SELECT groups.*, COUNT(*) AS booksNumber FROM groups, books_groups WHERE groups.id=books_groups.id_group GROUP BY books_groups.id_group ;"
+	var selectSql = "SELECT groups.*, COUNT(*) AS members FROM groups, books_groups WHERE groups.id=books_groups.id_group GROUP BY books_groups.id_group ;"
 	connection.query(selectSql, callback);
 }
 
@@ -10,19 +10,25 @@ function getBooksInLists(callback) {
 	connection.query(selectSql, callback);
 }
 
-function getList(listId, callback){
+function getList(listId, callback) {
 	var selectSql = "SELECT groups.Name AS listName, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=? AND groups.id=?";
 	connection.query(selectSql, [listId, listId], callback)
 }
 
-function getBookLists(bookId, callback){
+function getBookLists(bookId, callback) {
 	var selectSql = "SELECT groups.* FROM groups, books_groups WHERE books_groups.id_book=? AND groups.id=books_groups.id_group";
 	connection.query(selectSql, bookId, callback);
+}
+
+function searchLists(query, callback) {
+	var selectSql = "SELECT groups.Name AS listName, groups.id AS id_group, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=groups.id AND groups.Name LIKE ?";
+	connection.query(selectSql, "%"+query+"%", callback);
 }
 
 module.exports = {
 	getLists: getLists,
 	getBooksInLists: getBooksInLists,
 	getList: getList,
-	getBookLists: getBookLists
+	getBookLists: getBookLists,
+	searchLists: searchLists
 }

@@ -6,21 +6,7 @@
 
 	<% include	includes/header.ejs %>
 	
-	<div ng-controller="ListCtrl" class="left">
-		<div ng-repeat="list in lists">
-			<a href="/list/{{list.id}}"><h3>{{list.Name}}<span class="badge">{{list.booksNumber}}</span></h3></a>
-
-			<div ng-repeat="book in booksShow[list.id]" class="books">
-				<div class="col-sm-3">
-					<a href='/book/{{book.id}}'>
-						<img src="{{book.image_url}}">
-						<div>{{book.Name}}</div>
-					</a>
-				</div>
-			</div>
-
-		</div>
-	</div>
+	<% include includes/lists.ejs %>
 
 	<% include includes/scripts.ejs %>
  	<script src="/js/lists.js"></script>

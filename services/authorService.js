@@ -46,6 +46,10 @@ function addAuthor(name, lastName, patronymic, birthDate, biography, birthCountr
 	connection.query(insertSql, [name, lastName, patronymic, birthDate, biography, birthCountry, image], callback);
 }
 
+function searchAuthors(query, callback) {
+	connection.query("SELECT * FROM authors WHERE Last_Name LIKE ?", "%"+query+"%", callback);
+}
+
 
 module.exports = {
 	getAuthors: getAuthors,
@@ -55,5 +59,6 @@ module.exports = {
 	getAuthorByBookId: getAuthorByBookId,
 	getAuthorInformationById: getAuthorInformationById,
 	getAuthorsIdByBookId: getAuthorsIdByBookId,
-	addAuthor: addAuthor
+	addAuthor: addAuthor,
+	searchAuthors: searchAuthors
 }
