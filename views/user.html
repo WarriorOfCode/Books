@@ -8,7 +8,7 @@
 	<div  class="row-fluid">
 		<div class="col-xs-offset-1">
 			<div ng-controller="FriendCtrl">
-				<div class="alert alert-success collapse" role="alert" ng-bind="message" ng-show="message"></div>
+				
 				<h1> <%= user[0].NickName %> </h1>
 				<% if (user[0].Name) { %>
 					<p> Name is : <%= user[0].Name+" " %>
@@ -20,41 +20,11 @@
 				<% if (login) { %>
 					<% if (login == user[0].NickName) { %>
 						<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a>
-						<input type="button" class="btn btn-warning btn-large" value="Предложить книгу" ng-click="openModal()"><br/>
 					<% } else { %>
 						<button class="btn btn-default btn-block" ng-class="{'btn-primary':!isFriend}" ng-click="action()">{{ text }}</button>
 					<% } %>
 				<% } %>
 
-				<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-					<ng-form class="form-horizontal">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-
-								<div class="modal-body">
-									<div class="form-group down">
-										<label class="col-sm-3 control-label">Название книги:</label>
-										<div class="col-sm-6">
-											<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги" required>
-										</div>
-									</div>
-
-									<div class="form-group down">
-										<label class="col-sm-3 control-label">Автор:</label>
-										<div class="col-sm-6">
-											<input type="text" ng-model="book.author" class="form-control" placeholder="Введите название книги" required>
-										</div>
-									</div>
-								</div>
-
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary" ng-click="send()" data-dismiss="modal">Send</button>
-								</div>
-							</div>
-						</div>
-					</ng-form>
-				</div>
 			</div>
 
 			<div ng-controller="UserBooks">

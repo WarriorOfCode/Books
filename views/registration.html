@@ -5,8 +5,8 @@
 <% include includes/header.ejs%>
 <div class="container">
 	<form name="formA" ng-controller="RegistrationCtrl" ng-submit="sendData()" class="form-horizontal">
-		<div ng-bind="message" ng-show="message && error" class="alert alert-danger"  role="alert"></div>
-		<div ng-bind="message" ng-show="message && !error" class="alert alert-success"  role="alert"></div>
+		<div ng-bind="message" ng-show="message && error" class="alert alert-danger collapse"  role="alert"></div>
+		<div ng-bind="message" ng-show="message && !error" class="alert alert-success collapse"  role="alert"></div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Login</label>
 			<div class="col-sm-5">
@@ -32,7 +32,7 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-5">
-				<button type="submit" class="btn btn-default">Регистрация</button>
+				<button type="submit" data-toggle="collapse" data-target=".alert" class="btn btn-default">Регистрация</button>
 			</div>
 		</div>
 		

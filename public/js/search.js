@@ -8,7 +8,6 @@ function AuthorsCtrl($scope, $http) {
 
 	searchAuthros();
 
-
 	function searchAuthros (){
 		$http.get('/api/authors/search/'+search)
 		.success(function(data){
