@@ -119,7 +119,17 @@ function ListCtrl($scope, $http){
 
 	$http.get('/api/book/lists/'+bookId)
 	.success(function(data){
-		$scope.lists = data;
+
+		var genres =[];
+		var lists = [];
+		data.forEach(function(data){
+			if (data.genre==1)
+				genres.push(data);
+			else
+				lists.push(data)
+		});
+		$scope.genres = genres;
+		$scope.lists = lists;
 	})
 	.error(function(data){
 		console.log(data);
@@ -129,29 +139,32 @@ function ListCtrl($scope, $http){
 function ReviewCtrl($scope, $http, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
+	getReviews();
 
-	$http.get('/api/book/'+bookId+'/review')
-	.success(function(data){
-		if (data.length>0){
-			$scope.reviews = data;
-			data.forEach(function(data){
-				if (data.NickName == $window.App.login){
-					$scope.buttonHide = true;
-					return;
-				}
-			});
-		}
-	})
-	.error(function(data){
-		console.log(data);
-	})
+	function getReviews () {
+		$http.get('/api/book/'+bookId+'/review')
+		.success(function(data){
+			if (data.length>0){
+				$scope.reviews = data;
+				data.forEach(function(data){
+					if (data.NickName == $window.App.login){
+						$scope.buttonHide = true;
+						return;
+					}
+				});
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		})
+	}
 
 	$scope.send = function(){
 		if ($scope.review != null && $scope.review.body){
 			$http.put('/api/book/'+bookId+'/review', $scope.review)
 			.success(function(data){
 				$scope.checked = !$scope.checked;
-				location.reload();
+				getReviews();
 			})
 			.error(function(data){
 				console.log(data);

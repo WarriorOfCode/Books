@@ -39,14 +39,19 @@
 					<%= author[0].Last_Name %>
 				</a>
 			</p>
-			<div ng-controller="ListCtrl" ng-show="lists"><b>Списки:</b>
-					<span ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
+			<div ng-controller="ListCtrl">
+				<div ng-show="genres.length">
+					<b>Списки:</b>
+					<span ng-repeat="genre in genres"><a href="/list/{{genre.id}}">{{genre.Name}} </a></span>
+				</div>
+				<input type="button" class="btn btn-default btn-sm" ng-show="lists.length && !showLists" ng-click="showLists=true" value="ещё списки">
+				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
 			</div>
 
 
 			<div ng-controller="ReviewCtrl">
 				<% if (login) { %>
-					<input type="button" ng-hide="buttonHide" class="btn btn-default" value="Оставить отзыв" ng-click="checked=!checked">
+					<input type="button" ng-hide="buttonHide" class="btn btn-primary" value="Оставить отзыв" ng-click="checked=!checked">
 
 	 				<form ng-show="checked" class="form-horizontal">
 
@@ -66,7 +71,7 @@
 
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-5">
-								<button  ng-click="send()" class="btn btn-default">Save</button>
+								<button  ng-click="send()" class="btn btn-default">Send</button>
 								<button  ng-click="review=null" class="btn btn-default">Cancel</button>
 							</div>
 						</div>
