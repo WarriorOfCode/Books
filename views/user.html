@@ -6,32 +6,31 @@
 	<% include 	includes/header.ejs %>
 
 	<div  class="row-fluid">
-		<div class="col-xs-offset-1">
-			<div ng-controller="FriendCtrl">
-				
-				<h1> <%= user[0].NickName %> </h1>
-				<% if (user[0].Name) { %>
-					<p> Name is : <%= user[0].Name+" " %>
-						<% if (user[0].LastName) { %>
-							<%= user[0].LastName%>
-						<% } %>
-					</p><br/>
-				<% } %>
-				<% if (login) { %>
-					<% if (login == user[0].NickName) { %>
-						<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a>
-					<% } else { %>
-						<button class="btn btn-default btn-block" ng-class="{'btn-primary':!isFriend}" ng-click="action()">{{ text }}</button>
+		<div class="col-xs-offset-1" ng-controller="FriendCtrl">
+			
+			<h1> <%= user[0].NickName %> </h1>
+			<% if (user[0].Name) { %>
+				<p> Name is : <%= user[0].Name+" " %>
+					<% if (user[0].LastName) { %>
+						<%= user[0].LastName%>
 					<% } %>
+				</p><br/>
+			<% } %>
+			<% if (login) { %>
+				<% if (login == user[0].NickName) { %>
+					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a>
+				<% } else { %>
+					<button class="btn btn-default btn-block" ng-class="{'btn-primary':!isFriend}" ng-click="action()">{{ text }}</button>
 				<% } %>
+			<% } %>
 
-			</div>
+		</div>
 
-			<div ng-controller="UserBooks">
-				<div ng-hide="books">Loading...</div>
-				<div ng-show="books.length" class="Books">
-					<h3>Прочитанные книги: </h3>
-					<div class="books">
+		<form name="outerForm" ng-controller="UserBooks" class="down" novalidate>
+			<uib-tabset>
+				<uib-tab heading="Прочитанные книги">
+					<div ng-hide="books">Loading...</div>
+					<div ng-show="books.length" class="books down">
 						<div ng-repeat="book in books" class="col-sm-3">
 							<a ng-href="/book/{{book.id}}">
 								<img ng-src="{{book.image_url}}">
@@ -39,9 +38,33 @@
 							</a>
 						</div>
 					</div>
-				 </div>
-			</div>
-		</div>
+				</uib-tab>
+				<uib-tab heading="Читает">
+					<div ng-hide="booksInProgress">Loading...</div>
+					<div ng-show="booksInProgress.length" class="books down">
+						<div ng-repeat="book in booksInProgress" class="col-sm-3">
+							<a ng-href="/book/{{book.id}}">
+								<img ng-src="{{book.image_url}}">
+								<div> {{book.Name}} </div>
+							</a>
+						</div>
+					</div>
+				</uib-tab>
+
+				<uib-tab heading="Будет читать">
+					<div ng-hide="booksInFuture">Loading...</div>
+					<div ng-show="booksInFuture.length" class="books down">
+						<div ng-repeat="book in booksInFuture" class="col-sm-3">
+							<a ng-href="/book/{{book.id}}">
+								<img ng-src="{{book.image_url}}">
+								<div> {{book.Name}} </div>
+							</a>
+						</div>
+					</div>
+				</uib-tab>
+			</uib-tabset>
+		</form>
+
 	</div>
 
 	<script>

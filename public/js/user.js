@@ -56,7 +56,27 @@ function UserBooks($scope, $http){
 	var userId = location.pathname.replace("/user/", "");
 	$http.get('/api/user/books/'+userId)
 	.success(function(data){
-		$scope.books = data;
+		var booksInProgress = [],
+			booksInPast = [],
+			booksInFuture = [];
+
+		data.forEach(function(data){
+			switch (data["progress"]){
+				case 0:
+					booksInPast.push(data)
+					break
+				case 1:
+					booksInProgress.push(data)
+					break
+				case 2:
+					booksInFuture.push(data)
+					break
+			}
+		})
+		$scope.booksInProgress = booksInProgress;
+		$scope.booksInFuture = booksInFuture;
+		$scope.books = booksInPast;
+		console.log(booksInProgress)
 	})
 	.error(function(data){
 		console.log(data);

@@ -95,7 +95,7 @@ function getBooksByAuthorId(authorId, callback) {
 }
 
 function getBooksByUserId (userId, callback) {
-	var selectSql = "SELECT books.* FROM books, books_users WHERE books_users.id_user = ? AND books_users.id_book = books.id";
+	var selectSql = "SELECT books.*, books_users.progress FROM books, books_users WHERE books_users.id_user = ? AND books_users.id_book = books.id";
 	connection.query(selectSql, userId, callback);
 }
 
