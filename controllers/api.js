@@ -149,15 +149,39 @@ router.get('/user/books/:id', function (req, res){
 	}
 });
 
+router.get('/book/user/:id', function(req, res){
+	userService.checkisBookUser(req.params.id, req.session.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.put('/book/user', function(req, res){
-	userService.addUserBook(req.body.bookId, req.session.id, function(err, rows){
+	userService.deleteAllUserBook(req.body.bookId, req.session.id, function(err, rows){
+		if (err) throw err;
+		userService.addUserBook(req.body.bookId, req.session.id, req.body.progress, function(err, rows1){
+			if (err) throw err;
+			res.send(" ");
+		});
+	});
+});
+
+router.delete('/book/user/:id', function(req, res){
+	userService.deleteUserBook(req.params.id, req.session.id, 0, function(err, rows){
 		if (err) throw err;
 		res.send(" ");
 	});
 });
 
-router.delete('/book/user/:id', function(req, res){
-	userService.deleteUserBook(req.params.id, req.session.id, function(err, rows){
+router.delete('/book/user/inFuture/:id', function(req, res){
+	userService.deleteUserBook(req.params.id, req.session.id, 2, function(err, rows){
+		if (err) throw err;
+		res.send(" ");
+	});
+});
+
+router.delete('/book/user/inPresent/:id', function(req, res){
+	userService.deleteUserBook(req.params.id, req.session.id, 1, function(err, rows){
 		if (err) throw err;
 		res.send(" ");
 	});

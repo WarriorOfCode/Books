@@ -9,21 +9,31 @@
 	<div class="row-fluid">
 		<div class="col-sm-3 book-image">
 			<img src="<%= book[0].image_url %>" class="img-rounded" alt="<%= book[0].Name %>">
-			<div ng-controller="ReadCtrl">
-				<% if (login) { %>
+			<% if (login) { %>
+				<div ng-controller="ReadCtrl">
+					
+					<div class="btn-group btn-block">
+						<button type="button" class="btn btn-block btn-default dropdown-toggle"  ng-class="{'btn-primary':isReaded, 'btn-success':isPresent, 'btn-warning':isFuture}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{text}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu col-xs-12 col-sm-offset-4">
+							<li><a ng-click="action()" class="activ">Читал</a></li>
+							<li><a ng-click="read()">Читаю</a></li>
+							<li><a ng-click="willRead()">Буду читать</a></li>
+						</ul>
+					</div>
+				</div>
 
-				<button class="btn btn-default btn-block" ng-class="{'btn-primary':isReaded}" ng-click="action()">{{ text }}</button>
-				
-				<uib-rating ng-model="rate" max="10" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" aria-labelledby="default-rating" ng-click="sendMark(rate)"></uib-rating>
-				<span class="label" ng-class="{'label-danger': overStar<=3, 'label-warning': overStar>3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
+				<div ng-controller="RatingCtrl">
+					<uib-rating ng-model="rate" max="10" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" aria-labelledby="default-rating" ng-click="sendMark(rate)"></uib-rating>
+					<span class="label" ng-class="{'label-danger': overStar<=3, 'label-warning': overStar>3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
 
-				<span class="label" ng-class="{'label-danger': oldmark<=3, 'label-warning': oldmark>3 && oldmark<7, 'label-success': oldmark>=7}" ng-show="oldmark && isReadonly">{{oldmark}}</span><br/>
+					<span class="label" ng-class="{'label-danger': oldmark<=3, 'label-warning': oldmark>3 && oldmark<7, 'label-success': oldmark>=7}" ng-show="oldmark && isReadonly">{{oldmark}}</span><br/>
 
-				<button type="button" class="btn btn-sm btn-danger" ng-click="deleteMark()" ng-disabled="!isReadonly">Delete mark</button>
-    			<button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = false">change mark </button>
-
+					<button type="button" class="btn btn-sm btn-danger" ng-click="deleteMark()" ng-disabled="!isReadonly">Delete mark</button>
+					<button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = false">change mark </button>
+				</div>
 				<% } %>
-			</div>
 		</div>
 
 		<div class="col-sm-9">
@@ -39,6 +49,7 @@
 					<%= author[0].Last_Name %>
 				</a>
 			</p>
+			<p><b>Издательство: </b><%= book[0].publishing %></p>
 			<div ng-controller="ListCtrl">
 				<div ng-show="genres.length">
 					<b>Списки:</b>
@@ -53,16 +64,16 @@
 				<% if (login) { %>
 					<input type="button" ng-hide="buttonHide" class="btn btn-primary" value="Оставить отзыв" ng-click="checked=!checked">
 
-	 				<form ng-show="checked" class="form-horizontal">
+					<form ng-show="checked" class="form-horizontal">
 
-		 				<div class="form-group">
-		 					<label class="col-sm-3 control-label">Загаловок отзыва:</label>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Загаловок отзыва:</label>
 							<div class="col-sm-6">
-		 						<input type="text" class="form-control" ng-model="review.head" placeholder="Загаловок отзыва">
-		 					</div>
-		 				</div>
+								<input type="text" class="form-control" ng-model="review.head" placeholder="Загаловок отзыва">
+							</div>
+						</div>
 
-		 				<div class="form-group">
+						<div class="form-group">
 							<label class="col-sm-3 control-label">Отзыв:</label>
 							<div class="col-sm-6">
 								<textarea type="text" ng-model="review.body" class="form-control" placeholder="Отзыв" rows = "6"></textarea>
@@ -95,17 +106,17 @@
 
 		</div>
 	</div>
+	</div>
 
 	<script>
 		window.App = {
-			isReaded: <%= isReaded %>,
 			login: "<%= login %>"
 		}
 	</script>
 	
 	
 	<% include includes/scripts.ejs %>
- 	<script src="/js/book.js"></script>
+	<script src="/js/book.js"></script>
 
 </body>
 </html>

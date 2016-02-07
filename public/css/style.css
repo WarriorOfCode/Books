@@ -84,6 +84,15 @@
 	font-size: 22px;
 }
 
-.book-image .label{
+.book-image .label {
 	font-size: 13px;
+}
+
+/*STYLES FOR row-fluid offset*/
+.row-fluid .col-sm-offset-4 {
+	text-align: center;
+}
+
+.dropdown-menu a {
+	cursor: pointer;
 }

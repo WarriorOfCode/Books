@@ -26,20 +26,27 @@ function getSalt() {
 /**
  * Operations with books.
  */
-function findUserBook(bookId, userId, callback) {
-	var selectSql = "SELECT * FROM books_users WHERE id_book = ? AND id_user = ?";
+
+function checkisBookUser(bookId, userId, callback) {
+	var selectSql = "SELECT * FROM books_users WHERE id_book=? AND id_user=?";
 	connection.query(selectSql, [bookId, userId], callback);
 }
 
-function addUserBook(bookId, userId, callback) {
-	var insertSql ="INSERT INTO books_users (id_book, id_user) VALUES (?,?)";
-	connection.query(insertSql, [bookId, userId], callback);
+function addUserBook(bookId, userId, progress, callback) {
+	var insertSql ="INSERT INTO books_users (id_book, id_user, progress) VALUES (?,?,?)";
+	connection.query(insertSql, [bookId, userId, progress], callback);
 }
 
-function deleteUserBook(bookId, userId, callback) {
-	var deleteSql = "DELETE FROM books_users WHERE id_book = ? AND id_user = ?";
+function deleteUserBook(bookId, userId, progress, callback) {
+	var deleteSql = "DELETE FROM books_users WHERE id_book=? AND id_user=? AND progress=?";
+	connection.query(deleteSql, [bookId, userId, progress], callback);
+}
+
+function deleteAllUserBook(bookId, userId, callback) {
+	var deleteSql = "DELETE FROM books_users WHERE id_book=? AND id_user=?";
 	connection.query(deleteSql, [bookId, userId], callback);
 }
+
 /**
  * Operations with user's information.
  */
@@ -99,9 +106,10 @@ function updateUserInformation(name, lastName, email, userId, callback) {
 
 module.exports = {
 	getUsers: getUsers,
-	findUserBook: findUserBook,
+	checkisBookUser: checkisBookUser,
 	addUserBook: addUserBook,
 	deleteUserBook: deleteUserBook,
+	deleteAllUserBook: deleteAllUserBook,
 	getUserInformation: getUserInformation,
 	updateUserPassword: updateUserPassword,
 	getInformationByLogin: getInformationByLogin,

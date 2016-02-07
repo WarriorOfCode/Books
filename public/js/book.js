@@ -1,18 +1,20 @@
 angular
 	.module('Books')
 	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
+	.controller('RatingCtrl', ['$scope', '$http', RatingCtrl])
 	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
 	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl]);
 
-function ReadCtrl($scope, $http, $window) {
-
+function RatingCtrl($scope, $http) {
 	var bookId = location.pathname.replace("/book/", "");
+
+	getAssessment();
 
 	$scope.rate = 4.5;
 	$scope.isReadonly = false;
 
 	$scope.hoveringOver = function(value) {
-	$scope.overStar = value;
+		$scope.overStar = value;
 	};
 
 	$scope.ratingStates = [
@@ -55,35 +57,6 @@ function ReadCtrl($scope, $http, $window) {
 		})
 	}
 
-	var readText = "Читал",
-		unReadText = "Не читал",
-		inProgress = false;
-
-	$scope.isReaded = $window.App.isReaded;
-
-	updateText(); // called when page loaded and ready
-	getAssessment();
-
-	$scope.action = function () {
-		if (inProgress) return;
-		inProgress = true;
-
-		if ($scope.isReaded) {
-			$http.delete('/api/book/user/'+bookId)
-			.success(successHandler)
-			.error(errorHandler);
-		} else {
-			$http.put('/api/book/user', { bookId: bookId })
-			.success(successHandler)
-			.error(errorHandler);
-		}
-	};
-
-	function updateText()
-	{
-		$scope.text = $scope.isReaded ? unReadText : readText;	
-	}
-
 	function getAssessment(){
 		$http.get('/api/book/'+bookId+'/mark')
 		.success(function(data){
@@ -98,10 +71,117 @@ function ReadCtrl($scope, $http, $window) {
 		})
 	}
 
-	// called when http request ended with success response 
+}
+
+function ReadCtrl($scope, $http, $window) {
+
+	var bookId = location.pathname.replace("/book/", "");
+
+	var readText = "Читал",
+		unReadText = "Не читал",
+		inProgressTest = "Читаю",
+		inFutureText = "Буду читать",
+		inProgress = false;
+
+	$http.get('/api/book/user/'+bookId)
+	.success(function(data){
+		data.forEach(function(data){
+			switch (data["progress"]) {
+				case 0:
+					$scope.isReaded = true
+					break
+				case 1:
+					$scope.isPresent = true
+					break
+				case 2:
+					$scope.isFuture = true
+					break
+			}
+		})
+		updateText();
+	})
+	.error(function(data){
+		console.log(data)
+	})
+
+	$scope.action = function () {
+		if (inProgress) return;
+		inProgress = true;
+
+		if ($scope.isReaded) {
+			$http.delete('/api/book/user/'+bookId)
+			.success(successHandler)
+			.error(errorHandler);
+		} else {
+			$http.put('/api/book/user', { bookId: bookId, progress: 0})
+			.success(successHandler)
+			.error(errorHandler);
+		}
+	};
+
+	$scope.read = function () {
+		if (inProgress) return;
+		inProgress = true;
+
+		if ($scope.isPresent) {
+			$http.delete('/api/book/user/inPresent/'+bookId)
+			.success(function(data){
+				$scope.isPresent = !$scope.isPresent;
+				inProgress = false;
+				updateText();
+			})
+			.error(errorHandler);
+		} else {
+			$http.put('/api/book/user', { bookId: bookId, progress: 1})
+			.success(function(data){
+				$scope.isPresent = !$scope.isPresent;
+				$scope.isReaded = false;
+				$scope.isFuture = false;
+				inProgress = false;
+				updateText();
+			})
+			.error(errorHandler);
+		}
+	};
+
+	$scope.willRead = function () {
+		if (inProgress) return;
+		inProgress = true;
+
+		if ($scope.isFuture) {
+			$http.delete('/api/book/user/inFuture/'+bookId)
+			.success(function(data){
+				$scope.isFuture = !$scope.isFuture;
+				inProgress = false;
+				updateText();
+			})
+			.error(errorHandler);
+		} else {
+			$http.put('/api/book/user/', { bookId: bookId, progress: 2})
+			.success(function(data){
+				$scope.isFuture = !$scope.isFuture;
+				$scope.isReaded = false;
+				$scope.isPresent = false;
+				inProgress = false;
+				updateText();
+			})
+			.error(errorHandler);
+		}
+	};
+	
+	function updateText()
+	{
+		$scope.text = $scope.isFuture ? inFutureText
+					: $scope.isPresent ? inProgressTest
+					: readText;
+	}
+
+		// called when http request ended with success response 
 	function successHandler(response)
 	{
 		$scope.isReaded = !$scope.isReaded;
+		$scope.isPresent = false;
+		$scope.isFuture = false;
 		updateText();
 		inProgress = false;
 	}

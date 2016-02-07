@@ -14,17 +14,10 @@ router.get('/book/:id', function(req, res){
 		if (rows !== null && rows.length > 0){
 			authorService.getAuthorByBookId(req.params.id, function(err, rows1){
 				if (err) throw err;
-
-				userService.findUserBook(req.params.id, req.session.id, function(err, rows2){
-					if (err) throw err;
-
-					var isReaded = rows2 != null && rows2.length > 0;
-					res.render('book.html', {
-						book: rows,
-						author: rows1,
-						login: req.session.login,
-						isReaded: isReaded
-					});
+				res.render('book.html', {
+					book: rows,
+					author: rows1,
+					login: req.session.login
 				});
 			});
 		} else {
