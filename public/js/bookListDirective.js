@@ -1,0 +1,23 @@
+angular
+	.module('Books')
+	.directive('bookList', [bookList]);
+
+
+function bookList () {
+	return {
+		restrict: 'A',
+		scope: {
+			list: '=bookList'
+		},
+		// Этот HTML заменит директиву bookList.
+		template: '<div ng-hide="list">Loading...</div>' +
+					'<div ng-show="list.length" class="books">' +
+						'<div ng-repeat="book in list" class="col-sm-3">' +
+							'<a ng-href="/book/{{book.id}}">' +
+								'<img ng-src="{{book.image_url}}">' +
+								'<div> {{book.Name}} </div>' +
+							'</a>' +
+						'</div>' +
+					'</div>'
+	}
+}

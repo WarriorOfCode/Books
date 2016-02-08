@@ -4,7 +4,6 @@ angular
 	.controller('SearchCtrl', ['$scope', SearchCtrl])
 	.controller('OfferCtrl', ['$scope', '$http', OfferCtrl]);
 
-
 function LogoutCtrl($scope, $http) {
 	$scope.send = function () {
 		$http.get('/api/out')
@@ -36,7 +35,7 @@ function OfferCtrl($scope, $http) {
 			})
 			.error(function(data){
 				console.log(data);
-			})
+			});
 		}
 	}
 }

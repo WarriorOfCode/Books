@@ -76,7 +76,6 @@ function UserBooks($scope, $http){
 		$scope.booksInProgress = booksInProgress;
 		$scope.booksInFuture = booksInFuture;
 		$scope.books = booksInPast;
-		console.log(booksInProgress)
 	})
 	.error(function(data){
 		console.log(data);

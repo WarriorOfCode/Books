@@ -29,38 +29,15 @@
 		<form name="outerForm" ng-controller="UserBooks" class="down" novalidate>
 			<uib-tabset>
 				<uib-tab heading="Прочитанные книги">
-					<div ng-hide="books">Loading...</div>
-					<div ng-show="books.length" class="books down">
-						<div ng-repeat="book in books" class="col-sm-3">
-							<a ng-href="/book/{{book.id}}">
-								<img ng-src="{{book.image_url}}">
-								<div> {{book.Name}} </div>
-							</a>
-						</div>
-					</div>
+					<div class="down" book-list="books"></div>
 				</uib-tab>
+
 				<uib-tab heading="Читает">
-					<div ng-hide="booksInProgress">Loading...</div>
-					<div ng-show="booksInProgress.length" class="books down">
-						<div ng-repeat="book in booksInProgress" class="col-sm-3">
-							<a ng-href="/book/{{book.id}}">
-								<img ng-src="{{book.image_url}}">
-								<div> {{book.Name}} </div>
-							</a>
-						</div>
-					</div>
+					<div class="down" book-list="booksInProgress"></div>
 				</uib-tab>
 
 				<uib-tab heading="Будет читать">
-					<div ng-hide="booksInFuture">Loading...</div>
-					<div ng-show="booksInFuture.length" class="books down">
-						<div ng-repeat="book in booksInFuture" class="col-sm-3">
-							<a ng-href="/book/{{book.id}}">
-								<img ng-src="{{book.image_url}}">
-								<div> {{book.Name}} </div>
-							</a>
-						</div>
-					</div>
+					<div class="down" book-list="booksInFuture"></div>
 				</uib-tab>
 			</uib-tabset>
 		</form>
@@ -76,5 +53,6 @@
 	<% include includes/scripts.ejs %>
 
  	<script src="/js/user.js"></script>
+ 	<script src="/js/bookListDirective.js"></script>
 	</body>
 </html>

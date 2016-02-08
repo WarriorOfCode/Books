@@ -4,14 +4,7 @@
 		<div class="col-sm-12">
 			<a href="/list/{{list.id}}"><h3>{{list.Name}}<span class="badge">{{list.members}}</span></h3></a>
 
-			<div ng-repeat="book in booksShow[list.id]" class="books">
-				<div class="col-sm-3">
-					<a href='/book/{{book.id}}'>
-						<img src="{{book.image_url}}">
-						<div>{{book.Name}}</div>
-					</a>
-				</div>
-			</div>
+			<div book-list="booksShow[list.id]"></div>
 			
 		</div>
 	</div>
