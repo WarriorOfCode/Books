@@ -400,9 +400,16 @@ router.post('/edit', function(req, res){
 });
 
 router.put('/book/:id/review', function(req, res){
-	bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows){
+	bookService.getReviews(req.params.id, function(err, rows){
 		if (err) throw err;
-		res.json("saved")
+		if (rows != null && rows.length > 0){
+			res.send("Отзыв от этого пользователя уже есть");
+		} else {
+			bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows){
+				if (err) throw err;
+				res.json("saved")
+			});
+		}
 	});
 });
 
