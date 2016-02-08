@@ -454,4 +454,21 @@ router.delete('/book/:id/citation/:citationId', function(req, res){
 	});
 });
 
+router.get('/user/:id/citations', function(req, res){
+	if (isFinite(req.params.id)) {
+		bookService.getCitationsByUserId(req.params.id, function(err, rows){
+			if (err) throw err;
+			res.json(rows);
+		});
+	} else {
+		userService.getInformationByLogin(req.params.id, function(err, rows3){
+			if (err) throw err;
+			bookService.getCitationsByUserId(rows3[0].id, function(err, rows){
+				if (err) throw err;
+				res.json(rows);
+			});
+		});
+	}
+});
+
 module.exports = router;

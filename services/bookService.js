@@ -154,6 +154,12 @@ function addCitation(bookId, userId, text, callback) {
 function deleteCitation(citationId, callback) {
 	connection.query("DELETE FROM citations WHERE id=?", citationId, callback);
 }
+
+function getCitationsByUserId(userId, callback) {
+	var selectSql = "SELECT citations.text, citations.birthDate, books.Name, citations.id_book FROM citations,books  WHERE citations.id_user=? and citations.id_book=books.id";
+	connection.query(selectSql, userId, callback);
+}
+
 /**
  * Operation with offers
  */
@@ -218,6 +224,7 @@ module.exports = {
 	getCitations: getCitations,
 	addCitation: addCitation,
 	deleteCitation: deleteCitation,
+	getCitationsByUserId: getCitationsByUserId,
 	addOffer: addOffer,
 	getOffers: getOffers,
 	deleteOffer: deleteOffer,

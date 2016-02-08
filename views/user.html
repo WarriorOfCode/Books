@@ -39,6 +39,25 @@
 				<uib-tab heading="Будет читать">
 					<div class="down" book-list="booksInFuture"></div>
 				</uib-tab>
+				<uib-tab heading="Процитировал">
+					<div ng-hide="citations">Loading...</div>
+					<div ng-show="citations.length" class="col-xs-offset-2 down">
+						<div ng-repeat="citation in citations">
+							<blockquote>
+								Книга: <a href="/user/{{citation.id_book}}">{{citation.Name}}</a>
+								<span>{{citation.birthDate | date:'dd-MM-yyyy'}}</span>
+								<% if (login == user[0].NickName) { %>
+									<button class="btn btn-default" ng-show="login == citation.NickName" ng-click="deleteCitation(citation.id)" aria-label="Left Align">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+								<% } %>
+								<div>
+									{{citation.text}}
+								</div>
+							</blockquote>
+						</div>
+					</div>
+				</uib-tab>
 			</uib-tabset>
 		</form>
 

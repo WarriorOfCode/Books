@@ -54,6 +54,7 @@ function FriendCtrl($scope, $http, $window){
 
 function UserBooks($scope, $http){
 	var userId = location.pathname.replace("/user/", "");
+
 	$http.get('/api/user/books/'+userId)
 	.success(function(data){
 		var booksInProgress = [],
@@ -80,4 +81,16 @@ function UserBooks($scope, $http){
 	.error(function(data){
 		console.log(data);
 	})
+
+	getCitations();
+
+	function getCitations() {
+		$http.get('/api/user/'+userId+'/citations/')
+		.success(function(data){
+			$scope.citations = data;
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}
 }
