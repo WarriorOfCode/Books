@@ -33,7 +33,7 @@
 					<button type="button" class="btn btn-sm btn-danger" ng-click="deleteMark()" ng-disabled="!isReadonly">Delete mark</button>
 					<button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = false">change mark </button>
 				</div>
-				<% } %>
+			<% } %>
 		</div>
 
 		<div class="col-sm-9">
@@ -50,64 +50,113 @@
 				</a>
 			</p>
 			<p><b>Издательство: </b><%= book[0].publishing %></p>
+			<p><b>Оценка: </b></p>
 			<div ng-controller="ListCtrl">
 				<div ng-show="genres.length">
 					<b>Списки:</b>
-					<span ng-repeat="genre in genres"><a href="/list/{{genre.id}}">{{genre.Name}} </a></span>
+					<span ng-repeat="genre in genres"><a href="/list/{{genre.id}}"> {{genre.Name}} </a></span>
 				</div>
 				<input type="button" class="btn btn-default btn-sm" ng-show="lists.length && !showLists" ng-click="showLists=true" value="ещё списки">
 				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
 			</div>
+		</div>
 
+		<div class="col-sm-12">
+			<form name="outerForm" class="down" novalidate>
+				<uib-tabset>
+					<uib-tab heading="Отзывы">
+						<div class="col-sm-offset-3 down" ng-controller="ReviewCtrl" >
+							<% if (login) { %>
+								<input type="button" ng-hide="buttonHide" class="btn btn-primary" value="Оставить отзыв" ng-click="checked=!checked">
 
-			<div ng-controller="ReviewCtrl">
-				<% if (login) { %>
-					<input type="button" ng-hide="buttonHide" class="btn btn-primary" value="Оставить отзыв" ng-click="checked=!checked">
+								<ng-form ng-show="checked" class="form-horizontal">
 
-					<form ng-show="checked" class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Заголовок отзыва:</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" ng-model="review.head" placeholder="Загаловок отзыва">
+										</div>
+									</div>
 
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Загаловок отзыва:</label>
-							<div class="col-sm-6">
-								<input type="text" class="form-control" ng-model="review.head" placeholder="Загаловок отзыва">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Отзыв:</label>
+										<div class="col-sm-6">
+											<textarea type="text" ng-model="review.body" class="form-control" placeholder="Отзыв" rows = "6"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-offset-3 col-sm-5">
+											<button ng-click="send()" class="btn btn-default">Send</button>
+											<button ng-click="checked=!checked" class="btn btn-default">Cancel</button>
+										</div>
+									</div>
+
+								</ng-form>
+							<% } %>
+
+							<div ng-show="reviews.length>0">
+								<div ng-repeat="review in reviews">
+									<blockquote>
+										<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
+										<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
+										<button class="btn btn-default" ng-show="login == review.NickName" ng-click="deleteReview()" aria-label="Left Align">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+										</button>
+										<h4><b>{{review.title}}</b></h4>
+										<div>
+											{{review.text}}
+										</div>
+									</blockquote>
+								</div>
+
 							</div>
 						</div>
+					</uib-tab>
 
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Отзыв:</label>
-							<div class="col-sm-6">
-								<textarea type="text" ng-model="review.body" class="form-control" placeholder="Отзыв" rows = "6"></textarea>
+					<uib-tab heading="Цитаты">
+						<div class="col-sm-offset-3 down" ng-controller="CitatCtrl" >
+							<% if (login) { %>
+								<input type="button" ng-hide="buttonHide" class="btn btn-primary" value="Цитировать" ng-click="checked=!checked">
+
+								<ng-form ng-show="checked" class="form-horizontal">
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Цитата:</label>
+										<div class="col-sm-6">
+											<textarea type="text" ng-model="citation" class="form-control" placeholder="Отзыв" rows = "10"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-offset-3 col-sm-5">
+											<button ng-click="send()" class="btn btn-default">Send</button>
+											<button ng-click="checked=!checked" class="btn btn-default">Cancel</button>
+										</div>
+									</div>
+
+								</ng-form>
+							<% } %>
+
+							<div ng-show="citations.length>0">
+								<div ng-repeat="citation in citations">
+									<blockquote>
+										<a href="/user/{{citation.id_user}}">{{citation.NickName}}</a>
+										<span>{{citation.birthDate | date:'dd-MM-yyyy'}}</span>
+										<button class="btn btn-default" ng-show="login == citation.NickName" ng-click="deleteCitation(citation.id)" aria-label="Left Align">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+										</button>
+										<div>
+											{{citation.text}}
+										</div>
+									</blockquote>
+								</div>
+
 							</div>
 						</div>
-
-						<div class="form-group">
-							<div class="col-sm-offset-3 col-sm-5">
-								<button  ng-click="send()" class="btn btn-default">Send</button>
-								<button  ng-click="review=null" class="btn btn-default">Cancel</button>
-							</div>
-						</div>
-
-					</form>
-				<% } %>
-
-				<div ng-show="reviews.length>0"><h3>Отзывы: </h3>
-					<div ng-repeat="review in reviews">
-						<blockquote>
-							<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
-							<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
-							<button class="btn btn-default" ng-show="login == review.NickName" ng-click="deleteReview()" aria-label="Left Align">
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							</button>
-							<h4><b>{{review.title}}</b></h4>
-							<div>
-								{{review.text}}
-							</div>
-						</blockquote>
-					</div>
-
-				</div>
-
-			</div>
+					</uib-tab>
+				</uib-tabset>
+			</form>
 		</div>
 	</div>
 

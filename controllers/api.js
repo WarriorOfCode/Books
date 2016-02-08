@@ -401,7 +401,7 @@ router.post('/edit', function(req, res){
 });
 
 router.put('/book/:id/review', function(req, res){
-	bookService.getReviews(req.params.id, function(err, rows){
+	bookService.getUserReview(req.params.id, req.session.id, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0){
 			res.send("Отзыв от этого пользователя уже есть");
@@ -427,4 +427,31 @@ router.delete('/book/:id/review', function(req, res){
 		res.send("");
 	});
 });
+
+router.get('/book/:id/citations', function(req, res){
+	bookService.getCitations(req.params.id, function(err, rows){
+		res.send(rows);
+	});
+});
+
+router.put('/book/:id/citation', function(req, res){
+	bookService.addCitation(req.params.id, req.session.id, req.body.text, function(err, rows){
+		if (err) throw err;
+		res.send("saved");
+	});
+});
+
+router.delete('/book/:id/citation/:citationId', function(req, res){
+	bookService.getCitation(req.params.citationId, function(err, rows){
+		if (err) throw err;
+		if (rows[0]["id_user"]==req.session.id){
+			bookService.deleteCitation(req.params.citationId, function(err, rows1){
+				if (err) throw err;
+				res.send("");
+			});
+		} else
+			res.send("It is not your")
+	});
+});
+
 module.exports = router;

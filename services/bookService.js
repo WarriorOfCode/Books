@@ -122,7 +122,7 @@ function addReview(bookId, userId, title, text, callback) {
 }
 
 function getReviews(bookId, callback) {
-	selectSql = "SELECT reviews.*, users.NickName FROM reviews, users WHERE id_book=? AND users.id=reviews.id_user";
+	var selectSql = "SELECT reviews.*, users.NickName FROM reviews, users WHERE id_book=? AND users.id=reviews.id_user";
 	connection.query(selectSql, bookId, callback);
 }
 
@@ -130,6 +130,30 @@ function deleteReview(bookId, userId, callback) {
 	connection.query("DELETE FROM reviews WHERE id_book=? AND id_user=?", [bookId, userId], callback);
 }
 
+function getUserReview(bookId, userId, callback) {
+	connection.query("SELECT * FROM reviews WHERE id_book=? AND id_user=?", [bookId, userId], callback);
+}
+
+/**
+ * Operation with citations
+ */
+function getCitations(bookId, callback) {
+	var selectSql = "SELECT citations.*, users.NickName FROM citations, users WHERE id_book=? AND users.id=citations.id_user";
+	connection.query(selectSql, bookId, callback);
+}
+
+function getCitation(citationId, callback) {
+	connection.query("SELECT id_user FROM citations WHERE id=?", citationId, callback);
+}
+
+function addCitation(bookId, userId, text, callback) {
+	var insertSql = "INSERT INTO citations (id_book, id_user, text, birthDate) VALUES (?,?,?, Current_date())";
+	connection.query(insertSql, [bookId, userId, text], callback);
+}
+
+function deleteCitation(citationId, callback) {
+	connection.query("DELETE FROM citations WHERE id=?", citationId, callback);
+}
 /**
  * Operation with offers
  */
@@ -189,6 +213,11 @@ module.exports = {
 	addReview: addReview,
 	getReviews: getReviews,
 	deleteReview: deleteReview,
+	getUserReview: getUserReview,
+	getCitation: getCitation,
+	getCitations: getCitations,
+	addCitation: addCitation,
+	deleteCitation: deleteCitation,
 	addOffer: addOffer,
 	getOffers: getOffers,
 	deleteOffer: deleteOffer,

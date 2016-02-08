@@ -3,7 +3,8 @@ angular
 	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
 	.controller('RatingCtrl', ['$scope', '$http', RatingCtrl])
 	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
-	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl]);
+	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
+	.controller('CitatCtrl', ['$scope', '$http', '$window', CitatCtrl]);
 
 function RatingCtrl($scope, $http) {
 	var bookId = location.pathname.replace("/book/", "");
@@ -260,6 +261,56 @@ function ReviewCtrl($scope, $http, $window){
 		.success(function(data){
 			$scope.buttonHide = false;
 			getReviews();
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}
+	
+}
+
+function CitatCtrl($scope, $http, $window){
+
+	var bookId = location.pathname.replace("/book/", "");
+	getCitations();
+	$scope.login = $window.App.login;
+
+	function getCitations () {
+		$http.get('/api/book/'+bookId+'/citations')
+		.success(function(data){
+			if (data.length>0){
+				$scope.citations = data;
+				data.forEach(function(data){
+					if (data.NickName == $window.App.login){
+						return;
+					}
+				});
+			} else {
+				$scope.citations = [];
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		})
+	}
+
+	$scope.send = function(){
+		if ($scope.citation != null){
+			$http.put('/api/book/'+bookId+'/citation', {text: $scope.citation})
+			.success(function(data){
+				$scope.checked = !$scope.checked;
+				getCitations();
+			})
+			.error(function(data){
+				console.log(data);
+			});
+		}
+	}
+
+	$scope.deleteCitation = function(citationId){
+		$http.delete('/api/book/'+bookId+'/citation/'+citationId)
+		.success(function(data){
+			getCitations();
 		})
 		.error(function(data){
 			console.log(data);
