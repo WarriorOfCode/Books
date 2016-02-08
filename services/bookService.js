@@ -126,6 +126,10 @@ function getReviews(bookId, callback) {
 	connection.query(selectSql, bookId, callback);
 }
 
+function deleteReview(bookId, userId, callback) {
+	connection.query("DELETE FROM reviews WHERE id_book=? AND id_user=?", [bookId, userId], callback);
+}
+
 /**
  * Operation with offers
  */
@@ -184,6 +188,7 @@ module.exports = {
 	checkBookUniqueness: checkBookUniqueness,
 	addReview: addReview,
 	getReviews: getReviews,
+	deleteReview: deleteReview,
 	addOffer: addOffer,
 	getOffers: getOffers,
 	deleteOffer: deleteOffer,

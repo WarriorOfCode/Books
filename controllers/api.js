@@ -412,4 +412,11 @@ router.get('/book/:id/review', function(req, res){
 		res.json(rows);
 	});
 });
+
+router.delete('/book/:id/review', function(req, res){
+	bookService.deleteReview(req.params.id, req.session.id, function(err, rows){
+		if (err) throw err;
+		res.send("");
+	});
+});
 module.exports = router;

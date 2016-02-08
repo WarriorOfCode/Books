@@ -220,6 +220,7 @@ function ReviewCtrl($scope, $http, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
 	getReviews();
+	$scope.login = $window.App.login;
 
 	function getReviews () {
 		$http.get('/api/book/'+bookId+'/review')
@@ -232,6 +233,8 @@ function ReviewCtrl($scope, $http, $window){
 						return;
 					}
 				});
+			} else {
+				$scope.reviews = [];
 			}
 		})
 		.error(function(data){
@@ -248,8 +251,19 @@ function ReviewCtrl($scope, $http, $window){
 			})
 			.error(function(data){
 				console.log(data);
-			})
+			});
 		}
+	}
+
+	$scope.deleteReview = function(){
+		$http.delete('/api/book/'+bookId+'/review')
+		.success(function(data){
+			$scope.buttonHide = false;
+			getReviews();
+		})
+		.error(function(data){
+			console.log(data);
+		});
 	}
 	
 }
