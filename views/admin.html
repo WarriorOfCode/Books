@@ -220,6 +220,9 @@
 						<a href="" ng-click="order='author'; reverse=!reverse">Автор</a>
 					</th>
 					<th>
+						<a href="" ng-click="order='link'; reverse=!reverse">Ссылка</a>
+					</th>
+					<th>
 						<a href="" ng-click="order='id_user'; reverse=!reverse">Пользователь</a>
 					</th>
 					<th>
@@ -229,9 +232,10 @@
 				<tr ng-repeat="offer in offers | orderBy:order:reverse">
 					<td>{{offer.name}}</td>
 					<td>{{offer.author}}</td>
+					<td>{{offer.link}}</td>
 					<td>{{offer.id_user}}</td>
 					<td>
-						<button ng-click="delete(offer.name)" type="button" class="btn btn-default">
+						<button ng-click="delete(offer.id)" type="button" class="btn btn-default">
 							Удалить
 						</button>
 					</td>

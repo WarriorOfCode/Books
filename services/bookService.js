@@ -133,17 +133,17 @@ function deleteReview(bookId, userId, callback) {
 /**
  * Operation with offers
  */
-function addOffer(bookName, author, userId, callback) {
-	var insertSql = "INSERT INTO offers (name, author, id_user) VALUES (?,?,?)";
-	connection.query(insertSql, [bookName, author, userId], callback);
+function addOffer(bookName, author, userId, link, callback) {
+	var insertSql = "INSERT INTO offers (name, author, id_user, link) VALUES (?,?,?,?)";
+	connection.query(insertSql, [bookName, author, userId, link], callback);
 }
 
 function getOffers(callback) {
 	connection.query("SELECT * FROM offers", callback);
 }
 
-function deleteOffer(bookName, callback) {
-	connection.query("DELETE FROM offers WHERE name = ?", bookName, callback);
+function deleteOffer(offerId, callback) {
+	connection.query("DELETE FROM offers WHERE id = ?", offerId, callback);
 }
 
 /**

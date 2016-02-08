@@ -15,7 +15,8 @@ router.get('/users', function (req, res){
 });
 
 router.put('/offer', function (req, res){
-	bookService.addOffer(req.body.name, req.body.author, req.session.id, function(err, rows){
+	bookService.addOffer(req.body.name, req.body.author, req.session.id, req.body.link, function(err, rows){
+		if (err) throw err;
 		res.json({"message": 'Книга скоро будет добавлена!'});
 	});
 });
@@ -26,8 +27,8 @@ router.get('/offers', function(req, res){
 	});
 });
 
-router.delete('/offer/:name', function(req, res){
-	bookService.deleteOffer(req.params.name, function(err, rows){
+router.delete('/offer/:id', function(req, res){
+	bookService.deleteOffer(req.params.id, function(err, rows){
 		res.json("");
 	});
 });
@@ -405,7 +406,7 @@ router.put('/book/:id/review', function(req, res){
 		if (rows != null && rows.length > 0){
 			res.send("Отзыв от этого пользователя уже есть");
 		} else {
-			bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows){
+			bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows1){
 				if (err) throw err;
 				res.json("saved")
 			});

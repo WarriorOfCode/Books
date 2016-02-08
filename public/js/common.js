@@ -28,12 +28,15 @@ function SearchCtrl($scope) {
 function OfferCtrl($scope, $http) {
 
 	$scope.send = function(){
-		$http.put('/api/offer', $scope.book)
-		.success(function(data){
-			$scope.message = data["message"];
-		})
-		.error(function(data){
-			console.log(data);
-		})
+		if ($scope.book){
+			$http.put('/api/offer', $scope.book)
+			.success(function(data){
+				$scope.message = data["message"];
+				$scope.book= {};
+			})
+			.error(function(data){
+				console.log(data);
+			})
+		}
 	}
 }

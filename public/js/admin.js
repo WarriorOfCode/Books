@@ -198,19 +198,19 @@ function OffersCtrl($scope, $http){
 		console.log(data);
 	})
 
-	$scope.delete = function(bookName){
-		$http.delete('/api/offer/'+bookName)
+	$scope.delete = function(id){
+		$http.delete('/api/offer/'+id)
 		.success(function(data){
-			updateOffers(bookName);
+			updateOffers(id);
 		})
 		.error(function(data){
 			console.log(data)
 		})
 	}
 
-	function updateOffers(bookName){
+	function updateOffers(id){
 		for (var i = 0; i < $scope.offers.length; i++) {
-			if ($scope.offers[i]["name"] == bookName) {
+			if ($scope.offers[i]["id"] == id) {
 				$scope.offers.splice(i, 1);
 				break;
 			}
