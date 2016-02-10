@@ -1,0 +1,16 @@
+<div ng-hide="reviews">Loading...</div>
+<div ng-show="reviews.length" class="col-xs-offset-2 down">
+	<div ng-repeat="review in reviews">
+		<blockquote>
+			Книга: <a href="/book/{{review.id_book}}">{{review.Name}}</a>
+			<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
+				<button class="btn btn-default" ng-show="id == review.id_user" ng-click="deleteCitation(review.id, review.assessement)" aria-label="Left Align">
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				</button>
+			<h4><b>{{review.title}}</b></h4>
+			<div>
+				{{review.text}}
+			</div>
+		</blockquote>
+	</div>
+</div>

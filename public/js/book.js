@@ -256,8 +256,8 @@ function ReviewCtrl($scope, $http, $window){
 		}
 	}
 
-	$scope.deleteReview = function(){
-		$http.delete('/api/book/'+bookId+'/review')
+	$scope.deleteReview = function(reviewId){
+		$http.delete('/api/book/review/'+reviewId)
 		.success(function(data){
 			$scope.buttonHide = false;
 			getReviews();
@@ -308,7 +308,7 @@ function CitatCtrl($scope, $http, $window){
 	}
 
 	$scope.deleteCitation = function(citationId){
-		$http.delete('/api/book/'+bookId+'/citation/'+citationId)
+		$http.delete('/api/book/citation/'+citationId)
 		.success(function(data){
 			getCitations();
 		})

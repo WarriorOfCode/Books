@@ -421,7 +421,7 @@ router.get('/book/:id/review', function(req, res){
 	});
 });
 
-router.delete('/book/:id/review', function(req, res){
+router.delete('/book/review/id', function(req, res){
 	bookService.deleteReview(req.params.id, req.session.id, function(err, rows){
 		if (err) throw err;
 		res.send("");
@@ -430,8 +430,26 @@ router.delete('/book/:id/review', function(req, res){
 
 router.get('/book/:id/citations', function(req, res){
 	bookService.getCitations(req.params.id, function(err, rows){
+		if (err) throw err;
 		res.send(rows);
 	});
+});
+
+router.get('/user/:id/reviews', function(req, res){
+	if (isFinite(req.params.id)) {
+		bookService.getUserReviews(req.params.id, function(err, rows){
+			if (err) throw err;
+			res.send(rows);
+		});
+	} else {
+		userService.getInformationByLogin(req.params.id, function(err, rows1){
+			if (err) throw err;
+			bookService.getUserReviews(rows1[0].id, function(err, rows){
+				if (err) throw err;
+				res.send(rows);
+			});
+		});
+	};
 });
 
 router.put('/book/:id/citation', function(req, res){
@@ -441,16 +459,10 @@ router.put('/book/:id/citation', function(req, res){
 	});
 });
 
-router.delete('/book/:id/citation/:citationId', function(req, res){
-	bookService.getCitation(req.params.citationId, function(err, rows){
+router.delete('/book/citation/:citationId', function(req, res){
+	bookService.deleteCitation(req.params.citationId, req.session.id, function(err, rows1){
 		if (err) throw err;
-		if (rows[0]["id_user"]==req.session.id){
-			bookService.deleteCitation(req.params.citationId, function(err, rows1){
-				if (err) throw err;
-				res.send("");
-			});
-		} else
-			res.send("It is not your")
+		res.send("");
 	});
 });
 

@@ -95,6 +95,7 @@ router.get('/user/:id', function (req, res){
 					var isFriend = rows1 != null && rows1.length > 0;
 					res.render('user.html', {
 						login: req.session.login,
+						id: req.session.id,
 						user: rows,
 						isFriend: isFriend});
 				});

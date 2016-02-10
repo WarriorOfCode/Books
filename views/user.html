@@ -40,23 +40,10 @@
 					<div class="down" book-list="booksInFuture"></div>
 				</uib-tab>
 				<uib-tab heading="Процитировал">
-					<div ng-hide="citations">Loading...</div>
-					<div ng-show="citations.length" class="col-xs-offset-2 down">
-						<div ng-repeat="citation in citations">
-							<blockquote>
-								Книга: <a href="/user/{{citation.id_book}}">{{citation.Name}}</a>
-								<span>{{citation.birthDate | date:'dd-MM-yyyy'}}</span>
-								<% if (login == user[0].NickName) { %>
-									<button class="btn btn-default" ng-show="login == citation.NickName" ng-click="deleteCitation(citation.id)" aria-label="Left Align">
-										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-									</button>
-								<% } %>
-								<div>
-									{{citation.text}}
-								</div>
-							</blockquote>
-						</div>
-					</div>
+					<div class="down" reviews-list="citations" id-user="id"></div>
+				</uib-tab>
+				<uib-tab heading="Отзывы к книгам">
+					<div class="down" reviews-list="reviews" id-user="id" delete="deleteCitation()"></div>
 				</uib-tab>
 			</uib-tabset>
 		</form>
@@ -65,7 +52,9 @@
 
 	<script>
 		window.App = {
-			isFriend: <%= isFriend %>
+			isFriend: <%= isFriend %>,
+			login: "<%= login %>",
+			id: <%= id %>
 		}
 	</script>
 	
@@ -73,5 +62,6 @@
 
  	<script src="/js/user.js"></script>
  	<script src="/js/bookListDirective.js"></script>
+ 	<script src="/js/reviewsListDirective.js"></script>
 	</body>
 </html>

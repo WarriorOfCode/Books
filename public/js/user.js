@@ -1,7 +1,8 @@
 angular
 	.module('Books')
 	.controller('FriendCtrl', ['$scope', '$http', '$window', FriendCtrl])
-	.controller('UserBooks', ['$scope', '$http', UserBooks]);
+	.controller('UserBooks', ['$scope', '$http', '$window', UserBooks]);
+	
 
 function FriendCtrl($scope, $http, $window){
 
@@ -52,8 +53,10 @@ function FriendCtrl($scope, $http, $window){
 	}
 }
 
-function UserBooks($scope, $http){
+function UserBooks($scope, $http, $window){
 	var userId = location.pathname.replace("/user/", "");
+	$scope.login = $window.App.login;
+	$scope.id = $window.App.id;
 
 	$http.get('/api/user/books/'+userId)
 	.success(function(data){
@@ -83,14 +86,25 @@ function UserBooks($scope, $http){
 	})
 
 	getCitations();
+	getReviews();
 
 	function getCitations() {
-		$http.get('/api/user/'+userId+'/citations/')
+		$http.get('/api/user/'+userId+'/citations')
 		.success(function(data){
 			$scope.citations = data;
 		})
 		.error(function(data){
 			console.log(data);
+		});
+	}
+
+	function getReviews() {
+		$http.get('/api/user/'+userId+'/reviews')
+		.success(function(data){
+			$scope.reviews = data;
+		})
+		.error(function(data){
+			console.log(data)
 		});
 	}
 }

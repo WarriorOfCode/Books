@@ -100,7 +100,7 @@
 									<blockquote>
 										<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
 										<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
-										<button class="btn btn-default" ng-show="login == review.NickName" ng-click="deleteReview()" aria-label="Left Align">
+										<button class="btn btn-default" ng-show="login == review.NickName" ng-click="deleteReview(review.id)" aria-label="Left Align">
 											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 										</button>
 										<h4><b>{{review.title}}</b></h4>
