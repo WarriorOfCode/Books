@@ -17,7 +17,8 @@ router.get('/book/:id', function(req, res){
 				res.render('book.html', {
 					book: rows,
 					author: rows1,
-					login: req.session.login
+					login: req.session.login,
+					id: req.session.id
 				});
 			});
 		} else {

@@ -222,6 +222,8 @@ function ReviewCtrl($scope, $http, $window){
 	var bookId = location.pathname.replace("/book/", "");
 	getReviews();
 	$scope.login = $window.App.login;
+	$scope.id = $window.App.id;
+
 
 	function getReviews () {
 		$http.get('/api/book/'+bookId+'/review')
@@ -272,21 +274,18 @@ function ReviewCtrl($scope, $http, $window){
 function CitatCtrl($scope, $http, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
-	getCitations();
 	$scope.login = $window.App.login;
+	$scope.id = $window.App.id;
+
+	getCitations();
 
 	function getCitations () {
 		$http.get('/api/book/'+bookId+'/citations')
 		.success(function(data){
 			if (data.length>0){
-				$scope.citations = data;
-				data.forEach(function(data){
-					if (data.NickName == $window.App.login){
-						return;
-					}
-				});
+				$scope.reviews = data;
 			} else {
-				$scope.citations = [];
+				$scope.reviews = [];
 			}
 		})
 		.error(function(data){

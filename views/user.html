@@ -40,10 +40,12 @@
 					<div class="down" book-list="booksInFuture"></div>
 				</uib-tab>
 				<uib-tab heading="Процитировал">
-					<div class="down" reviews-list="citations" id-user="id"></div>
+					<div class="col-xs-offset-2" bookquote ng-controller="CitationCtrl">
+					</div>
 				</uib-tab>
 				<uib-tab heading="Отзывы к книгам">
-					<div class="down" reviews-list="reviews" id-user="id" delete="deleteCitation()"></div>
+					<div class="col-xs-offset-2" bookquote ng-controller="ReviewCtrl">
+					</div>
 				</uib-tab>
 			</uib-tabset>
 		</form>
@@ -61,7 +63,7 @@
 	<% include includes/scripts.ejs %>
 
  	<script src="/js/user.js"></script>
- 	<script src="/js/bookListDirective.js"></script>
- 	<script src="/js/reviewsListDirective.js"></script>
+ 	<script src="/js/directives/bookListDirective.js"></script>
+ 	<script src="/js/directives/bookquote.js"></script>
 	</body>
 </html>

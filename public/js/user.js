@@ -1,8 +1,9 @@
 angular
 	.module('Books')
 	.controller('FriendCtrl', ['$scope', '$http', '$window', FriendCtrl])
-	.controller('UserBooks', ['$scope', '$http', '$window', UserBooks]);
-	
+	.controller('UserBooks', ['$scope', '$http', '$window', UserBooks])
+	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
+	.controller('CitationCtrl', ['$scope', '$http', '$window', CitationCtrl]);
 
 function FriendCtrl($scope, $http, $window){
 
@@ -84,19 +85,12 @@ function UserBooks($scope, $http, $window){
 	.error(function(data){
 		console.log(data);
 	})
+	
+}
 
-	getCitations();
+function ReviewCtrl($scope, $http, $window) {
+	var userId = location.pathname.replace("/user/", "");
 	getReviews();
-
-	function getCitations() {
-		$http.get('/api/user/'+userId+'/citations')
-		.success(function(data){
-			$scope.citations = data;
-		})
-		.error(function(data){
-			console.log(data);
-		});
-	}
 
 	function getReviews() {
 		$http.get('/api/user/'+userId+'/reviews')
@@ -105,6 +99,42 @@ function UserBooks($scope, $http, $window){
 		})
 		.error(function(data){
 			console.log(data)
+		});
+	}
+
+	$scope.deleteReview = function(reviewId){
+		$http.delete('/api/book/review/'+reviewId)
+		.success(function(data){
+			$scope.buttonHide = false;
+			getReviews();
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}
+}
+
+function CitationCtrl($scope, $http, $window) {
+	var userId = location.pathname.replace("/user/", "");
+	getCitations();
+
+	function getCitations() {
+		$http.get('/api/user/'+userId+'/citations')
+		.success(function(data){
+			$scope.reviews = data;
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}
+
+	$scope.deleteReview = function(citationId){
+		$http.delete('/api/book/citation/'+citationId)
+		.success(function(data){
+			getCitations();
+		})
+		.error(function(data){
+			console.log(data);
 		});
 	}
 }
