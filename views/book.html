@@ -40,14 +40,13 @@
 			<h1><%= book[0].Name %></h1>
 			<p><%= book[0].Description %></p><br/>
 			<p><b>Дата первого издания:</b> <%= book[0].Birth_data %></p><br/>
-			<p><b>Автор: </b>
-				<a href='/author/<%= author[0].id %>'>
-					<%= author[0].Name %>
-					<% if (author[0].patronymic) { %>
-						<%= author[0].patronymic %> 
-					<% } %>
-					<%= author[0].Last_Name %>
+			<p ng-controller="AuthorBookCtrl">
+				<b ng-show="authors.length==1">Автор: </b>
+				<b ng-show="authors.length>1">Авторы: </b>
+				<a ng-repeat="author in authors" href="/author/author.id">
+					{{author.Name}} {{author.patronymic}} {{author.Last_Name}}
 				</a>
+				
 			</p>
 			<p><b>Издательство: </b><%= book[0].publishing %></p>
 			<p><b>Оценка: </b></p>

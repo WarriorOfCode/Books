@@ -2,6 +2,7 @@ angular
 	.module('Books')
 	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
 	.controller('RatingCtrl', ['$scope', '$http', RatingCtrl])
+	.controller('AuthorBookCtrl', ['$scope', '$http', AuthorBookCtrl])
 	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
 	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
 	.controller('CitatCtrl', ['$scope', '$http', '$window', CitatCtrl]);
@@ -72,6 +73,18 @@ function RatingCtrl($scope, $http) {
 		})
 	}
 
+}
+
+function AuthorBookCtrl($scope, $http) {
+	var bookId = location.pathname.replace("/book/", "");
+	$http.get('/api/book/'+bookId+'/authors')
+	.success(function(data){
+		$scope.authors = data;
+		console.log(data);
+	})
+	.error(function(data){
+		console.log(data);
+	});
 }
 
 function ReadCtrl($scope, $http, $window) {

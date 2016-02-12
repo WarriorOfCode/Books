@@ -26,7 +26,7 @@ function getAuthorByName(name, lastName, callback) {
 }
 
 function getAuthorByBookId(bookId, callback) {
-	var selectauthor = "SELECT * FROM  authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
+	var selectauthor = "SELECT id, Name, Last_Name, patronymic FROM  authors WHERE id IN (SELECT id_author FROM books_authors WHERE id_book=?)";
 	connection.query(selectauthor, bookId, callback);
 }
 

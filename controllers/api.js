@@ -140,6 +140,13 @@ router.post('/book/:id', function (req, res){
 	});
 });
 
+router.get('/book/:id/authors', function(req, res){
+	authorService.getAuthorByBookId(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.get('/user/books/:id', function (req, res){
 	if (isFinite(req.params.id)) {
 		bookService.getBooksByUserId(req.params.id, function(err, rows){

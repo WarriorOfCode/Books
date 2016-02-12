@@ -12,14 +12,10 @@ router.get('/book/:id', function(req, res){
 	bookService.getBookById(req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
-			authorService.getAuthorByBookId(req.params.id, function(err, rows1){
-				if (err) throw err;
-				res.render('book.html', {
-					book: rows,
-					author: rows1,
-					login: req.session.login,
-					id: req.session.id
-				});
+			res.render('book.html', {
+				book: rows,
+				login: req.session.login,
+				id: req.session.id
 			});
 		} else {
 			res.redirect('/');
