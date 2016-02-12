@@ -9,7 +9,6 @@ function bookList () {
 		scope: {
 			list: '=bookList'
 		},
-		// Этот HTML заменит директиву bookList.
 		template: '<div ng-hide="list">Loading...</div>' +
 					'<div ng-show="list.length" class="books">' +
 						'<div ng-repeat="book in list" class="col-sm-3">' +

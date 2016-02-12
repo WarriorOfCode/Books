@@ -47,6 +47,13 @@ router.get('/authors', function(req, res){
 	});
 });
 
+router.get('/author/:id/books', function(req, res){
+	bookService.getBooksByAuthorId(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.get('/lists', function(req, res){
 	listService.getLists(function(err, rows){
 		if (err) throw err;

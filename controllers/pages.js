@@ -31,10 +31,7 @@ router.get('/author/:id', function(req, res){
 	authorService.getAuthorInformationById(req.params.id, function(err, rows){
 		if (err) throw err;
 		if (rows !== null && rows.length > 0){
-			bookService.getBooksByAuthorId(req.params.id, function(err, rows1){
-				if (err) throw err;
-				res.render('author.html', {author:rows, login: req.session.login, books: rows1});
-			});
+			res.render('author.html', {author:rows, login: req.session.login});
 		} else {
 			res.redirect('/');
 		}
