@@ -80,7 +80,6 @@ function AuthorBookCtrl($scope, $http) {
 	$http.get('/api/book/'+bookId+'/authors')
 	.success(function(data){
 		$scope.authors = data;
-		console.log(data);
 	})
 	.error(function(data){
 		console.log(data);

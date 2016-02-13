@@ -20,7 +20,7 @@
 				<% if (login == user[0].NickName) { %>
 					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a>
 				<% } else { %>
-					<button class="btn btn-default btn-block" ng-class="{'btn-primary':!isFriend}" ng-click="action()">{{ text }}</button>
+					<button class="btn btn-default btn-block" ng-class="{'btn-primary':isFriend}" ng-click="action()">{{ text }}</button>
 				<% } %>
 			<% } %>
 
@@ -54,9 +54,8 @@
 
 	<script>
 		window.App = {
-			isFriend: <%= isFriend %>,
 			login: "<%= login %>",
-			id: <%= id %>
+			id: <%= user[0].id %>
 		}
 	</script>
 	

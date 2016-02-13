@@ -147,21 +147,18 @@ router.get('/book/:id/authors', function(req, res){
 	});
 });
 
+router.get('/follower/:id', function(req, res){
+	userService.checkFriend(req.session.id, req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	})
+});
+
 router.get('/user/books/:id', function (req, res){
-	if (isFinite(req.params.id)) {
-		bookService.getBooksByUserId(req.params.id, function(err, rows){
-			if (err) throw err;
-			res.json(rows);
-		});
-	} else {
-		userService.getInformationByLogin(req.params.id, function(err, rows3){
-			if (err) throw err;
-			bookService.getBooksByUserId(rows3[0].id, function(err, rows){
-				if (err) throw err;
-				res.json(rows);
-			});
-		});
-	}
+	bookService.getBooksByUserId(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
 });
 
 router.get('/book/user/:id', function(req, res){
@@ -232,40 +229,17 @@ router.post('/password', function(req, res){
 });
 
 router.delete('/friend/:id', function(req, res){
-	if (isFinite(req.params.id)){
-		unsubscribe(req.params.id);
-	} else {
-		userService.getInformationByLogin(req.params.id, function (err, rows){
-			if (err) throw err;
-			unsubscribe(rows[0].id);
-		});
-	}
-
-	function unsubscribe(id){
-		userService.deleteFriend(req.session.id, id, function (err, rows1){
-			if (err) throw err;
-			res.send(" ");
-		});
-	}
-
+	userService.deleteFriend(req.session.id, req.params.id, function (err, rows){
+		if (err) throw err;
+		res.send(" ");
+	});
 });
 
 router.put('/friend', function(req, res){
-	if (isFinite(req.body.userId)){
-		subscribe(req.body.userId);
-	} else {
-		userService.getInformationByLogin(req.body.userId, function (err, rows){
-			if (err) throw err;
-			subscribe(rows[0].id);
-		});
-	}
-
-	function subscribe(id){
-		userService.addfriend(req.session.id, id, function (err, rows1){
-			if (err) throw err;
-			res.send(" ");
-		});
-	}
+	userService.addfriend(req.session.id, req.body.userId, function (err, rows){
+		if (err) throw err;
+		res.send(" ");
+	});
 });
 
 router.post('/login', function(req, res){
@@ -450,20 +424,10 @@ router.get('/book/:id/citations', function(req, res){
 });
 
 router.get('/user/:id/reviews', function(req, res){
-	if (isFinite(req.params.id)) {
-		bookService.getUserReviews(req.params.id, function(err, rows){
-			if (err) throw err;
-			res.send(rows);
-		});
-	} else {
-		userService.getInformationByLogin(req.params.id, function(err, rows1){
-			if (err) throw err;
-			bookService.getUserReviews(rows1[0].id, function(err, rows){
-				if (err) throw err;
-				res.send(rows);
-			});
-		});
-	};
+	bookService.getUserReviews(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.send(rows);
+	});
 });
 
 router.put('/book/:id/citation', function(req, res){
@@ -481,20 +445,10 @@ router.delete('/book/citation/:citationId', function(req, res){
 });
 
 router.get('/user/:id/citations', function(req, res){
-	if (isFinite(req.params.id)) {
-		bookService.getCitationsByUserId(req.params.id, function(err, rows){
-			if (err) throw err;
-			res.json(rows);
-		});
-	} else {
-		userService.getInformationByLogin(req.params.id, function(err, rows3){
-			if (err) throw err;
-			bookService.getCitationsByUserId(rows3[0].id, function(err, rows){
-				if (err) throw err;
-				res.json(rows);
-			});
-		});
-	}
+	bookService.getCitationsByUserId(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
 });
 
 module.exports = router;

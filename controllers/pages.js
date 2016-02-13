@@ -66,37 +66,20 @@ router.get('/list/:id', function (req, res){
 
 router.get('/user/:id', function (req, res){
 	if (isFinite(req.params.id)) {
-		user(req.params.id);
+		userService.getUserInformation(req.params.id, handleRequestByUser);
 	} else {
-		userService.getInformationByLogin(req.params.id, function(err, rows3){
-			if (err) throw err;
-			if (rows3 !==null && rows3.length > 0){
-				user(rows3[0].id);
-			} else {
-				res.redirect('/');
-			}
-		});
+		userService.getInformationByLogin(req.params.id, handleRequestByUser);
 	};
-	function user(params) {
-		
-		if (params == null) res.redirect('/');
 
-		userService.getUserInformation(params, function(err, rows){
-			if (err) throw err;
-			if (rows !== null && rows.length > 0){
-				userService.getFriend(req.session.id, params, function(err, rows1){
-					if (err) throw err;
-					var isFriend = rows1 != null && rows1.length > 0;
-					res.render('user.html', {
-						login: req.session.login,
-						id: req.session.id,
-						user: rows,
-						isFriend: isFriend});
-				});
-			} else {
-				res.redirect('/');
-			}
-		});
+	function handleRequestByUser(err, rows){
+		if (err) throw err;
+		if (rows !== null && rows.length > 0){
+			res.render('user.html', {
+				login: req.session.login,
+				user: rows});
+		} else {
+			res.redirect('/');
+		}
 	}
 });
 

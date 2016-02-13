@@ -11,9 +11,17 @@ function FriendCtrl($scope, $http, $window){
 		unFriendText = "Отписаться",
 		inProgress = false;
 
-	$scope.isFriend = $window.App.isFriend;
+	var userId = $window.App.id;
 
-	updateText();
+	$http.get('/api/follower/'+userId)
+	.success(function(data){
+		$scope.isFriend = data != null && data.length > 0;;
+		updateText();
+	})
+	.error(function(data){
+		console.log(data)
+	});
+
 
 	$scope.openModal = function(){
 		$('#myModal').modal();
@@ -22,9 +30,6 @@ function FriendCtrl($scope, $http, $window){
 	$scope.action = function () {
 		if (inProgress) return;
 		inProgress = true;
-
-		var userId = location.pathname.replace("/user/", "");
-
 		if ($scope.isFriend) {
 			$http.delete('/api/friend/' + userId)
 			.success(successHandler)
@@ -50,12 +55,12 @@ function FriendCtrl($scope, $http, $window){
 
 	function updateText()
 	{
-		$scope.text = $scope.isFriend ? friendText : unFriendText;	
+		$scope.text = $scope.isFriend ? unFriendText : friendText;	
 	}
 }
 
 function UserBooks($scope, $http, $window){
-	var userId = location.pathname.replace("/user/", "");
+	var userId = $window.App.id;
 	$scope.login = $window.App.login;
 	$scope.id = $window.App.id;
 
@@ -89,7 +94,7 @@ function UserBooks($scope, $http, $window){
 }
 
 function ReviewCtrl($scope, $http, $window) {
-	var userId = location.pathname.replace("/user/", "");
+	var userId = $window.App.id;
 	getReviews();
 
 	function getReviews() {
@@ -115,7 +120,7 @@ function ReviewCtrl($scope, $http, $window) {
 }
 
 function CitationCtrl($scope, $http, $window) {
-	var userId = location.pathname.replace("/user/", "");
+	var userId = $window.App.id;
 	getCitations();
 
 	function getCitations() {

@@ -52,7 +52,7 @@ function deleteAllUserBook(bookId, userId, callback) {
  */
 
 function getUserInformation(userId, callback) {
-	connection.query("SELECT * FROM users WHERE id = ?", userId, callback);
+	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE id = ?", userId, callback);
 }
 
 function updateUserPassword(password, userId, callback) {
@@ -60,14 +60,14 @@ function updateUserPassword(password, userId, callback) {
 }
 
 function getInformationByLogin(login, callback) {
-	connection.query("SELECT * FROM users WHERE NickName = ?", login, callback);
+	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE NickName = ?", login, callback);
 }
 
 /**
  * Operations with friens.
  */
-function getFriend(followerId, followingId, callback) {
-	var selectSql = "SELECT * FROM friends WHERE id_follower = ? AND id_following = ?";
+function checkFriend(followerId, followingId, callback) {
+	var selectSql = "SELECT id_following FROM friends WHERE id_follower = ? AND id_following = ?";
 	connection.query(selectSql, [followerId, followingId], callback);
 }
 
@@ -113,7 +113,7 @@ module.exports = {
 	getUserInformation: getUserInformation,
 	updateUserPassword: updateUserPassword,
 	getInformationByLogin: getInformationByLogin,
-	getFriend: getFriend,
+	checkFriend: checkFriend,
 	deleteFriend: deleteFriend,
 	addfriend: addfriend,
 	getUser: getUser,
