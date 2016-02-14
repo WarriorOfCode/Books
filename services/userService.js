@@ -63,6 +63,10 @@ function getInformationByLogin(login, callback) {
 	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE NickName = ?", login, callback);
 }
 
+function getPasswordByLogin(login, callback) {
+	connection.query("SELECT password, salt, id, NickName, permissions FROM users WHERE NickName=?", login, callback);
+}
+
 /**
  * Operations with friens.
  */
@@ -113,6 +117,7 @@ module.exports = {
 	getUserInformation: getUserInformation,
 	updateUserPassword: updateUserPassword,
 	getInformationByLogin: getInformationByLogin,
+	getPasswordByLogin: getPasswordByLogin,
 	checkFriend: checkFriend,
 	deleteFriend: deleteFriend,
 	addfriend: addfriend,

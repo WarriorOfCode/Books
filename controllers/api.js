@@ -246,7 +246,7 @@ router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
 
-	userService.getInformationByLogin(req.body.nickName, function(err, rows){
+	userService.getPasswordByLogin(req.body.nickName, function(err, rows){
 		if (err) throw err;
 		if (rows.length>0){
 			
