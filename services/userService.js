@@ -9,21 +9,6 @@ function getUsers(callback) {
 }
 
 /**
- *  Encryption of password
- */
-function passwordEncryption(salt, password) {
-	var hash = crypto.createHash('sha512')
-					.update(salt+password)
-					.digest('hex');
-	return hash;
-}
-
-function getSalt() {
-	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
-	return salt;
-}
-
-/**
  * Operations with books.
  */
 
@@ -56,15 +41,33 @@ function getUserInformation(userId, callback) {
 }
 
 function updateUserPassword(password, userId, callback) {
-		connection.query("UPDATE users SET password = ? WHERE id = ?", [password, userId], callback);
+	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
+	var hash = crypto.createHash('sha512')
+					.update(salt+password)
+					.digest('hex');
+	connection.query("UPDATE users SET password = ?, salt=? WHERE id = ?", [hash, salt, userId], callback);
 }
 
 function getInformationByLogin(login, callback) {
 	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE NickName = ?", login, callback);
 }
 
-function getPasswordByLogin(login, callback) {
-	connection.query("SELECT password, salt, id, NickName, permissions FROM users WHERE NickName=?", login, callback);
+function checkPassword(login, password, callback){
+	connection.query("SELECT password, salt, id, NickName, permissions FROM users WHERE NickName=?", login, function(err, rows){
+		if (err) throw err;
+		if (rows.length>0){
+			var checkPassword = crypto.createHash('sha512')
+						.update(rows[0].salt+password)
+						.digest('hex');
+
+			var user = {'id': rows[0].id,
+						'permissions': rows[0].permissions,
+						'login': rows[0].NickName};
+			(rows[0].password==checkPassword) ? callback(1, user) : callback(0);
+		} else {
+			callback(0)
+		}
+	});
 }
 
 /**
@@ -93,9 +96,13 @@ function getUser(email, login, callback) {
 	connection.query(selectSql, [email, login], callback);
 }
 
-function insertUser(email, password, login, salt, callback) {
+function insertUser(email, password, login, callback) {
+	var salt = Math.round((new Date().valueOf() * Math.random()))+'';
+	var hash = crypto.createHash('sha512')
+					.update(salt+password)
+					.digest('hex');
 	var insertSql = "INSERT INTO users (Email, password, NickName, salt) VALUES (?,?,?,?)";
-	connection.query(insertSql, [email, password, login, salt], callback);
+	connection.query(insertSql, [email, hash, login, salt], callback);
 }
 
 function checkEmailUniqueness(email, userId, callback) {
@@ -117,14 +124,12 @@ module.exports = {
 	getUserInformation: getUserInformation,
 	updateUserPassword: updateUserPassword,
 	getInformationByLogin: getInformationByLogin,
-	getPasswordByLogin: getPasswordByLogin,
+	checkPassword: checkPassword,
 	checkFriend: checkFriend,
 	deleteFriend: deleteFriend,
 	addfriend: addfriend,
 	getUser: getUser,
 	insertUser: insertUser,
 	checkEmailUniqueness: checkEmailUniqueness,
-	updateUserInformation: updateUserInformation,
-	passwordEncryption: passwordEncryption,
-	getSalt: getSalt
+	updateUserInformation: updateUserInformation
 };

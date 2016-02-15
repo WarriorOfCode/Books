@@ -210,21 +210,15 @@ router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
 	var success = {"error": false, "message": 'Password changed'};
 
-	userService.getUserInformation(req.session.id, function(err, rows){
-	
-		if (err) throw err;
-
-		var oldPassword = userService.passwordEncryption(rows[0].salt, req.body.old);
-		var newPassword = userService.passwordEncryption(rows[0].salt, req.body.new);
-
-		if (rows[0].password == oldPassword) {
-			userService.updateUserPassword(newPassword, req.session.id, function(err, rows){
+	userService.checkPassword(req.session.login, req.body.old, function(check, user){
+		if (check) {
+			userService.updateUserPassword(req.body.new, req.session.id, function(err, rows){
 				if (err) throw err;
 				res.json(success);
 			});
 		} else {
 			res.json(error);
-		};
+		}
 	});
 });
 
@@ -246,20 +240,12 @@ router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
 
-	userService.getPasswordByLogin(req.body.nickName, function(err, rows){
-		if (err) throw err;
-		if (rows.length>0){
-			
-			var password = userService.passwordEncryption(rows[0].salt, req.body.password)
-
-			if (rows[0].password==password){
-				req.session.login = rows[0].NickName;
-				req.session.id = rows[0].id;
-				req.session.permissions = rows[0].permissions;
-				res.json(success);
-			} else {
-				res.json(errorLogin);
-			}
+	userService.checkPassword(req.body.nickName, req.body.password, function(check, user){
+		if(check){
+			req.session.login = user.login;
+			req.session.id = user.id;
+			req.session.permissions = user.permissions;
+			res.json(success);
 		} else {
 			res.json(errorLogin);
 		}
@@ -341,25 +327,21 @@ router.put('/book', function(req, res){
 });
 
 router.put('/user', function (req, res) {
-	
-	var salt = userService.getSalt();
-	var password = userService.passwordEncryption(salt, req.body.password);
-
 	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
 	var success = {"error": false, "message": "Регистрация прошла успешно!"};
 	
-	userService.getUser(req.body.email, req.body.nickName, function (err, rows1) {
+	userService.getUser(req.body.email, req.body.nickName, function (err, rows) {
 		if (err) throw err;
 
-		if (rows1 != null && rows1.length > 0) {
-			if (rows1[0].Email == req.body.email) {
+		if (rows != null && rows.length > 0) {
+			if (rows[0].Email == req.body.email) {
 				res.json(errorEmail); 
 			} else {
 				res.json(errorLogin);
 			}
 		} else {
-			userService.insertUser(req.body.email, password, req.body.nickName, salt, function (err, rows2) {
+			userService.insertUser(req.body.email, req.body.password, req.body.nickName, function (err, rows2) {
 				if (err) throw err;
 				userService.getInformationByLogin(req.body.nickName, function(err, rows3){
 					if (err) throw err;

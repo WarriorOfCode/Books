@@ -31,6 +31,8 @@ function PasswordCtrl($scope, $http){
 				.success(function(data){
 					$scope.message = data["message"];
 					$scope.errorpassword = data["error"];
+					if(!data["error"])
+						$scope.password = {};
 				})
 				.error(function(data){
 					console.log(data);
