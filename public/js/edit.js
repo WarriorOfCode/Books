@@ -25,8 +25,8 @@ function EditCtrl($scope, $http, $window){
 
 function PasswordCtrl($scope, $http){
 	$scope.save = function(){
-		if ($scope.password && $scope.password.new && $scope.password.new.length > 5){
-			if ($scope.password.new == $scope.password.repeat){
+		if ($scope.password && $scope.password.newPassword && $scope.password.newPassword.length > 5){
+			if ($scope.password.newPassword == $scope.password.repeat){
 				$http.post('/api/password', $scope.password)
 				.success(function(data){
 					$scope.message = data["message"];

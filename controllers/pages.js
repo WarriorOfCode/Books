@@ -84,15 +84,11 @@ router.get('/user/:id', function (req, res){
 });
 
 router.get('/', function(req, res){
-	bookService.getNewBooks(function(err, rows) {
-		if (err) throw err;
-		bookService.getPopBooks(function(err, rows1){
+	
+		listService.getPopBooks(function(err, rows){
 			if (err) throw err;
-			bookService.getBookByGroupId(function(err, rows2){
-				if (err) throw err;
-				res.render('index.html', {books: rows1, login: req.session.login, newbooks: rows, classic: rows2});
-			});
-		});
+				res.render('index.html', {books: rows, login: req.session.login});
+		
 	});
 });
 

@@ -6,37 +6,20 @@
 	
 	<% include includes/header.ejs%>
 
-	<div class="left">
+	<div class="left" ng-controller="BooksLists">
 		<h3>Популярные</h3>
 
 		<% include includes/booksList.ejs %>
 
 		<h3>Новые</h3>
-
-		<div class="books">
-			<% newbooks.forEach(function(book) { %>
-				<div class="col-sm-3">
-					<a href='/book/<%= book.id %>'>
-						<img src="<%= book.image_url %>">
-						<div><%= book.Name %></div>
-					</a>
-				</div>
-			<% }) %>
-		</div>
-
-		<h3>Классика</h3>
-		<div class="books">
-			<% classic.forEach(function(book) { %>
-				<div class="col-sm-3">
-					<a href='/book/<%= book.id %>'>
-						<img src="<%= book.image_url %>">
-						<div><%= book.Name %></div>
-					</a>
-				</div>
-			<% }) %>
-		</div>
+		<div book-list="newBooks"></div>
+		
+		<h3>Рейтинг</h3>
+		<div book-list="books"></div>
 	</div>
 	<% include includes/scripts.ejs %>
+	<script src="/js/index.js"></script>
+	<script src="/js/directives/bookListDirective.js"></script>
 
 </body>
 </html>

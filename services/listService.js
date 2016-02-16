@@ -25,10 +25,26 @@ function searchLists(query, callback) {
 	connection.query(selectSql, "%"+query+"%", callback);
 }
 
+function getNewBooks(callback) {
+	connection.query('SELECT * FROM books GROUP BY id DESC LIMIT 4', callback);
+}
+
+function getPopBooks(callback) {
+	var selectPop = 'SELECT * FROM books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
+	connection.query(selectPop, callback);
+}
+
+function getRating(callback) {
+	connection.query("SELECT * FROM books ORDER by assessment DESC LIMIT 4", callback)
+}
+
 module.exports = {
 	getLists: getLists,
 	getBooksInLists: getBooksInLists,
 	getList: getList,
 	getBookLists: getBookLists,
-	searchLists: searchLists
+	searchLists: searchLists,
+	getNewBooks: getNewBooks,
+	getPopBooks: getPopBooks,
+	getRating: getRating
 }

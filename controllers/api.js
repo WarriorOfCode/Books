@@ -61,6 +61,13 @@ router.get('/lists', function(req, res){
 	});
 });
 
+router.get('/lists/newBooks', function(req, res){
+	listService.getNewBooks(function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
 router.get('/lists/books', function(req, res){
 	listService.getBooksInLists(function(err, rows){
 		if (err) throw err;
@@ -70,6 +77,20 @@ router.get('/lists/books', function(req, res){
 
 router.get('/book/lists/:id', function(req, res){
 	listService.getBookLists(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/list/:id', function(req, res){
+	listService.getList(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/lists/rating', function(req, res){
+	listService.getRating(function(err, rows){
 		if (err) throw err;
 		res.json(rows);
 	});
@@ -210,9 +231,9 @@ router.post('/password', function(req, res){
 	var error = {"error": true, "message": 'Old password is wrong'};
 	var success = {"error": false, "message": 'Password changed'};
 
-	userService.checkPassword(req.session.login, req.body.old, function(check, user){
+	userService.checkPassword(req.session.login, req.body.oldPassword, function(check, user){
 		if (check) {
-			userService.updateUserPassword(req.body.new, req.session.id, function(err, rows){
+			userService.updateUserPassword(req.body.newPassword, req.session.id, function(err, rows){
 				if (err) throw err;
 				res.json(success);
 			});

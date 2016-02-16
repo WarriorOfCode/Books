@@ -99,20 +99,6 @@ function getBooksByUserId (userId, callback) {
 	connection.query(selectSql, userId, callback);
 }
 
-function getNewBooks(callback) {
-	connection.query('SELECT * FROM books GROUP BY id DESC LIMIT 4', callback);
-}
-
-function getPopBooks(callback) {
-	var selectPop = 'SELECT * FROM books WHERE id IN (SELECT id_book FROM books_users GROUP BY id_book ORDER BY COUNT(*) DESC) LIMIT 4';
-	connection.query(selectPop, callback);
-}
-
-function getBookByGroupId(callback) {
-	var selectSql = 'SELECT * FROM books WHERE id IN (SELECT id_book FROM books_groups WHERE id_group = 1)';
-	connection.query(selectSql, callback);
-}
-
 /**
  * Operation with reviews
  */
@@ -217,9 +203,6 @@ module.exports = {
 	getBookById: getBookById,
 	getBooksByAuthorId: getBooksByAuthorId,
 	getBooksByUserId: getBooksByUserId,
-	getNewBooks: getNewBooks,
-	getPopBooks: getPopBooks,
-	getBookByGroupId: getBookByGroupId,
 	checkBookUniqueness: checkBookUniqueness,
 	addReview: addReview,
 	getReviews: getReviews,
