@@ -11,9 +11,9 @@ function FriendCtrl($scope, $http, $window){
 		unFriendText = "Отписаться",
 		inProgress = false;
 
-	var userId = $window.App.id;
+	var userId = $window.App.pageId;
 
-	$http.get('/api/follower/'+userId)
+	$http.get('/api/checkFollowing/'+userId)
 	.success(function(data){
 		$scope.isFriend = data != null && data.length > 0;;
 		updateText();
@@ -23,8 +23,9 @@ function FriendCtrl($scope, $http, $window){
 	});
 
 
-	$scope.openModal = function(){
-		$('#myModal').modal();
+	$scope.openModal = function(type){
+		$scope.type = type;
+		$('#followerModal').modal();
 	};
 
 	$scope.action = function () {
@@ -57,12 +58,29 @@ function FriendCtrl($scope, $http, $window){
 	{
 		$scope.text = $scope.isFriend ? unFriendText : friendText;	
 	}
+
+	$http.get('/api/user/'+userId+'/follower/')
+	.success(function(data){
+		$scope.followers = data;
+	})
+	.error(function(data){
+		console.log(data)
+	})
+
+	$http.get('/api/user/'+userId+'/following/')
+	.success(function(data){
+		$scope.followings = data;
+		console.log(data)
+	})
+	.error(function(data){
+		console.log(data)
+	})
 }
 
 function UserBooks($scope, $http, $window){
-	var userId = $window.App.id;
+	var userId = $window.App.pageId;
 	$scope.login = $window.App.login;
-	$scope.id = $window.App.id;
+	$scope.id = $window.App.pageId;
 
 	$http.get('/api/user/books/'+userId)
 	.success(function(data){
@@ -94,7 +112,8 @@ function UserBooks($scope, $http, $window){
 }
 
 function ReviewCtrl($scope, $http, $window) {
-	var userId = $window.App.id;
+	var userId = $window.App.pageId;
+	$scope.id = $window.App.id;
 	getReviews();
 
 	function getReviews() {
@@ -120,7 +139,8 @@ function ReviewCtrl($scope, $http, $window) {
 }
 
 function CitationCtrl($scope, $http, $window) {
-	var userId = $window.App.id;
+	var userId = $window.App.pageId;
+	$scope.id = $window.App.id;
 	getCitations();
 
 	function getCitations() {

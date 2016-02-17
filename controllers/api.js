@@ -168,11 +168,25 @@ router.get('/book/:id/authors', function(req, res){
 	});
 });
 
-router.get('/follower/:id', function(req, res){
+router.get('/checkFollowing/:id', function(req, res){
 	userService.checkFriend(req.session.id, req.params.id, function(err, rows){
 		if (err) throw err;
 		res.json(rows);
-	})
+	});
+});
+
+router.get('/user/:id/follower/', function(req, res){
+	userService.getFollower(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
+});
+
+router.get('/user/:id/following/', function(req, res){
+	userService.getFollowing(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
 });
 
 router.get('/user/books/:id', function (req, res){

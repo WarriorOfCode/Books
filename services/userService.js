@@ -88,6 +88,16 @@ function addfriend(followerId, followingId, callback) {
 	connection.query(insertSql, [followerId, followingId], callback);
 }
 
+function getFollower(userId, callback) {
+	var selectSql = "SELECT friends.id_follower, users.NickName FROM friends, users WHERE id_following=? and users.id = friends.id_follower";
+	connection.query(selectSql, userId, callback);
+}
+
+function getFollowing(userId, callback) {
+	var selectSql = "SELECT friends.id_following, users.NickName FROM friends, users WHERE id_follower=? and users.id = friends.id_following"
+	connection.query(selectSql, userId, callback);
+}
+
 /**
  * Operations with Email.
  */
@@ -126,6 +136,8 @@ module.exports = {
 	getInformationByLogin: getInformationByLogin,
 	checkPassword: checkPassword,
 	checkFriend: checkFriend,
+	getFollower: getFollower,
+	getFollowing: getFollowing,
 	deleteFriend: deleteFriend,
 	addfriend: addfriend,
 	getUser: getUser,

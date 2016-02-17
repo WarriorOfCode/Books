@@ -18,11 +18,45 @@
 			<% } %>
 			<% if (login) { %>
 				<% if (login == user[0].NickName) { %>
-					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a>
+					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a></br>
 				<% } else { %>
-					<button class="btn btn-default btn-block" ng-class="{'btn-primary':isFriend}" ng-click="action()">{{ text }}</button>
+					<button class="btn btn-default btn-block" ng-class="{'btn-primary':isFriend}" ng-click="action()">{{ text }}</button></br>
 				<% } %>
 			<% } %>
+			<a ng-click="openModal(1)">{{followers.length}} подписчиков </a><a ng-click="openModal(0)"> {{followings.length}} подписок</a>
+
+			<div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<form class="form-horizontal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3>Подписки</h3>
+						</div>
+						
+						<form name="outerForm" ng-controller="UserBooks" class="down" novalidate>
+							<uib-tabset>
+								<uib-tab ng-click="type=1" active="type" heading="Подписчики">
+									<div ng-repeat="follower in followers " class="modal-body">
+										<div class="form-group down left">
+											<a href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
+										</div>
+									</div>
+								</uib-tab>
+
+								<uib-tab ng-click="type=0" active="!type" heading="Подписки">
+									<div ng-repeat="following in followings " class="modal-body">
+										<div class="form-group down">
+											<a href="/user/{{following.id_following}}">{{following.NickName}}</a>
+										</div>
+									</div>
+								</uib-tab>
+							</uib-tabset>
+						</form>
+
+					</div>
+				</div>
+			</form>
+		</div>
 
 		</div>
 
@@ -50,12 +84,16 @@
 			</uib-tabset>
 		</form>
 
+		
+
+
 	</div>
 
 	<script>
 		window.App = {
 			login: "<%= login %>",
-			id: <%= user[0].id %>
+			pageId: <%= user[0].id %>,
+			id: <%= id %>
 		}
 	</script>
 	

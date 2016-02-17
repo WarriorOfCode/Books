@@ -76,7 +76,9 @@ router.get('/user/:id', function (req, res){
 		if (rows !== null && rows.length > 0){
 			res.render('user.html', {
 				login: req.session.login,
-				user: rows});
+				user: rows,
+				id: req.session.id
+			});
 		} else {
 			res.redirect('/');
 		}
@@ -84,11 +86,9 @@ router.get('/user/:id', function (req, res){
 });
 
 router.get('/', function(req, res){
-	
-		listService.getPopBooks(function(err, rows){
-			if (err) throw err;
-				res.render('index.html', {books: rows, login: req.session.login});
-		
+	listService.getPopBooks(function(err, rows){
+		if (err) throw err;
+		res.render('index.html', {books: rows, login: req.session.login});
 	});
 });
 
