@@ -29,30 +29,25 @@
 			<form class="form-horizontal">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h3>Подписки</h3>
-						</div>
-						
-						<form name="outerForm" ng-controller="UserBooks" class="down" novalidate>
-							<uib-tabset>
-								<uib-tab ng-click="type=1" active="type" heading="Подписчики">
-									<div ng-repeat="follower in followers " class="modal-body">
-										<div class="form-group down left">
-											<a href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
-										</div>
+						<uib-tabset>
+							<uib-tab ng-click="type=true" active="type" heading="Подписчики">
+								<div ng-show="followers.length==0">Подписчиков пока нет</div>
+								<div ng-repeat="follower in followers " class="modal-body">
+									<div class="form-group left-name">
+										<a href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
 									</div>
-								</uib-tab>
+								</div>
+							</uib-tab>
 
-								<uib-tab ng-click="type=0" active="!type" heading="Подписки">
-									<div ng-repeat="following in followings " class="modal-body">
-										<div class="form-group down">
-											<a href="/user/{{following.id_following}}">{{following.NickName}}</a>
-										</div>
+							<uib-tab ng-click="type=false" active="!type" heading="Подписки">
+								<div ng-show="followers.length==0">Ни на кого не подписан</div>
+								<div ng-repeat="following in followings " class="modal-body">
+									<div class="form-group left-name">
+										<a href="/user/{{following.id_following}}">{{following.NickName}}</a>
 									</div>
-								</uib-tab>
-							</uib-tabset>
-						</form>
-
+								</div>
+							</uib-tab>
+						</uib-tabset>
 					</div>
 				</div>
 			</form>

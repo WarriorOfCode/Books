@@ -188,6 +188,23 @@ function deleteMark(userId, bookId, callback) {
 	connection.query("DELETE FROM assessments WHERE id_user =? AND id_book=?", [userId, bookId], callback);
 }
 
+/**
+* For schedule
+*/
+
+function getAssessments(bookId, callback) {
+	connection.query("SELECT assessment FROM assessments WHERE id_book = ?", bookId, callback);
+}
+
+function addAssessments(assessment, id, callback) {
+	var updateSql = "UPDATE books SET assessment = ? WHERE id =?";
+	connection.query(updateSql, [assessment, id], callback);
+}
+
+function getAllBookId(callback) {
+	connection.query("SELECT id FROM books", callback);
+}
+
 module.exports = {
 	getBooksWithAuthors: getBooksWithAuthors,
 	getConnections: getConnections,
@@ -220,5 +237,8 @@ module.exports = {
 	addMark: addMark,
 	getMarkBook: getMarkBook,
 	updateMark: updateMark,
-	deleteMark: deleteMark
+	deleteMark: deleteMark,
+	getAssessments: getAssessments,
+	addAssessments: addAssessments,
+	getAllBookId: getAllBookId
 }

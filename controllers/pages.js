@@ -77,7 +77,7 @@ router.get('/user/:id', function (req, res){
 			res.render('user.html', {
 				login: req.session.login,
 				user: rows,
-				id: req.session.id
+				id: req.session.id || 0
 			});
 		} else {
 			res.redirect('/');

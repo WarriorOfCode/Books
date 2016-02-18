@@ -7,6 +7,7 @@ angular
 
 function FriendCtrl($scope, $http, $window){
 
+	$scope.type = false;
 	var friendText = "Подписаться",
 		unFriendText = "Отписаться",
 		inProgress = false;
@@ -70,7 +71,6 @@ function FriendCtrl($scope, $http, $window){
 	$http.get('/api/user/'+userId+'/following/')
 	.success(function(data){
 		$scope.followings = data;
-		console.log(data)
 	})
 	.error(function(data){
 		console.log(data)

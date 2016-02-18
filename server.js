@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var api = require('./controllers/api');
 var admin = require('./controllers/admin');
-var pages = require('./controllers/pages')
+var pages = require('./controllers/pages');
 
 app.engine('html', require('ejs').renderFile);
 
