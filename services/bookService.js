@@ -205,6 +205,13 @@ function getAllBookId(callback) {
 	connection.query("SELECT id FROM books", callback);
 }
 
+/**
+* Operations with fact about book
+*/
+function getFacts(bookId, callback) {
+	connection.query("SELECT fact, id FROM facts WHERE id_book=?", bookId, callback);
+}
+
 module.exports = {
 	getBooksWithAuthors: getBooksWithAuthors,
 	getConnections: getConnections,
@@ -240,5 +247,6 @@ module.exports = {
 	deleteMark: deleteMark,
 	getAssessments: getAssessments,
 	addAssessments: addAssessments,
-	getAllBookId: getAllBookId
+	getAllBookId: getAllBookId,
+	getFacts: getFacts
 }

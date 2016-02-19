@@ -467,4 +467,11 @@ router.get('/user/:id/citations', function(req, res){
 	});
 });
 
+router.get('/book/:id/facts', function(req, res){
+	bookService.getFacts(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	})
+});
+
 module.exports = router;

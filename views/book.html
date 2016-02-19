@@ -124,6 +124,16 @@
 							<div bookquote></div>
 						</div>
 					</uib-tab>
+
+					<uib-tab heading="Интересные факты">
+						<div class="col-sm-offset-2s down" ng-controller="FactsCtrl">
+						<div ng-repeat="fact in facts">
+							<blockquote>
+								{{fact.fact}}
+							</blockquote>
+						</div>
+						</div>
+					</uib-tab>
 				</uib-tabset>
 			</form>
 		</div>

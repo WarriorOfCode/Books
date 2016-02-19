@@ -5,7 +5,20 @@ angular
 	.controller('AuthorBookCtrl', ['$scope', '$http', AuthorBookCtrl])
 	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
 	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
-	.controller('CitatCtrl', ['$scope', '$http', '$window', CitatCtrl]);
+	.controller('CitatCtrl', ['$scope', '$http', '$window', CitatCtrl])
+	.controller('FactsCtrl', ['$scope', '$http', '$window', FactsCtrl]);
+
+function FactsCtrl($scope, $http, $window) {
+	var bookId = location.pathname.replace("/book/", "");
+
+	$http.get('/api/book/'+bookId+'/facts')
+	.success(function(data){
+		$scope.facts = data;
+	})
+	.error(function(data){
+		console.log(data);
+	});
+};
 
 function RatingCtrl($scope, $http) {
 	var bookId = location.pathname.replace("/book/", "");
