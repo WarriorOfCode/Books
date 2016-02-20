@@ -1,9 +1,10 @@
 angular
 	.module('Books')
-	.controller('AuthorCtrl', ['$scope', '$http', AuthorCtrl]);
+	.controller('AuthorCtrl', ['$scope', '$http', '$window', AuthorCtrl]);
 
-function AuthorCtrl($scope, $http) {
-	var authorId = location.pathname.replace("/author/", "");
+function AuthorCtrl($scope, $http, $window) {
+	var authorId = $window.App.authorId;
+	$scope.birthDate = new Date(Date.parse($window.App.authorDate));
 	$http.get('/api/author/'+authorId+'/books')
 	.success(function(data){
 		$scope.books = data;

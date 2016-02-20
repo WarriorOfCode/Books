@@ -18,12 +18,19 @@
 			<% } %>
 			<%= author[0].Last_Name %></h1>
 			<p><%= author[0].Biography %></p><br/>
-			<!-- <p><b>Дата рождения:</b> <%= author[0].Birth_data %></p><br/> -->
+			<p><b>Дата рождения:</b> {{birthDate | date:'dd-MM-yyyy'}}</p><br/>
+			<p><b>Страна происхождения:</b> <%= author[0].Counry_of_birth %></p>
 		</div>
 		<h3 ng-show="books.length">Является автором следующих книг: </h3>
 		<div book-list="books"></div>
 	</div>
 
+	<script>
+		window.App = {
+			authorId: <%= author[0].id%>,
+			authorDate: "<%= author[0].Birth_date.toUTCString() %>"
+		}
+	</script>
 	<% include includes/scripts.ejs %>
  	<script src="/js/author.js"></script>
  	<script src="/js/directives/bookListDirective.js"></script>
