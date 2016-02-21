@@ -1,7 +1,7 @@
 angular
 	.module('Books')
 	.controller('AuthorCtrl', ['$scope', '$http', '$window', AuthorCtrl])
-	.controller('FactsCtrl', ['$scope', '$http', FactsCtrl]);
+	.controller('FactsCtrl', ['$scope', '$http', '$window', FactsCtrl]);
 
 function AuthorCtrl($scope, $http, $window) {
 	var authorId = $window.App.authorId;
@@ -15,7 +15,8 @@ function AuthorCtrl($scope, $http, $window) {
 	})
 }
 
-function FactsCtrl($scope, $http) {
+function FactsCtrl($scope, $http, $window) {
+	var authorId = $window.App.authorId;
 	$http.get('/api/author/'+authorId+'/facts')
 	.success(function(data){
 		$scope.facts = data;

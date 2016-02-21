@@ -13,8 +13,6 @@ router.get('/users', function (req, res){
 	});
 });
 
-authorService.getAuthorInformationById(req.params.id, function(err, rows){
-
 router.put('/offer', function (req, res){
 	bookService.addOffer(req.body.name, req.body.author, req.session.id, req.body.link, function(err, rows){
 		if (err) throw err;

@@ -20,14 +20,17 @@
 			<p><%= author[0].Biography %></p><br/>
 			<p><b>Дата рождения:</b> {{birthDate | date:'dd-MM-yyyy'}}</p><br/>
 			<p><b>Страна происхождения:</b> <%= author[0].Counry_of_birth %></p>
+
+			<div ng-controller="FactsCtrl">
+				<span ng-show="facts.length"><b>Факты:</b></span>
+				<span ng-repeat="fact in facts">
+					{{fact.fact}}
+				</span>
+			</div>
 		</div>
 		<h3 ng-show="books.length">Является автором следующих книг: </h3>
 		<div book-list="books"></div>
-		<div ng-controller="FactsCtrl">
-			<div ng-repeat="fact in facts">
-				{{fact.fact}}
-			</div>
-		</div>
+
 	</div>
 
 	<script>
