@@ -13,6 +13,8 @@ router.get('/users', function (req, res){
 	});
 });
 
+authorService.getAuthorInformationById(req.params.id, function(err, rows){
+
 router.put('/offer', function (req, res){
 	bookService.addOffer(req.body.name, req.body.author, req.session.id, req.body.link, function(err, rows){
 		if (err) throw err;
@@ -471,7 +473,14 @@ router.get('/book/:id/facts', function(req, res){
 	bookService.getFacts(req.params.id, function(err, rows){
 		if (err) throw err;
 		res.json(rows);
-	})
+	});
+});
+
+router.get('/author/:id/facts', function(req, res){
+	authorService.getFacts(req.params.id, function(err, rows){
+		if (err) throw err;
+		res.json(rows);
+	});
 });
 
 module.exports = router;

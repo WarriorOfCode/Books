@@ -50,6 +50,12 @@ function searchAuthors(query, callback) {
 	connection.query("SELECT * FROM authors WHERE Last_Name LIKE ?", "%"+query+"%", callback);
 }
 
+/**
+* Operations with fact about author
+*/
+function getFacts(authorId, callback) {
+	connection.query("SELECT fact, id FROM facts WHERE id_author=?", authorId, callback);
+}
 
 module.exports = {
 	getAuthors: getAuthors,
@@ -60,5 +66,6 @@ module.exports = {
 	getAuthorInformationById: getAuthorInformationById,
 	getAuthorsIdByBookId: getAuthorsIdByBookId,
 	addAuthor: addAuthor,
-	searchAuthors: searchAuthors
+	searchAuthors: searchAuthors,
+	getFacts: getFacts
 }
