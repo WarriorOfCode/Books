@@ -20,7 +20,7 @@ function SearchCtrl($scope) {
 	$scope.query =  decodeURIComponent(location.search.replace("?query=", ""));
 
 	$scope.openModal = function(){
-		$('#myModal').modal();
+		$('#offersModal').modal();
 	};
 }
 

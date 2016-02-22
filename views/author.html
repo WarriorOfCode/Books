@@ -22,14 +22,18 @@
 			<p><b>Страна происхождения:</b> <%= author[0].Counry_of_birth %></p>
 
 			<div ng-controller="FactsCtrl">
-				<span ng-show="facts.length"><b>Факты:</b></span>
-				<span ng-repeat="fact in facts">
+				<span ng-show="facts.length || firstFact"><b>Факты:</b></span>
+				<span>{{firstFact.fact}}</span>
+
+				<input type="button" class="btn btn-default btn-sm" ng-show="facts.length && !showFacts" ng-click="showFacts=true" value="ещё факты">
+				<div ng-show="showFacts" ng-repeat="fact in facts">
 					{{fact.fact}}
-				</span>
+				</div>
 			</div>
+		
+			<h3 ng-show="books.length">Является автором следующих книг: </h3>
+			<div book-list="books"></div>
 		</div>
-		<h3 ng-show="books.length">Является автором следующих книг: </h3>
-		<div book-list="books"></div>
 
 	</div>
 

@@ -1,53 +1,53 @@
-		<div class="form-group down">
-			<label class="col-sm-3 control-label">Название книги:</label>
-			<div class="col-sm-6">
-				<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги" required>
-			</div>
-		</div>
+<div class="form-group down">
+	<label class="col-sm-3 control-label">Название книги:</label>
+	<div class="col-sm-6">
+		<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги" required>
+	</div>
+</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Описание книги:</label>
-			<div class="col-sm-6">
-				<textarea type="text" ng-model="book.description" class="form-control" placeholder="Введите описание книги" rows = "6" required></textarea>
-			</div>
-		</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">Описание книги:</label>
+	<div class="col-sm-6">
+		<textarea type="text" ng-model="book.description" class="form-control" placeholder="Введите описание книги" rows = "6" required></textarea>
+	</div>
+</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Дата первой публикации:</label>
-			<div class="col-sm-6">
-				<input type="number" ng-model="book.age" class="form-control" placeholder="Год рождения" max="2016" ng-maxlength="4" required>
-			</div>
-		</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">Дата первой публикации:</label>
+	<div class="col-sm-6">
+		<input type="number" ng-model="book.age" class="form-control" placeholder="Год рождения" max="2016" ng-maxlength="4" required>
+	</div>
+</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">ISBN:</label>
-			<div class="col-sm-6">
-				<input name="isbn" ng-disabled="checked" ng-model="book.isbn" class="form-control" type="text" ng-minlength="13" placeholder = "ISBN">
-			</div>
-			
-		</div>
-		
-		<div class="form-group">
-			<div class="checkbox col-sm-4 control-label">
-				<label>
-					<input type="checkbox" ng-model="checked" ng-click="book.isbn=''">Без ISBN
-				</label>
-			</div>
-		</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">ISBN:</label>
+	<div class="col-sm-6">
+		<input name="isbn" ng-disabled="checked" ng-model="book.isbn" class="form-control" type="text" ng-minlength="13" placeholder = "ISBN">
+	</div>
+	
+</div>
+
+<div class="form-group">
+	<div class="checkbox col-sm-4 control-label">
+		<label>
+			<input type="checkbox" ng-model="checked" ng-click="book.isbn=''">Без ISBN
+		</label>
+	</div>
+</div>
 
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Автор:</label>
-			<div class="col-sm-6">
-				<select class="form-control" ng-model="book.author" ng-options="b.Name+' '+b.Last_Name for b in authors" multiple>
-					<option value="" disabled>-- choose author --</option>
-				</select>
-			</div>
-		</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">Автор:</label>
+	<div class="col-sm-6">
+		<select class="form-control" ng-model="book.author" ng-options="b.Name+' '+b.Last_Name for b in authors" multiple>
+			<option value="" disabled>-- choose author --</option>
+		</select>
+	</div>
+</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Ссылка на обложку:</label>
-			<div class="col-sm-6">
-				<input type="text" ng-model="book.link" class="form-control" placeholder="Ссылка на обложку" requared>
-			</div>
-		</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">Ссылка на обложку:</label>
+	<div class="col-sm-6">
+		<input type="text" ng-model="book.link" class="form-control" placeholder="Ссылка на обложку" requared>
+	</div>
+</div>

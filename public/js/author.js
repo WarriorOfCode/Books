@@ -20,6 +20,8 @@ function FactsCtrl($scope, $http, $window) {
 	$http.get('/api/author/'+authorId+'/facts')
 	.success(function(data){
 		$scope.facts = data;
+		$scope.firstFact = $scope.facts[0]
+		$scope.facts.splice(0, 1);
 	})
 	.error(function(data){
 		console.log(data);

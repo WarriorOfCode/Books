@@ -8,6 +8,7 @@ angular
 function FriendCtrl($scope, $http, $window){
 
 	$scope.type = false;
+	$scope.costil = false;
 	var friendText = "Подписаться",
 		unFriendText = "Отписаться",
 		inProgress = false;
@@ -25,6 +26,7 @@ function FriendCtrl($scope, $http, $window){
 
 
 	$scope.openModal = function(type){
+		$scope.costil = !type;
 		$scope.type = type;
 		$('#followerModal').modal();
 	};

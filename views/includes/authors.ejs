@@ -3,7 +3,7 @@
 	<div ng-repeat="author in authors" class="books">
 		<div class="col-sm-3">
 			<a href='/author/{{author.id}}'>
-				<img src="{{author.image_url}}">
+				<img ng-src="{{author.image_url}}">
 				<div>{{author.Name}} {{author.Last_Name}}</div>
 			</a>
 		</div>

@@ -44,13 +44,13 @@
 	</nav>
 
 	<div ng-controller="OfferCtrl">
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<form class="form-horizontal">
-				<div class="modal-dialog">
-					<div class="modal-content">
+		<div class="modal fade" id="offersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
 
-						<% if (login) { %>
-							<div class="modal-body">
+					<% if (login) { %>
+						<div class="modal-body">
+							<form class="form-horizontal">
 								<div class="form-group down">
 									<label class="col-sm-3 control-label">Название книги:</label>
 									<div class="col-sm-6">
@@ -71,37 +71,38 @@
 										<input type="text" ng-model="book.link" class="form-control" placeholder="Введите название книги">
 									</div>
 								</div>
-							</div>
+							</form>
 
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary" data-toggle="collapse" data-target=".alert" ng-click="send()" data-dismiss="modal">Send</button>
-							</div>
+						</div>
 
-						<% } else {%>
-							<div class="modal-body">
-								<div class="form-group down">
-									<div class="col-sm-12">
-										Необходимо зарегистрироваться или войти
-									</div>
-								</div>
-								<hr/>
-								<div class="form-group down">
-									<div class="col-md-6 col-md-offset-3">
-										<a href='/registration'>Зарегистрироваться</a>
-										<a href='/login'>Войти!</a>
-									</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" data-toggle="collapse" data-target=".alert" ng-click="send()" data-dismiss="modal">Send</button>
+						</div>
+
+					<% } else {%>
+						<div class="modal-body">
+							<div class="form-group down">
+								<div class="col-sm-12">
+									Необходимо зарегистрироваться или войти
 								</div>
 							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<hr/>
+							<div class="form-group down">
+								<div class="col-md-6 col-md-offset-3">
+									<a href='/registration'>Зарегистрироваться</a>
+									<a href='/login'>Войти!</a>
+								</div>
 							</div>
-						<% } %>
-						
-					</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					<% } %>
+					
 				</div>
-			</form>
+			</div>
 		</div>
 		<div class="alert alert-success collapse" role="alert" ng-show="message" ng-bind="message"></div>
 	</div>
