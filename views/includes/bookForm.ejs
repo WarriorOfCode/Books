@@ -39,7 +39,7 @@
 <div class="form-group">
 	<label class="col-sm-3 control-label">Автор:</label>
 	<div class="col-sm-6">
-		<select class="form-control" ng-model="book.author" ng-options="b.Name+' '+b.Last_Name for b in authors" multiple>
+		<select class="form-control" ng-model="book.author" ng-options="b.Name+' '+b.Last_Name for b in authors track by b.id" multiple>
 			<option value="" disabled>-- choose author --</option>
 		</select>
 	</div>
