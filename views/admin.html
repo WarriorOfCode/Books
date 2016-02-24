@@ -83,7 +83,7 @@
 				<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
 					<td ng-model="deleteBook">{{book.id}}</td>
 					<td>{{book.Name}}</td>
-					<td>{{book.authorName}} {{book.authorLastname}} {{book.dopAuthorName}}{{book.dopAuthorLastName}}</span></td>
+					<td>{{book.authorName}} {{book.authorLastname}}<span ng-repeat="authorName in book.dopAuthorName">, {{authorName}} {{book.dopAuthorLastName[$index]}}</span></td>
 					<td>{{book.Birth_data}}</td>
 					<td>{{book.ISBN}}</td>
 					<td>{{book.image_url}}</td>

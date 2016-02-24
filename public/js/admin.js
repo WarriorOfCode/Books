@@ -70,14 +70,13 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 			for (var i=0; i<data.length; i++){
 				for (var k=1; k<data.length; k++){
 					if (data[i].id==data[k].id && k!=i && data[k].id!=-1 && data[i].id!=-1){
-						data[i].dopAuthorName = [];
-						data[i].dopAuthorLastName = [];
-						data[i].dopAuthorId = [];
+						if (!data[i].dopAuthorName)
+							data[i].dopAuthorName = [];
+						if (!data[i].dopAuthorLastName)
+							data[i].dopAuthorLastName = [];
 						data[i].dopAuthorName.push(data[k].authorName);
 						data[i].dopAuthorLastName.push(data[k].authorLastname);
-						data[i].dopAuthorId.push(data[k].authorId);
 						data[k].id = -1;
-						console.log(data[i])
 					}
 				}
 			}
