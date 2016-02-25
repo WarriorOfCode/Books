@@ -153,10 +153,10 @@ router.get('/connections', function (req, res){
 router.post('/book/:id', function (req, res){
 	bookService.updateBook(req.params.id, req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows){
 		if (err) throw err;
-		bookService.updateConnection(req.params.id, req.body.author.id, function(err, rows1){
+		bookService.updateConnection(req.params.id, req.body.author, function(err, rows1){
 			if (err) throw err;
-			res.send(" ");
 		});
+		res.send(" ");
 	});
 });
 

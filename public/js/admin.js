@@ -66,7 +66,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 	function getBook() {
 		$http.get('/api/books')
 		.success(function(data){
-			var deadList = [];
+			
 			for (var i=0; i<data.length; i++){
 				for (var k=1; k<data.length; k++){
 					if (data[i].id==data[k].id && k!=i && data[k].id!=-1 && data[i].id!=-1){
@@ -80,6 +80,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 					}
 				}
 			}
+
 			data.forEach(function(data0, i, data){
 				if (data0.id==-1){
 					delete data[i];

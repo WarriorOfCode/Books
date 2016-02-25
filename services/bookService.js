@@ -74,9 +74,13 @@ function updateBook(id, name, description, birthDate, image, isbn, callback) {
 	connection.query(updateSql, [name, description, birthDate, image, isbn, id], callback);
 }
 
-function updateConnection(bookId, authorId, callback) {
-	connection.query("UPDATE books_authors SET id_author=? WHERE id_book =?", [authorId, bookId], callback);
-}
+function updateConnection(bookId, authors, callback) {
+	connection.query("DELETE FROM books_authors WHERE id_book=?", bookId, callback);
+	authors.forEach(function(author){
+		console.log(author.id+" "+bookId)
+		connection.query("INSERT INTO books_authors (id_book, id_author) VALUES (?,?)", [bookId, author.id], callback);
+	});
+};
 
 /**
  * Get book
