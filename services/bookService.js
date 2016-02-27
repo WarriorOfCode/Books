@@ -14,6 +14,7 @@ function getBooksWithAuthors(callback) {
 function getConnections(callback) {
 	connection.query("SELECT * FROM books_authors", callback);
 }
+
 /**
 * Delete book by id
 */
@@ -77,7 +78,6 @@ function updateBook(id, name, description, birthDate, image, isbn, callback) {
 function updateConnection(bookId, authors, callback) {
 	connection.query("DELETE FROM books_authors WHERE id_book=?", bookId, callback);
 	authors.forEach(function(author){
-		console.log(author.id+" "+bookId)
 		connection.query("INSERT INTO books_authors (id_book, id_author) VALUES (?,?)", [bookId, author.id], callback);
 	});
 };
