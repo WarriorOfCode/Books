@@ -86,9 +86,8 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 					delete data[data.length-1];
 					data.length--;
 				}
-				if (i == data.length-1){
-									$scope.existingBooks = data;
-									console.log($scope.existingBooks)}
+				if (i == data.length-1)
+					$scope.existingBooks = data;
 			});
 
 		})

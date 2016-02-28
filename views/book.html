@@ -57,6 +57,12 @@
 				<input type="button" class="btn btn-default btn-sm" ng-show="lists.length && !showLists" ng-click="showLists=true" value="ещё списки">
 				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
 			</div>
+			<div class="share-btn" data-title="<%= book[0].Name %>" data-desc="<%= book[0].Description%>">
+				<a class="btn-vk" data-id="vk">VK</a>
+				<a class="btn-facebook" data-id="fb">Facebook</a>
+				<a class="btn-twitter" data-id="tw">Twitter</a>
+				<a class="btn-mail" data-id="mail">EMail</a>
+			</div>
 		</div>
 
 		<div class="col-sm-12">
@@ -138,6 +144,7 @@
 			</form>
 		</div>
 	</div>
+	
 
 	<script>
 		window.App = {
@@ -150,6 +157,7 @@
 	<% include includes/scripts.ejs %>
 	<script src="/js/book.js"></script>
 	<script src="/js/directives/bookquote.js"></script>
+	<script src="/js/share-buttons.js"></script>
 
 </body>
 </html>
