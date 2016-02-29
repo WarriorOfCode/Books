@@ -3,106 +3,108 @@
 </head>
 <body ng-app="Books">
 
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href ="/">
-					<img alt="inbooks" src="/book.gif">
-				</a>
-			</div>
-
-			<div class="head">
-				<div class="col-lg-5 col-lg-offset-2" ng-controller="SearchCtrl">
-					<form action="/search" >
-						<div class="input-group">
-							<input type="text" ng-model="query" name="query" class="form-control" placeholder="Search for...">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="submit">Search!</button>
-							</span>
-						</div>
-					</form>
-					<ul class="nav nav-pills">
-						<li role="presentation"><a href="#">Жанры</a></li>
-						<li role="presentation"><a href="/authors">Авторы</a></li>
-						<li role="presentation"><a href="#">Отзывы</a></li>
-						<li role="presentation"><a href="/lists">Списки</a></li>
-						<input type="button" class="btn btn-warning btn-large" value="Предложить книгу" ng-click="openModal()"><br/>
-					</ul>
+	<header>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href ="/">
+						<img alt="inbooks" src="/book.gif">
+					</a>
 				</div>
-				
-				<span ng-controller="LogoutCtrl">
-					<% if (login) { %>
-						<a href="/user/<%= login %>"><%= login %></a>
-						<a href ng-click="send()" value="Выйти">Выйти</a>
-					<% } else { %>
-						<a href='/registration'>Зарегистрироваться</a>
-						<a href='/login'>Войти!</a>
-					<% } %>
-				</span>
-			</div>
-		</div>
-	</nav>
 
-	<div ng-controller="OfferCtrl">
-		<div class="modal fade" id="offersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<% if (login) { %>
-						<div class="modal-body">
-							<form class="form-horizontal">
-								<div class="form-group down">
-									<label class="col-sm-3 control-label">Название книги:</label>
-									<div class="col-sm-6">
-										<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги">
-									</div>
-								</div>
-
-								<div class="form-group down">
-									<label class="col-sm-3 control-label">Автор:</label>
-									<div class="col-sm-6">
-										<input type="text" ng-model="book.author" class="form-control" placeholder="Введите название книги">
-									</div>
-								</div>
-
-								<div class="form-group down">
-									<label class="col-sm-3 control-label">Ссылка на книгу:</label>
-									<div class="col-sm-6">
-										<input type="text" ng-model="book.link" class="form-control" placeholder="Введите название книги">
-									</div>
-								</div>
-							</form>
-
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" data-toggle="collapse" data-target=".alert" ng-click="send()" data-dismiss="modal">Send</button>
-						</div>
-
-					<% } else {%>
-						<div class="modal-body">
-							<div class="form-group down">
-								<div class="col-sm-12">
-									Необходимо зарегистрироваться или войти
-								</div>
+				<div class="head">
+					<div class="col-lg-5 col-lg-offset-2" ng-controller="SearchCtrl">
+						<form action="/search" >
+							<div class="input-group">
+								<input type="text" ng-model="query" name="query" class="form-control" placeholder="Search for...">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit">Search!</button>
+								</span>
 							</div>
-							<hr/>
-							<div class="form-group down">
-								<div class="col-md-6 col-md-offset-3">
-									<a href='/registration'>Зарегистрироваться</a>
-									<a href='/login'>Войти!</a>
-								</div>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
-					<% } %>
+						</form>
+						<ul class="nav nav-pills">
+							<li role="presentation"><a href="#">Жанры</a></li>
+							<li role="presentation"><a href="/authors">Авторы</a></li>
+							<li role="presentation"><a href="#">Отзывы</a></li>
+							<li role="presentation"><a href="/lists">Списки</a></li>
+							<input type="button" class="btn btn-warning btn-large" value="Предложить книгу" ng-click="openModal()"><br/>
+						</ul>
+					</div>
 					
+					<span ng-controller="LogoutCtrl">
+						<% if (login) { %>
+							<a href="/user/<%= login %>"><%= login %></a>
+							<a href ng-click="send()" value="Выйти">Выйти</a>
+						<% } else { %>
+							<a href='/registration'>Зарегистрироваться</a>
+							<a href='/login'>Войти!</a>
+						<% } %>
+					</span>
 				</div>
 			</div>
+		</nav>
+
+		<div ng-controller="OfferCtrl">
+			<div class="modal fade" id="offersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<% if (login) { %>
+							<div class="modal-body">
+								<form class="form-horizontal">
+									<div class="form-group down">
+										<label class="col-sm-3 control-label">Название книги:</label>
+										<div class="col-sm-6">
+											<input type="text" ng-model="book.name" class="form-control" placeholder="Введите название книги">
+										</div>
+									</div>
+
+									<div class="form-group down">
+										<label class="col-sm-3 control-label">Автор:</label>
+										<div class="col-sm-6">
+											<input type="text" ng-model="book.author" class="form-control" placeholder="Введите название книги">
+										</div>
+									</div>
+
+									<div class="form-group down">
+										<label class="col-sm-3 control-label">Ссылка на книгу:</label>
+										<div class="col-sm-6">
+											<input type="text" ng-model="book.link" class="form-control" placeholder="Введите название книги">
+										</div>
+									</div>
+								</form>
+
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" data-toggle="collapse" data-target=".alert" ng-click="send()" data-dismiss="modal">Send</button>
+							</div>
+
+						<% } else {%>
+							<div class="modal-body">
+								<div class="form-group down">
+									<div class="col-sm-12">
+										Необходимо зарегистрироваться или войти
+									</div>
+								</div>
+								<hr/>
+								<div class="form-group down">
+									<div class="col-md-6 col-md-offset-3">
+										<a href='/registration'>Зарегистрироваться</a>
+										<a href='/login'>Войти!</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						<% } %>
+						
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-success collapse" role="alert" ng-show="message" ng-bind="message"></div>
 		</div>
-		<div class="alert alert-success collapse" role="alert" ng-show="message" ng-bind="message"></div>
-	</div>
+	</header>

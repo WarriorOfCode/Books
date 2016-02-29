@@ -7,11 +7,10 @@
 	<% include	includes/header.ejs %>
 
 	<div class="row-fluid" ng-controller="AuthorCtrl">
-		<div class="col-sm-3 book-image">
+		<figure class="col-sm-3 book-image">
 			<img src="<%= author[0].image_url %>" class="img-rounded" alt="<%= author[0].Last_Name %>">
-			
-		</div>
-		<div class="col-sm-9">
+		</figure>
+		<section class="col-sm-9">
 			<h1><%= author[0].Name %>
 			<% if (author[0].patronymic) {%>
 				<%= author[0].patronymic %> 
@@ -33,7 +32,7 @@
 		
 			<h3 ng-show="books.length">Является автором следующих книг: </h3>
 			<div book-list="books"></div>
-		</div>
+		</section>
 
 	</div>
 
