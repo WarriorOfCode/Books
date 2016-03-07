@@ -1,29 +1,31 @@
 angular
-	.module('Books')
-	.controller('AuthorCtrl', ['$scope', '$http', '$window', AuthorCtrl])
-	.controller('FactsCtrl', ['$scope', '$http', '$window', FactsCtrl]);
+    .module('Books')
+    .controller('AuthorCtrl', ['$scope', 'AuthorService', 'author', AuthorCtrl])
+    .controller('FactsCtrl', ['$scope', 'AuthorService', 'author', FactsCtrl]);
 
-function AuthorCtrl($scope, $http, $window) {
-	var authorId = $window.App.authorId;
-	$scope.birthDate = new Date(Date.parse($window.App.authorDate));
-	$http.get('/api/author/'+authorId+'/books')
-	.success(function(data){
-		$scope.books = data;
-	})
-	.error(function(data){
-		console.log(data);
-	})
+function AuthorCtrl($scope, AuthorService, author) {
+    var authorId = author.id;
+    $scope.birthDate = author.Birth_date && new Date(Date.parse(author.Birth_date));
+
+    AuthorService.getBooksByAuthorId(authorId)
+        .success(function(data){
+            $scope.books = data;
+        })
+        .error(function(data){
+            console.log(data);
+        });
 }
 
-function FactsCtrl($scope, $http, $window) {
-	var authorId = $window.App.authorId;
-	$http.get('/api/author/'+authorId+'/facts')
-	.success(function(data){
-		$scope.facts = data;
-		$scope.firstFact = $scope.facts[0]
-		$scope.facts.splice(0, 1);
-	})
-	.error(function(data){
-		console.log(data);
-	})
+function FactsCtrl($scope, AuthorService, author) {
+    var authorId = author.id;
+
+    AuthorService.getFactsByAuthorId(authorId)
+        .success(function(data){
+            $scope.facts = data;
+            $scope.firstFact = $scope.facts[0];
+            $scope.facts.splice(0, 1);
+        })
+        .error(function(data){
+            console.log(data);
+        });
 }

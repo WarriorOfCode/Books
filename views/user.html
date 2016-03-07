@@ -34,7 +34,7 @@
 									<div ng-show="followers.length==0">Подписчиков пока нет</div>
 									<div ng-repeat="follower in followers " class="modal-body">
 										<div class="form-group left-name">
-											<a href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
+											<a ng-href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
 										</div>
 									</div>
 								</uib-tab>
@@ -43,7 +43,7 @@
 									<div ng-show="followers.length==0">Ни на кого не подписан</div>
 									<div ng-repeat="following in followings" class="modal-body">
 										<div class="form-group left-name">
-											<a href="/user/{{following.id_following}}">{{following.NickName}}</a>
+											<a ng-href="/user/{{following.id_following}}">{{following.NickName}}</a>
 										</div>
 									</div>
 								</uib-tab>
