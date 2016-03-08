@@ -52,10 +52,10 @@
 			<div ng-controller="ListCtrl">
 				<div ng-show="genres.length">
 					<b>Списки:</b>
-					<span ng-repeat="genre in genres"><a href="/list/{{genre.id}}"> {{genre.Name}} </a></span>
+					<span ng-repeat="genre in genres"><a href="/list/{{genre.id}}"> {{genre.name}} </a></span>
 				</div>
 				<input type="button" class="btn btn-default btn-sm" ng-show="lists.length && !showLists" ng-click="showLists=true" value="ещё списки">
-				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.Name}} </a></span>
+				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.name}} </a></span>
 			</div>
 			<div class="share-btn" data-title="<%= book[0].Name %>" data-desc="<%= book[0].Description%>">
 				<a class="btn-vk" data-id="vk">VK</a>

@@ -33,7 +33,7 @@ function ListCtrl($scope, $http){
 			data.reverse().forEach (function (book){
 				if (!booksShow[book.id_group]) {
 					booksShow[book.id_group] = [];
-					lists.push({"Name": book.listName, "id": book.id_group, "members": 0});
+					lists.push({"name": book.listName, "id": book.id_group, "members": 0});
 				}
 				if (booksShow[book.id_group].length<4)
 					booksShow[book.id_group].push(book);

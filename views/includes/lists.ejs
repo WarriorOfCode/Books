@@ -2,7 +2,7 @@
 	<h4 class="down" ng-hide="lists.length">По вашему запросу не найдено ни одного списка</h4>
 	<div ng-repeat="list in lists">
 		<div class="col-sm-12">
-			<a href="/list/{{list.id}}"><h3>{{list.Name}}<span class="badge">{{list.members}}</span></h3></a>
+			<a href="/list/{{list.id}}"><h3>{{list.name}}<span class="badge">{{list.members}}</span></h3></a>
 
 			<div book-list="booksShow[list.id]"></div>
 			
