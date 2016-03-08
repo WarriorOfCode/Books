@@ -301,7 +301,7 @@ router.put('/author', function(req, res){
 		if (rows != null && rows.length > 0) {
 			res.json(error);
 		} else {
-			authorService.addAuthor(req.body.name, req.body.lastname, req.body.patronymic, req.body.age, req.body.description, req.body.country, req.body.link, function(err, rows1){
+			authorService.addAuthor(req.body.name, req.body.lastName, req.body.patronymic, req.body.birthDate, req.body.biography, req.body.birthCountry, req.body.imageUrl, function(err, rows1){
 				if (err) throw err;
 				res.json(success);
 			});

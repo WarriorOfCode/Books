@@ -92,7 +92,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 
 		})
 		.error(function (data){
-			console.log(data)
+			console.log(data);
 		})
 	}
 
@@ -104,18 +104,18 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 				updateBook(bookId);
 			})
 			.error(function (data) {
-				console.log(data)
+				console.log(data);
 			})
 		} 
 	}
 
 	$scope.save = function(){
-		$http.post('/api/book/'+$scope.book["id"], $scope.book)
+		$http.post('/api/book/' + $scope.book["id"], $scope.book)
 		.success(function (data){
 			getBook();
 		})
 		.error(function (data) {
-			console.log(data)
+			console.log(data);
 		});
 	};
 
@@ -124,7 +124,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 
 		for (var key in $scope.authors){
 			if ($scope.authors[key].id == book["authorId"]){
-				var chooseauthor = $scope.authors[key];
+				var chooseAuthor = $scope.authors[key];
 				break;
 			}
 		}
@@ -136,7 +136,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 			"link": book["image_url"],
 			"age": book["Birth_data"],
 			"id": book["id"],
-			"author": chooseauthor
+			"author": chooseAuthor
 		};
 		$scope.book = data;
 	};
@@ -175,13 +175,13 @@ function ChangeAuthorsCtrl ($scope, $http, $window, AuthorService){
 
 		var data = {
 			"id": author["id"],
-			"name": author["Name"],
-			"lastname": author["Last_Name"],
+			"name": author["name"],
+			"lastname": author["lastName"],
 			"patronymic": author["patronymic"],
-			"description": author["Biography"],
-			"age": author["Birth_data"],
-			"country": author["Counry_of_birth"],
-			"link": author["image_url"]
+			"description": author["biography"],
+			"age": author["birthDate"],
+			"country": author["birthCountry"],
+			"link": author["imageUrl"]
 		};
 		$scope.author = data;
 	};
