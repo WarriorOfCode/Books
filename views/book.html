@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><%= book[0].Name %></title>
+	<title><%= book[0].name %></title>
 
 	<% include	includes/header.ejs %>
 	
 	<div class="row-fluid">
 		<div class="col-sm-3 book-image">
-			<img src="<%= book[0].image_url %>" class="img-rounded" alt="<%= book[0].Name %>">
+			<img src="<%= book[0].imageUrl %>" class="img-rounded" alt="<%= book[0].name %>">
 			<% if (login) { %>
 				<div ng-controller="ReadCtrl">
 					
@@ -37,9 +37,9 @@
 		</div>
 
 		<section class="col-sm-9">
-			<h1><%= book[0].Name %></h1>
-			<p><%= book[0].Description %></p><br/>
-			<p><b>Дата первого издания:</b> <%= book[0].Birth_data %></p><br/>
+			<h1><%= book[0].name %></h1>
+			<p><%= book[0].description %></p><br/>
+			<p><b>Дата первого издания:</b> <%= book[0].birthDate %></p><br/>
 			<p ng-controller="AuthorBookCtrl">
 				<b ng-show="authors.length==1">Автор: </b>
 				<b ng-show="authors.length>1">Авторы: </b>
@@ -57,7 +57,7 @@
 				<input type="button" class="btn btn-default btn-sm" ng-show="lists.length && !showLists" ng-click="showLists=true" value="ещё списки">
 				<span ng-show="showLists" ng-repeat="list in lists"><a href="/list/{{list.id}}">{{list.name}} </a></span>
 			</div>
-			<div class="share-btn" data-title="<%= book[0].Name %>" data-desc="<%= book[0].Description%>">
+			<div class="share-btn" data-title="<%= book[0].name %>" data-desc="<%= book[0].description%>">
 				<a class="btn-vk" data-id="vk">VK</a>
 				<a class="btn-facebook" data-id="fb">Facebook</a>
 				<a class="btn-twitter" data-id="tw">Twitter</a>

@@ -4,8 +4,8 @@
 		<blockquote>
 			<header>
 				<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
-				<span ng-show="review.Name">Книга: </span>
-				<a href="/book/{{review.id_book}}">{{review.Name}}</a>
+				<span ng-show="review.name">Книга: </span>
+				<a href="/book/{{review.id_book}}">{{review.name}}</a>
 				<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>
 				<button class="btn btn-default" ng-show="id == review.id_user" ng-click="deleteReview(review.id)" aria-label="Left Align">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>

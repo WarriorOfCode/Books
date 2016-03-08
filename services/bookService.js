@@ -26,7 +26,7 @@ function deleteBook(bookId, callback) {
  * Check that db have book with input params
  */
 function checkBookUniqueness(bookName, authorId, callback) {
-	var selectSql = "SELECT * FROM books_authors WHERE id_book IN (SELECT id FROM books WHERE Name = ?) AND id_author = ?";
+	var selectSql = "SELECT * FROM books_authors WHERE id_book IN (SELECT id FROM books WHERE name = ?) AND id_author = ?";
 	connection.query(selectSql, [bookName, authorId], callback);
 }
 
@@ -34,20 +34,20 @@ function checkBookUniqueness(bookName, authorId, callback) {
  * Search book
  */
 function searchBooks(name, callback) {
-	connection.query('SELECT * FROM books WHERE Name LIKE ?', "%"+name+"%", callback);
+	connection.query('SELECT * FROM books WHERE name LIKE ?', "%"+name+"%", callback);
 }
 
 /**
  * Add book
  */
-function addBookWithISBN(name, description, birthDate, image, ISBN, callback) {
-	var insertSqlISBN = "INSERT INTO books (Name, Description, Birth_data, image_url, ISBN) VALUES (?,?,?,?,?)";
-	connection.query(insertSqlISBN, [name, description, birthDate, image, ISBN], callback);
+function addBookWithISBN(name, description, birthDate, imageUrl, ISBN, callback) {
+	var insertSqlISBN = "INSERT INTO books (name, description, birthDate, imageUrl, ISBN) VALUES (?,?,?,?,?)";
+	connection.query(insertSqlISBN, [name, description, birthDate, imageUrl, ISBN], callback);
 }
 
-function addBook(name, description, birthDate, image, callback) {
-	var insertSqlBook = "INSERT INTO books (Name, Description, Birth_data, image_url) VALUES (?,?,?,?)";
-	connection.query(insertSqlBook, [name, description, birthDate, image], callback);
+function addBook(name, description, birthDate, imageUrl, callback) {
+	var insertSqlBook = "INSERT INTO books (name, description, birthDate, imageUrl) VALUES (?,?,?,?)";
+	connection.query(insertSqlBook, [name, description, birthDate, imageUrl], callback);
 }
 
 /**
@@ -71,7 +71,7 @@ function addConnectionBookAuthor(bookId, authors, callback) {
 * Update information about book
 */
 function updateBook(id, name, description, birthDate, image, isbn, callback) {
-	var updateSql = "UPDATE books SET Name=?, Description=?, Birth_data=?, image_url=?, ISBN=? WHERE id=?";
+	var updateSql = "UPDATE books SET name=?, description=?, birthDate=?, imageUrl=?, ISBN=? WHERE id=?";
 	connection.query(updateSql, [name, description, birthDate, image, isbn, id], callback);
 }
 
@@ -125,7 +125,7 @@ function getUserReview(bookId, userId, callback) {
 }
 
 function getUserReviews(userId, callback) {
-	var selectSql = "select reviews.*, books.Name from reviews, books where id_user=? and reviews.id_book=books.id";
+	var selectSql = "select reviews.*, books.name from reviews, books where id_user=? and reviews.id_book=books.id";
 	connection.query(selectSql, userId, callback);
 }
 
@@ -151,7 +151,7 @@ function deleteCitation(citationId, userId, callback) {
 }
 
 function getCitationsByUserId(userId, callback) {
-	var selectSql = "SELECT citations.*, books.Name FROM citations, books  WHERE citations.id_user=? and citations.id_book=books.id";
+	var selectSql = "SELECT citations.*, books.name FROM citations, books  WHERE citations.id_user=? and citations.id_book=books.id";
 	connection.query(selectSql, userId, callback);
 }
 

@@ -1,17 +1,9 @@
 <div class="books">
 	<% books.forEach(function(book) { %>
 		<div class="col-sm-3">
-			<% if (book.Last_Name) { %>
-				<a href='/author/<%= book.id %>'>
-			<% } else {%>
 			<a href='/book/<%= book.id %>'>
-			<% } %>
-				<img src="<%= book.image_url %>">
-				<div><%= book.Name %>
-				<% if (book.Last_Name) { %>
-					<%= book.Last_Name%>
-				<% } %>
-				</div>
+				<img src="<%= book.imageUrl %>">
+				<div><%= book.name %></div>
 			</a>
 		</div>
 	<% }) %>

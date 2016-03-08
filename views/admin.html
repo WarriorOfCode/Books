@@ -53,7 +53,7 @@
 					</th>
 
 					<th>
-						<a href="" ng-click="order='Name'; reverse=!reverse">Название</a>
+						<a href="" ng-click="order='name'; reverse=!reverse">Название</a>
 					</th>
 
 					<th>
@@ -61,7 +61,7 @@
 					</th>
 
 					<th>
-						<a href="" ng-click="order='Birth_data'; reverse=!reverse">Дата первой публикации</a>
+						<a href="" ng-click="order='birthDate'; reverse=!reverse">Дата первой публикации</a>
 					</th>
 
 					<th>
@@ -69,11 +69,11 @@
 					</th>
 
 					<th>
-						<a href="" ng-click="order='image_url'; reverse=!reverse">Ссылка на обложку</a>
+						<a href="" ng-click="order='imageUrl'; reverse=!reverse">Ссылка на обложку</a>
 					</th>
 
 					<th>
-						<a href="" ng-click="order='Description'; reverse=!reverse">Описание</a>
+						<a href="" ng-click="order='description'; reverse=!reverse">Описание</a>
 					</th>
 
 					<th>
@@ -82,12 +82,12 @@
 				</tr>
 				<tr ng-repeat="book in existingBooks | filter: predicate | orderBy:order:reverse">
 					<td ng-model="deleteBook">{{book.id}}</td>
-					<td>{{book.Name}}</td>
+					<td>{{book.name}}</td>
 					<td>{{book.authorName}} {{book.authorLastname}} <span ng-repeat="authorName in book.dopAuthorName track by $index">, {{authorName}} {{book.dopAuthorLastName[$index]}}</span></td>
-					<td>{{book.Birth_data}}</td>
+					<td>{{book.birthDate}}</td>
 					<td>{{book.ISBN}}</td>
-					<td>{{book.image_url}}</td>
-					<td>{{book.Description}}</td>
+					<td>{{book.imageUrl}}</td>
+					<td>{{book.description}}</td>
 					<td>
 						<button  type="button" class="btn btn-default" ng-click="openModal(book)">Редактировать</button>
 						<button ng-click="action(book.id)" type="button" class="btn btn-default">

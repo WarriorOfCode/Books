@@ -11,7 +11,7 @@ function getBooksInLists(callback) {
 }
 
 function getList(listId, callback) {
-	var selectSql = "SELECT groups.Name AS listName, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=? AND groups.id=?";
+	var selectSql = "SELECT groups.name AS listName, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=? AND groups.id=?";
 	connection.query(selectSql, [listId, listId], callback)
 }
 
@@ -21,7 +21,7 @@ function getBookLists(bookId, callback) {
 }
 
 function searchLists(query, callback) {
-	var selectSql = "SELECT groups.Name AS listName, groups.id AS id_group, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=groups.id AND groups.Name LIKE ?";
+	var selectSql = "SELECT groups.name AS listName, groups.id AS id_group, books.* FROM books_groups, books, groups WHERE books_groups.id_book=books.id AND books_groups.id_group=groups.id AND groups.name LIKE ?";
 	connection.query(selectSql, "%"+query+"%", callback);
 }
 

@@ -13,8 +13,8 @@ function bookList () {
 					'<div ng-show="list.length" class="books">' +
 						'<div ng-repeat="book in list" class="col-sm-3">' +
 							'<a ng-href="/book/{{book.id}}">' +
-								'<img ng-src="{{book.image_url}}">' +
-								'<div> {{book.Name}} </div>' +
+								'<img ng-src="{{book.imageUrl}}">' +
+								'<div> {{book.name}} </div>' +
 							'</a>' +
 						'</div>' +
 					'</div>'

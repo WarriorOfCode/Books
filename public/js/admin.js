@@ -130,11 +130,11 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 		}
 
 		var data = {
-			"name": book["Name"],
-			"description": book["Description"],
-			"isbn": book["ISBN"],
-			"link": book["image_url"],
-			"age": book["Birth_data"],
+			"name": book["name"],
+			"description": book["description"],
+			"ISBN": book["ISBN"],
+			"imageUrl": book["imageUrl"],
+			"birthDate": book["birthDate"],
 			"id": book["id"],
 			"author": chooseAuthor
 		};
