@@ -3,7 +3,7 @@
 	<article ng-repeat="review in reviews">
 		<blockquote>
 			<header>
-				<a href="/user/{{review.id_user}}">{{review.NickName}}</a>
+				<a href="/user/{{review.id_user}}">{{review.login}}</a>
 				<span ng-show="review.name">Книга: </span>
 				<a href="/book/{{review.id_book}}">{{review.name}}</a>
 				<span>{{review.birthDate | date:'dd-MM-yyyy'}}</span>

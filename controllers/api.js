@@ -274,7 +274,7 @@ router.post('/login', function(req, res){
 	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
 	var success = {"error": false};
 
-	userService.checkPassword(req.body.nickName, req.body.password, function(check, user){
+	userService.checkPassword(req.body.login, req.body.password, function(check, user){
 		if(check){
 			req.session.login = user.login;
 			req.session.id = user.id;
@@ -365,21 +365,21 @@ router.put('/user', function (req, res) {
 	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
 	var success = {"error": false, "message": "Регистрация прошла успешно!"};
 	
-	userService.getUser(req.body.email, req.body.nickName, function (err, rows) {
+	userService.getUser(req.body.email, req.body.login, function (err, rows) {
 		if (err) throw err;
 
 		if (rows != null && rows.length > 0) {
-			if (rows[0].Email == req.body.email) {
+			if (rows[0].email == req.body.email) {
 				res.json(errorEmail); 
 			} else {
 				res.json(errorLogin);
 			}
 		} else {
-			userService.insertUser(req.body.email, req.body.password, req.body.nickName, function (err, rows2) {
+			userService.insertUser(req.body.email, req.body.password, req.body.login, function (err, rows2) {
 				if (err) throw err;
-				userService.getInformationByLogin(req.body.nickName, function(err, rows3){
+				userService.getInformationByLogin(req.body.login, function(err, rows3){
 					if (err) throw err;
-					req.session.login = rows3[0].NickName;
+					req.session.login = rows3[0].login;
 					req.session.id =rows3[0].id;
 					req.session.permissions = rows3[0].permissions;
 					res.json(success);

@@ -37,7 +37,7 @@ function deleteAllUserBook(bookId, userId, callback) {
  */
 
 function getUserInformation(userId, callback) {
-	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE id = ?", userId, callback);
+	connection.query("SELECT id, login, name, lastName, email FROM users WHERE id = ?", userId, callback);
 }
 
 function updateUserPassword(password, userId, callback) {
@@ -49,11 +49,11 @@ function updateUserPassword(password, userId, callback) {
 }
 
 function getInformationByLogin(login, callback) {
-	connection.query("SELECT id, NickName, Name, LastName, Email FROM users WHERE NickName = ?", login, callback);
+	connection.query("SELECT id, login, name, lastName, email FROM users WHERE login = ?", login, callback);
 }
 
 function checkPassword(login, password, callback){
-	connection.query("SELECT password, salt, id, NickName, permissions FROM users WHERE NickName=?", login, function(err, rows){
+	connection.query("SELECT password, salt, id, login, permissions FROM users WHERE login=?", login, function(err, rows){
 		if (err) throw err;
 		if (rows.length>0){
 			var checkPassword = crypto.createHash('sha512')
@@ -62,7 +62,7 @@ function checkPassword(login, password, callback){
 
 			var user = {'id': rows[0].id,
 						'permissions': rows[0].permissions,
-						'login': rows[0].NickName};
+						'login': rows[0].login};
 			(rows[0].password==checkPassword) ? callback(1, user) : callback(0);
 		} else {
 			callback(0)
@@ -89,12 +89,12 @@ function addfriend(followerId, followingId, callback) {
 }
 
 function getFollower(userId, callback) {
-	var selectSql = "SELECT friends.id_follower, users.NickName FROM friends, users WHERE id_following=? and users.id = friends.id_follower";
+	var selectSql = "SELECT friends.id_follower, users.login FROM friends, users WHERE id_following=? and users.id = friends.id_follower";
 	connection.query(selectSql, userId, callback);
 }
 
 function getFollowing(userId, callback) {
-	var selectSql = "SELECT friends.id_following, users.NickName FROM friends, users WHERE id_follower=? and users.id = friends.id_following"
+	var selectSql = "SELECT friends.id_following, users.login FROM friends, users WHERE id_follower=? and users.id = friends.id_following"
 	connection.query(selectSql, userId, callback);
 }
 
@@ -102,7 +102,7 @@ function getFollowing(userId, callback) {
  * Operations with Email.
  */
 function getUser(email, login, callback) {
-	var selectSql = "SELECT Email FROM users WHERE Email = ? OR NickName =?";
+	var selectSql = "SELECT email FROM users WHERE email = ? OR login =?";
 	connection.query(selectSql, [email, login], callback);
 }
 
@@ -111,17 +111,17 @@ function insertUser(email, password, login, callback) {
 	var hash = crypto.createHash('sha512')
 					.update(salt+password)
 					.digest('hex');
-	var insertSql = "INSERT INTO users (Email, password, NickName, salt) VALUES (?,?,?,?)";
+	var insertSql = "INSERT INTO users (email, password, login, salt) VALUES (?,?,?,?)";
 	connection.query(insertSql, [email, hash, login, salt], callback);
 }
 
 function checkEmailUniqueness(email, userId, callback) {
-	var selectSql = "SELECT * FROM users WHERE Email = ? AND id != ?";
+	var selectSql = "SELECT * FROM users WHERE email = ? AND id != ?";
 	connection.query(selectSql, [email, userId], callback);
 }
 
 function updateUserInformation(name, lastName, email, userId, callback) {
-	var updateSql = "UPDATE users SET Name = ?, LastName = ?, Email =? WHERE id = ?";
+	var updateSql = "UPDATE users SET name = ?, lastName = ?, email =? WHERE id = ?";
 	connection.query(updateSql, [name, lastName, email, userId], callback);
 }
 

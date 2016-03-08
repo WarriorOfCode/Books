@@ -70,9 +70,9 @@ function addConnectionBookAuthor(bookId, authors, callback) {
 /**
 * Update information about book
 */
-function updateBook(id, name, description, birthDate, image, isbn, callback) {
+function updateBook(id, name, description, birthDate, imageUrl, isbn, callback) {
 	var updateSql = "UPDATE books SET name=?, description=?, birthDate=?, imageUrl=?, ISBN=? WHERE id=?";
-	connection.query(updateSql, [name, description, birthDate, image, isbn, id], callback);
+	connection.query(updateSql, [name, description, birthDate, imageUrl, isbn, id], callback);
 }
 
 function updateConnection(bookId, authors, callback) {
@@ -112,7 +112,7 @@ function addReview(bookId, userId, title, text, callback) {
 }
 
 function getReviews(bookId, callback) {
-	var selectSql = "SELECT reviews.*, users.NickName FROM reviews, users WHERE id_book=? AND users.id=reviews.id_user";
+	var selectSql = "SELECT reviews.*, users.login FROM reviews, users WHERE id_book=? AND users.id=reviews.id_user";
 	connection.query(selectSql, bookId, callback);
 }
 
@@ -133,7 +133,7 @@ function getUserReviews(userId, callback) {
  * Operation with citations
  */
 function getCitations(bookId, callback) {
-	var selectSql = "SELECT citations.*, users.NickName FROM citations, users WHERE id_book=? AND users.id=citations.id_user";
+	var selectSql = "SELECT citations.*, users.login FROM citations, users WHERE id_book=? AND users.id=citations.id_user";
 	connection.query(selectSql, bookId, callback);
 }
 

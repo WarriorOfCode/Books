@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> <%= user[0].NickName %> </title>
+		<title> <%= user[0].login %> </title>
 	
 	<% include 	includes/header.ejs %>
 
 	<div class="row-fluid">
 		<div class="col-xs-offset-1" ng-controller="FriendCtrl">
 			
-			<h1> <%= user[0].NickName %> </h1>
-			<% if (user[0].Name) { %>
-				<p> Name is : <%= user[0].Name+" " %>
-					<% if (user[0].LastName) { %>
-						<%= user[0].LastName%>
+			<h1> <%= user[0].login %> </h1>
+			<% if (user[0].name) { %>
+				<p> Name is : <%= user[0].name+" " %>
+					<% if (user[0].lastName) { %>
+						<%= user[0].lastName%>
 					<% } %>
 				</p><br/>
 			<% } %>
 			<% if (login) { %>
-				<% if (login == user[0].NickName) { %>
+				<% if (login == user[0].login) { %>
 					<a href="/setting"><input class="btn btn-info btn-large" type="button" value = "Редактировать"></a></br>
 				<% } else { %>
 					<button class="btn btn-default btn-block" ng-class="{'btn-primary':isFriend}" ng-click="action()">{{ text }}</button></br>
@@ -34,16 +34,16 @@
 									<div ng-show="followers.length==0">Подписчиков пока нет</div>
 									<div ng-repeat="follower in followers " class="modal-body">
 										<div class="form-group left-name">
-											<a ng-href="/user/{{follower.id_follower}}">{{follower.NickName}}</a>
+											<a ng-href="/user/{{follower.id_follower}}">{{follower.login}}</a>
 										</div>
 									</div>
 								</uib-tab>
 
 								<uib-tab ng-click="type=false" active="costil" heading="Подписки">
-									<div ng-show="followers.length==0">Ни на кого не подписан</div>
+									<div ng-show="followings.length==0">Ни на кого не подписан</div>
 									<div ng-repeat="following in followings" class="modal-body">
 										<div class="form-group left-name">
-											<a ng-href="/user/{{following.id_following}}">{{following.NickName}}</a>
+											<a ng-href="/user/{{following.id_following}}">{{following.login}}</a>
 										</div>
 									</div>
 								</uib-tab>

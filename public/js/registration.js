@@ -3,7 +3,7 @@ angular
 	.controller('RegistrationCtrl', ['$scope', '$http', RegistrationCtrl]);
 function RegistrationCtrl($scope, $http) {
 	$scope.sendData = function () {
-    	if ($scope.user.nickName && $scope.user.email && $scope.user.password && $scope.user.nickName.length<21){
+    	if ($scope.user.login && $scope.user.email && $scope.user.password && $scope.user.login.length<21){
 			$http.put('/api/user', $scope.user)
 			.success(function(data){
 				$scope.error = data["error"];
@@ -16,7 +16,7 @@ function RegistrationCtrl($scope, $http) {
 			});
 			
 		} else {
-			if ($scope.user.nickName<21){console.log("Тест")}
+			if ($scope.user.login<21){console.log("Тест")}
 			$scope.message = "Пустые поля или пароль меньше шести символов не допускаются";
 		};
 	};

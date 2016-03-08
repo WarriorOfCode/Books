@@ -256,7 +256,7 @@ function ReviewCtrl($scope, $http, $window){
 			if (data.length>0){
 				$scope.reviews = data;
 				data.forEach(function(data){
-					if (data.NickName == $window.App.login){
+					if (data.login == $window.App.login){
 						$scope.buttonHide = true;
 						return;
 					}
