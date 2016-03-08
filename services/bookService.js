@@ -4,7 +4,7 @@ var connection = require('../db');
  * Get all books with authors
  */
 function getBooksWithAuthors(callback) {
-	selectSql = "SELECT books.*, authors.id AS authorId, authors.Name AS authorName, authors.Last_Name AS authorLastname FROM books_authors, authors, books WHERE books_authors.id_author=authors.id AND books.id=books_authors.id_book";
+	selectSql = "SELECT books.*, authors.id AS authorId, authors.name AS authorName, authors.lastName AS authorLastname FROM books_authors, authors, books WHERE books_authors.id_author=authors.id AND books.id=books_authors.id_book";
 	connection.query(selectSql, callback);
 }
 

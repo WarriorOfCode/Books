@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><%= author[0].Name%> <%= author[0].Last_Name%></title>
+	<title><%= author[0].name%> <%= author[0].lastName%></title>
 
 	<% include	includes/header.ejs %>
 
 	<div class="row-fluid" ng-controller="AuthorCtrl">
 		<figure class="col-sm-3 book-image">
-			<img src="<%= author[0].image_url %>" class="img-rounded" alt="<%= author[0].Last_Name %>">
+			<img src="<%= author[0].imageUrl %>" class="img-rounded" alt="<%= author[0].lastName %>">
 		</figure>
 		<section class="col-sm-9">
-			<h1><%= author[0].Name %>
+			<h1><%= author[0].name %>
 			<% if (author[0].patronymic) {%>
 				<%= author[0].patronymic %>
 			<% } %>
-			<%= author[0].Last_Name %></h1>
-			<p><%= author[0].Biography %></p><br/>
+			<%= author[0].lastName %></h1>
+			<p><%= author[0].biography %></p><br/>
 			<p ng-if="birthDate"><b>Дата рождения:</b> {{birthDate | date:'dd-MM-yyyy'}}</p><br/>
-			<p><b>Страна происхождения:</b> <%= author[0].Counry_of_birth %></p>
+			<p><b>Страна происхождения:</b> <%= author[0].birthCountry %></p>
 
 			<div ng-controller="FactsCtrl">
 				<span ng-show="facts.length || firstFact"><b>Факты:</b></span>
