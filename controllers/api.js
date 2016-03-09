@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var crypto = require ('crypto');
 var userService = require('../services/userService');
 var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');
 var listService = require('../services/listService');
+var message = require('../services/messages')
 
 router.get('/users', function (req, res){
 	userService.getUsers(function (err, rows) {
@@ -16,7 +16,7 @@ router.get('/users', function (req, res){
 router.put('/offer', function (req, res){
 	bookService.addOffer(req.body.name, req.body.author, req.session.id, req.body.link, function(err, rows){
 		if (err) throw err;
-		res.json({"message": 'Книга скоро будет добавлена!'});
+		res.json(message.bookOffer);
 	});
 });
 
@@ -241,17 +241,14 @@ router.get('/authors/search/:query', function(req, res){
 });
 
 router.post('/password', function(req, res){
-	var error = {"error": true, "message": 'Old password is wrong'};
-	var success = {"error": false, "message": 'Password changed'};
-
 	userService.checkPassword(req.session.login, req.body.oldPassword, function(check, user){
 		if (check) {
 			userService.updateUserPassword(req.body.newPassword, req.session.id, function(err, rows){
 				if (err) throw err;
-				res.json(success);
+				res.json(message.changedSuccess);
 			});
 		} else {
-			res.json(error);
+			res.json(message.passwordError);
 		}
 	});
 });
@@ -271,17 +268,14 @@ router.put('/friend', function(req, res){
 });
 
 router.post('/login', function(req, res){
-	var errorLogin = {"error": true, "message": 'Ошибка входа!'};
-	var success = {"error": false};
-
 	userService.checkPassword(req.body.login, req.body.password, function(check, user){
 		if(check){
 			req.session.login = user.login;
 			req.session.id = user.id;
 			req.session.permissions = user.permissions;
-			res.json(success);
+			res.json(message.success);
 		} else {
-			res.json(errorLogin);
+			res.json(message.loginError);
 		}
 	});
 });
@@ -294,16 +288,14 @@ router.get('/out', function(req, res){
 });
 
 router.put('/author', function(req, res){
-	var error = {"error": true, "message": 'Такой писатель уже зарегистрирован!'};
-	var success = {"error": false, "message": "Автор успешно зарегистрирован!"};
 	authorService.getAuthorByName(req.body.name, req.body.lastname, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0) {
-			res.json(error);
+			res.json(message.authorError);
 		} else {
 			authorService.addAuthor(req.body.name, req.body.lastName, req.body.patronymic, req.body.birthDate, req.body.biography, req.body.birthCountry, req.body.imageUrl, function(err, rows1){
 				if (err) throw err;
-				res.json(success);
+				res.json(message.authorSuccess);
 			});
 		}
 	});
@@ -312,20 +304,16 @@ router.put('/author', function(req, res){
 router.delete('/book/:id', function(req, res){
 	bookService.deleteBook(req.params.id, function(err, rows){
 		if (err) throw err;
-		res.json({"message": 'Книга успешно удалена!'});
-	})
+		res.json(message.changedSuccess);
+	});
 });
 
 router.put('/book', function(req, res){
-	var errorbook = {"error": true, "message": 'Такая книга уже зарегистрированна!'};
-	var success = {"error": false, "message": "Книга успешно добавлена!"};
-
-	if (req.body.isbn!= null && req.body.isbn > 0)
-	{
+	if (req.body.isbn!= null && req.body.isbn > 0){
 		bookService.getBookByISBN(req.body.isbn, function(err, rows){
 			if (err) throw err;
 			if (rows!= null && rows.length > 0){
-				res.json(errorbook);
+				res.json(message.bookError);
 			} else {
 				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
@@ -334,7 +322,7 @@ router.put('/book', function(req, res){
 						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 						});
-						res.json(success);
+						res.json(message.bookSuccess);
 					});
 				});
 			};
@@ -343,7 +331,7 @@ router.put('/book', function(req, res){
 		bookService.checkBookUniqueness(req.body.name, req.body.author.id, function(err, rows){
 			if (err) throw err;
 			if (rows != null && rows.length>1) {
-				res.json(errorbook);
+				res.json(message.bookError);
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
@@ -352,7 +340,7 @@ router.put('/book', function(req, res){
 						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 						});
-						res.json(success);
+						res.json(message.bookSuccess);
 					});
 				});
 			}
@@ -361,18 +349,14 @@ router.put('/book', function(req, res){
 });
 
 router.put('/user', function (req, res) {
-	var errorEmail = {"error": true, "message": 'Email занят', "emailError": true};
-	var errorLogin = {"error": true, "message": 'Login занят', "emailError": false};
-	var success = {"error": false, "message": "Регистрация прошла успешно!"};
-	
 	userService.getUser(req.body.email, req.body.login, function (err, rows) {
 		if (err) throw err;
 
 		if (rows != null && rows.length > 0) {
 			if (rows[0].email == req.body.email) {
-				res.json(errorEmail); 
+				res.json(message.emailError); 
 			} else {
-				res.json(errorLogin);
+				res.json(message.registrationLoginError);
 			}
 		} else {
 			userService.insertUser(req.body.email, req.body.password, req.body.login, function (err, rows2) {
@@ -382,7 +366,7 @@ router.put('/user', function (req, res) {
 					req.session.login = rows3[0].login;
 					req.session.id =rows3[0].id;
 					req.session.permissions = rows3[0].permissions;
-					res.json(success);
+					res.json(message.registrationSuccess);
 				});
 			});
 		};
@@ -394,11 +378,11 @@ router.post('/edit', function(req, res){
 	userService.checkEmailUniqueness(req.body.email, req.session.id, function(err, rows1){
 		if (err) throw err;
 		if (rows1 != null && rows1.length > 0){
-			res.json({"message": 'Такая почта уже зарегистрированна!', "error": true});
+			res.json(message.emailError);
 		} else {
 			userService.updateUserInformation(req.body.name, req.body.lastName, req.body.email, req.session.id, function(err, rows){
 				if (err) throw err;
-				res.json({"message": 'Saved!'})
+				res.json(message.changedSuccess)
 			});
 		}
 	});
@@ -412,7 +396,7 @@ router.put('/book/:id/review', function(req, res){
 		} else {
 			bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows1){
 				if (err) throw err;
-				res.json("saved")
+				res.json(message.changedSuccess)
 			});
 		}
 	});
@@ -449,7 +433,7 @@ router.get('/user/:id/reviews', function(req, res){
 router.put('/book/:id/citation', function(req, res){
 	bookService.addCitation(req.params.id, req.session.id, req.body.text, function(err, rows){
 		if (err) throw err;
-		res.send("saved");
+		res.send(message.changedSuccess);
 	});
 });
 

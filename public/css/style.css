@@ -1,33 +1,8 @@
-
-
-/* STYLES FOR HEADER */
-
-.head {
-	margin-top: 15px;
-}
-.navbar-brand {
-	height: 100px;
-	padding: 0;
-}
-.navbar-brand img {
-	width: 120px;
-	height: 100px;
-	margin-top: -5px;
-	margin-left: 15px;
-}
-
-.head ul {
-	margin-top: 5px;
-}
-
-.navbar {
-	border-radius: 0;
-}
-
 /* STYLES FOR BOOK */
 
 .book-image img {
 	max-width: 100%;
+	min-height: 350px;
 }
 
 .book-image input{
@@ -111,4 +86,37 @@
 }
 .share-btn > a:hover {
     cursor: pointer;
+}
+
+img {
+	display: block;
+	background: url('/images/cover.jpg') no-repeat;
+	margin: 0 auto;
+	min-height: 250px;
+}
+
+/* STYLES FOR HEADER */
+
+.head {
+	margin-top: 15px;
+}
+.navbar-brand {
+	height: 100px;
+	padding: 0;
+}
+.navbar-brand img {
+	display: inline;
+	width: 120px;
+	height: 100px;
+	margin-top: -5px;
+	margin-left: 15px;
+	min-height: 0px;
+}
+
+.head ul {
+	margin-top: 5px;
+}
+
+.navbar {
+	border-radius: 0;
 }
