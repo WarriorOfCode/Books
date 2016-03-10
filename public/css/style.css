@@ -93,6 +93,7 @@ img {
 	background: url('/images/cover.jpg') no-repeat;
 	margin: 0 auto;
 	min-height: 250px;
+	text-indent: -9000px;
 }
 
 /* STYLES FOR HEADER */
