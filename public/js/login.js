@@ -1,14 +1,18 @@
 angular
 	.module('Books')
-	.controller('LoginCtrl', ['$scope', '$http', '$location', LoginCtrl]);
+	.controller('LoginCtrl', ['$scope', '$http', '$location', '$translate', LoginCtrl]);
 
-function LoginCtrl($scope, $http, $location) {
+function LoginCtrl($scope, $http, $location, $translate) {
     $scope.sendData = function () {
 		$http.post('/api/login', $scope.user)
 		.success(function(data){
-			if(!data["error"])
+			if(!data)
 				location.href = '/';
-			$scope.message = data["message"];
+			else {
+				$translate('message.loginError').then(function (data) {
+					$scope.message = data;
+				});
+			}
 		})
 		.error(function (data) {
 			console.log(data);

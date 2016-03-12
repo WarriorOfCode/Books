@@ -13,10 +13,14 @@ var translations = {
 	message:{
 		offer: 'Спасибо за предложение, книга скоро будет добавлена!',
 		emailEmpty: "Поле email не может быть пустым, а люди могут",
-		loginError: "Такой login уже зарегестрирован",
+		registrationLoginError: "Такой login уже зарегестрирован",
 		'emailError': "этот Email уже занят",
 		'registrationSuccess': "Регистрация прошла успешно!",
-		'registrationError': "Пустые поля или пароль меньше шести символов не допускаются"
+		'registrationError': "Пустые поля или пароль меньше 6 символов не допускаются",
+		'loginError': "Введён неверный login или пароль",
+		'changedSuccess': "Изменения сохранены",
+		passwordMatchError: "Новый пароль не совпадает с подтверждением",
+		passwordError: "Неверный старый пароль"
 	}
 };
 
@@ -46,7 +50,6 @@ function OfferCtrl($scope, $http, $translate) {
 		if ($scope.book){
 			$http.put('/api/offer', $scope.book)
 			.success(function(data){
-				//$scope.message = data["message"];
 				$scope.book= {};
 				$translate('message.offer').then(function (data) {
 					$scope.message = data;

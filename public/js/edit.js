@@ -1,52 +1,66 @@
 angular
 	.module('Books')
 	.controller('EditCtrl', ['$scope', '$http', '$window', '$translate', EditCtrl])
-	.controller('PasswordCtrl', ['$scope', '$http', PasswordCtrl]);
+	.controller('PasswordCtrl', ['$scope', '$http', '$translate', PasswordCtrl]);
 
 function EditCtrl($scope, $http, $window, $translate){
 	$scope.user = $window.userDate;
 	$scope.send = function() {
+		$scope.error = true;
 		if ($scope.user.email){
 			$http.post('/api/edit', $scope.user)
 			.success(function(data){
-				$scope.message = data["message"];
-				$scope.errorEmail = null;
-				$scope.error = data["error"];
+				if (data){
+					translate('emailError');
+				} else {
+					translate('changedSuccess');
+					$scope.error = false;
+				}
 			})
 			.error(function (data) {
 				console.log(data);
 			});
 		} else {
-			$translate('message.emailEmpty').then(function (data) {
-					$scope.errorEmail = data;
-				});
-			$scope.message = null;
+			translate('emailEmpty');
 		}
+		function translate(messageKey) {
+			$translate('message.'+messageKey).then(function (data) {
+				$scope.message = data;
+			});
+		}
+
 	};
 }
 
-function PasswordCtrl($scope, $http){
+function PasswordCtrl($scope, $http, $translate){
 	$scope.save = function(){
+		$scope.errorpassword = true;
 		if ($scope.password && $scope.password.newPassword && $scope.password.newPassword.length > 5){
 			if ($scope.password.newPassword == $scope.password.repeat){
 				$http.post('/api/password', $scope.password)
 				.success(function(data){
-					$scope.message = data["message"];
-					$scope.errorpassword = data["error"];
-					if(!data["error"])
+					if(!data){
 						$scope.password = {};
+						translate("changedSuccess");
+						$scope.errorpassword = false;
+					} else {
+						translate("passwordError");
+					}
 				})
 				.error(function(data){
 					console.log(data);
 				});
-				$scope.errorNewPassword = null;
 			} else {
-				$scope.errorNewPassword = "Password doesn't match the confirmation";
-				$scope.message = null;
+				translate("passwordMatchError");
 			};
 		} else {
-			$scope.errorNewPassword = "В пароле должно быть как минимум 6 символов";
-			$scope.message = null;
+			translate("registrationError");
+		}
+
+		function translate(messageKey){
+			$translate('message.'+messageKey).then(function (data) {
+				$scope.message = data;
+			});
 		}
 	};
 }

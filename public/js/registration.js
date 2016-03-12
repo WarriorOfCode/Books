@@ -7,24 +7,16 @@ function RegistrationCtrl($scope, $http, $translate) {
 			$http.put('/api/user', $scope.user)
 			.success(function(data){
 				$scope.error = data;
-				switch(data){
-					case 0:
-						$translate('message.registrationSuccess').then(function (data) {
-							$scope.message = data;
-						});
-						location.href = '/';
-						break;
-					case 1:
-						$translate('message.emailError').then(function (data) {
-							$scope.message = data;
-						});
-						break;
-					case 2:
-						$translate('message.loginError').then(function (data) {
-							$scope.message = data;
-						});
-						break;
-				}
+				var messages = [
+					'message.registrationSuccess',
+					'message.emailError',
+					'message.registrationLoginError'
+				];
+				$translate(messages[data]).then(function (data) {
+					$scope.message = data;
+				});
+				if (!data)
+					location.href = '/';
 			})
 			.error(function (data) {
 				console.log(data);

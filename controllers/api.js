@@ -16,7 +16,7 @@ router.get('/users', function (req, res){
 router.put('/offer', function (req, res){
 	bookService.addOffer(req.body.name, req.body.author, req.session.id, req.body.link, function(err, rows){
 		if (err) throw err;
-		res.json(message.bookOffer);
+		res.json("");
 	});
 });
 
@@ -245,10 +245,10 @@ router.post('/password', function(req, res){
 		if (check) {
 			userService.updateUserPassword(req.body.newPassword, req.session.id, function(err, rows){
 				if (err) throw err;
-				res.json(message.changedSuccess);
+				res.json(0);
 			});
 		} else {
-			res.json(message.passwordError);
+			res.json(1);
 		}
 	});
 });
@@ -273,9 +273,9 @@ router.post('/login', function(req, res){
 			req.session.login = user.login;
 			req.session.id = user.id;
 			req.session.permissions = user.permissions;
-			res.json(message.success);
+			res.json(0);
 		} else {
-			res.json(message.loginError);
+			res.json(1);
 		}
 	});
 });
@@ -378,11 +378,11 @@ router.post('/edit', function(req, res){
 	userService.checkEmailUniqueness(req.body.email, req.session.id, function(err, rows1){
 		if (err) throw err;
 		if (rows1 != null && rows1.length > 0){
-			res.json(message.emailError);
+			res.json(1);
 		} else {
 			userService.updateUserInformation(req.body.name, req.body.lastName, req.body.email, req.session.id, function(err, rows){
 				if (err) throw err;
-				res.json(message.changedSuccess)
+				res.json(0);
 			});
 		}
 	});
@@ -396,7 +396,7 @@ router.put('/book/:id/review', function(req, res){
 		} else {
 			bookService.addReview(req.params.id, req.session.id, req.body.head, req.body.body, function(err, rows1){
 				if (err) throw err;
-				res.json(message.changedSuccess)
+				res.json(0);
 			});
 		}
 	});
@@ -433,7 +433,7 @@ router.get('/user/:id/reviews', function(req, res){
 router.put('/book/:id/citation', function(req, res){
 	bookService.addCitation(req.params.id, req.session.id, req.body.text, function(err, rows){
 		if (err) throw err;
-		res.send(message.changedSuccess);
+		res.send(0);
 	});
 });
 
