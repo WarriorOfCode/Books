@@ -3,7 +3,6 @@ angular
 	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl])
 	.controller('SearchCtrl', ['$scope', SearchCtrl])
 	.controller('OfferCtrl', ['$scope', '$http', '$translate', OfferCtrl])
-	.controller('localazeCtrl', ['$scope', '$translate', localazeCtrl])
 	.config(['$translateProvider', function ($translateProvider) {
 		$translateProvider
 			.translations('en', translations)
@@ -12,20 +11,13 @@ angular
 
 var translations = {
 	message:{
-		offer: 'Спасибо за предложение, книга скоро будет добавлена!'	
+		offer: 'Спасибо за предложение, книга скоро будет добавлена!',
+		emailEmpty: "Поле email не может быть пустым, а люди могут",
+		loginError: "Такой login уже зарегестрирован",
+		'emailError': "этот Email уже занят",
+		'registrationSuccess': "Регистрация прошла успешно!",
+		'registrationError': "Пустые поля или пароль меньше шести символов не допускаются"
 	}
-};
-
-function localazeCtrl ($scope, $translate) {
-	$translate('HEADLINE').then(function (headline) {
-		$scope.headline = headline;
-	});
-	$translate('PARAGRAPH').then(function (paragraph) {
-		$scope.paragraph = paragraph;
-	});
-	$translate('NAMESPACE.PARAGRAPH').then(function (anotherOne) {
-		$scope.namespaced_paragraph = anotherOne;
-	});
 };
 
 function LogoutCtrl($scope, $http) {
@@ -56,9 +48,9 @@ function OfferCtrl($scope, $http, $translate) {
 			.success(function(data){
 				//$scope.message = data["message"];
 				$scope.book= {};
-				 $translate('message.offer').then(function (data) {
-				      $scope.message = data;
-				    });
+				$translate('message.offer').then(function (data) {
+					$scope.message = data;
+				});
 			})
 			.error(function(data){
 				console.log(data);

@@ -354,9 +354,9 @@ router.put('/user', function (req, res) {
 
 		if (rows != null && rows.length > 0) {
 			if (rows[0].email == req.body.email) {
-				res.json(message.emailError); 
+				res.json(1);
 			} else {
-				res.json(message.registrationLoginError);
+				res.json(2);
 			}
 		} else {
 			userService.insertUser(req.body.email, req.body.password, req.body.login, function (err, rows2) {
@@ -366,7 +366,7 @@ router.put('/user', function (req, res) {
 					req.session.login = rows3[0].login;
 					req.session.id =rows3[0].id;
 					req.session.permissions = rows3[0].permissions;
-					res.json(message.registrationSuccess);
+					res.json(0);
 				});
 			});
 		};

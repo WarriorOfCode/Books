@@ -1,9 +1,9 @@
 angular
 	.module('Books')
-	.controller('EditCtrl', ['$scope', '$http', '$window', EditCtrl])
+	.controller('EditCtrl', ['$scope', '$http', '$window', '$translate', EditCtrl])
 	.controller('PasswordCtrl', ['$scope', '$http', PasswordCtrl]);
 
-function EditCtrl($scope, $http, $window){
+function EditCtrl($scope, $http, $window, $translate){
 	$scope.user = $window.userDate;
 	$scope.send = function() {
 		if ($scope.user.email){
@@ -17,7 +17,9 @@ function EditCtrl($scope, $http, $window){
 				console.log(data);
 			});
 		} else {
-			$scope.errorEmail = "Поле email не может быть пустым, а люди могут";
+			$translate('message.emailEmpty').then(function (data) {
+					$scope.errorEmail = data;
+				});
 			$scope.message = null;
 		}
 	};
