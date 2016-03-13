@@ -20,15 +20,15 @@ function AuthorService($http) {
 }
 
 function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
+	
+	function showEmptyMessage () {
+		$translate('message.empty').then(function (data) {
+			$scope.messageBook = data;
+		});
+		$scope.errorBook = true;
+	}
+
 	$scope.send = function() {
-
-		function showEmptyMessage () {
-			$translate('message.empty').then(function (data) {
-				$scope.messageBook = data;
-			});
-			$scope.errorBook = true;
-		}
-
 		if(!$scope.book){
 			showEmptyMessage();
 		}
@@ -76,25 +76,46 @@ function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
 }
 
 function AuthorRegisterCtrl($scope, $http, $translate) {
-	$scope.save = function() {
-		$http.put('/api/author', $scope.author)
-		.success(function(data){
-			var messageKey;
-			if (!data){
-				messageKey = "authorSuccess"
-				$scope.author = {};
-			} else {
-				messageKey ="authorError";
-			}
-			$scope.errorAuthor = data;
-			$translate('message.'+messageKey).then(function (data) {
-				$scope.messageAuthor = data;
-			});	
-		})
-		.error(function (data) {
-			console.log(data);
+	function showEmptyMessage () {
+		$translate('message.emptyExceptPatronymic').then(function (data) {
+			$scope.messageAuthor = data;
 		});
+		$scope.errorAuthor = true;
+	}
+
+	$scope.save = function() {
+		if(!$scope.author){
+			showEmptyMessage();
+		}
+		else if ($scope.author.name
+				&& $scope.author.lastName
+				&& $scope.author.biography
+				&& $scope.author.birthCountry
+				&& $scope.author.birthDate
+				&& $scope.author.imageUrl)
+				{
+				$http.put('/api/author', $scope.author)
+				.success(function(data){
+					var messageKey;
+					if (!data){
+						messageKey = "authorSuccess"
+						$scope.author = {};
+					} else {
+						messageKey ="authorError";
+					}
+					$scope.errorAuthor = data;
+					$translate('message.'+messageKey).then(function (data) {
+						$scope.messageAuthor = data;
+					});	
+				})
+				.error(function (data) {
+					console.log(data);
+				});
+		} else {
+			showEmptyMessage();
+		};
 	};
+
 }
 
 function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
@@ -172,7 +193,7 @@ function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
 					$scope.messageChangeBook = data;
 				});
 			}
-		} else{
+		} else {
 			$translate('message.empty').then(function (data) {
 				$scope.messageChangeBook = data;
 			});
@@ -229,26 +250,38 @@ function ChangeAuthorsCtrl ($scope, $http, $window, $translate, AuthorService){
 		var data = {
 			"id": author["id"],
 			"name": author["name"],
-			"lastname": author["lastName"],
+			"lastName": author["lastName"],
 			"patronymic": author["patronymic"],
-			"description": author["biography"],
-			"age": author["birthDate"],
-			"country": author["birthCountry"],
-			"link": author["imageUrl"]
+			"biography": author["biography"],
+			"birthDate": author.birthDate && new Date(Date.parse(author.birthDate)),
+			"birthCountry": author["birthCountry"],
+			"imageUrl": author["imageUrl"]
 		};
 		$scope.author = data;
 	};
 
 	$scope.save = function(){
-		$http.post('/api/author/'+$scope.author["id"], $scope.author)
-		.success(function (data){
-			AuthorService.getAuthors(function(data){
-				$scope.authors = data;
+		 if ($scope.author.name
+				&& $scope.author.lastName
+				&& $scope.author.biography
+				&& $scope.author.birthCountry
+				&& $scope.author.birthDate
+				&& $scope.author.imageUrl)
+				{
+				$http.post('/api/author/'+$scope.author["id"], $scope.author)
+				.success(function (data){
+					AuthorService.getAuthors(function(data){
+						$scope.authors = data;
+					});
+				})
+				.error(function (data) {
+					console.log(data)
+				});
+		} else {
+			$translate('message.emptyExceptPatronymic').then(function (data) {
+				$scope.messageAuthor = data;
 			});
-		})
-		.error(function (data) {
-			console.log(data)
-		});
+		}
 	};
 
 

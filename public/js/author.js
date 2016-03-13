@@ -5,7 +5,7 @@ angular
 
 function AuthorCtrl($scope, AuthorService, author) {
     var authorId = author.id;
-    $scope.birthDate = author.Birth_date && new Date(Date.parse(author.Birth_date));
+    $scope.birthDate = author.birthDate && new Date(Date.parse(author.birthDate));
 
     AuthorService.getBooksByAuthorId(authorId)
         .success(function(data){

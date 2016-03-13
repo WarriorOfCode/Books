@@ -62,7 +62,8 @@ function TranslationConfig($translateProvider) {
 			authorError: "Такой автор уже зарегестрирован",
 			authorSuccess: "Автор успешно зарегестрирован",
 			empty: "Пустые поля не допускаются",
-			date: "Проверьте введенную дату"
+			date: "Проверьте введенную дату",
+			emptyExceptPatronymic: "Пустые поля не допускаются, исключая отчество и авторы моложе 11 лет тоже"
 		}
 	};
 
@@ -83,7 +84,8 @@ function TranslationConfig($translateProvider) {
 			authorError: "Such author is registered yet",
 			authorSuccess: "An author added",
 			empty: "Fields can not be empty",
-			date: "Date is incorrect"
+			date: "Date is incorrect",
+			emptyExceptPatronymic: "Fields can not be empty, except patronymic" 
 		}
 	};
 	

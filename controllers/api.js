@@ -136,7 +136,7 @@ router.delete('/author/:id', function(req, res){
 });
 
 router.post('/author/:id', function(req, res){
-	authorService.updateAuthor(req.params.id, req.body.name, req.body.lastname, req.body.patronymic, req.body.description, req.body.country, req.body.link, function(err, rows){
+	authorService.updateAuthor(req.params.id, req.body.name, req.body.lastName, req.body.patronymic, req.body.biography, req.body.birthCountry, req.body.imageUrl, req.body.birthDate, function(err, rows){
 		if (err) throw err;
 		res.json(" ");
 	});

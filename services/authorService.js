@@ -14,9 +14,9 @@ function deleteAuthor(authorId, callback) {
 	connection.query("DELETE FROM authors WHERE id=?", authorId, callback);
 }
 
-function updateAuthor(authorId, name, lastName, patronymic, biography, birthCountry, imageUrl, callback) {
-	var updateSql = "UPDATE authors SET name=?, lastName=?, patronymic=?, biography=?, birthCountry=?, imageUrl=? WHERE id=?";
-	connection.query(updateSql, [name, lastName, patronymic, biography, birthCountry, imageUrl, authorId], callback);
+function updateAuthor(authorId, name, lastName, patronymic, biography, birthCountry, imageUrl, birthDate, callback) {
+	var updateSql = "UPDATE authors SET name=?, lastName=?, patronymic=?, biography=?, birthCountry=?, imageUrl=?, birthDate=? WHERE id=?";
+	connection.query(updateSql, [name, lastName, patronymic, biography, birthCountry, imageUrl, birthDate, authorId], callback);
 }
 /**
  * Get information about author.
