@@ -1,10 +1,10 @@
 angular
 	.module('Books')
 	.factory('AuthorService', ['$http', AuthorService])
-	.controller('BookRegisterCtrl', ['$scope', '$http', 'AuthorService', BookRegisterCtrl])
-	.controller('AuthorRegisterCtrl', ['$scope', '$http', AuthorRegisterCtrl])
-	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeBooksCtrl])
-	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', 'AuthorService', ChangeAuthorsCtrl])
+	.controller('BookRegisterCtrl', ['$scope', '$http', '$translate', 'AuthorService', BookRegisterCtrl])
+	.controller('AuthorRegisterCtrl', ['$scope', '$http', '$translate', AuthorRegisterCtrl])
+	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', '$translate', 'AuthorService',  ChangeBooksCtrl])
+	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', '$translate', 'AuthorService', ChangeAuthorsCtrl])
 	.controller('OffersCtrl', ['$scope', '$http', OffersCtrl]);
 
 function AuthorService($http) {
@@ -19,27 +19,55 @@ function AuthorService($http) {
 	}
 }
 
-function BookRegisterCtrl($scope, $http, AuthorService) {
+function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
 	$scope.send = function() {
-		$http.put('/api/book', $scope.book)
-		.success(function(data){
-			var messageKey;
-			$scope.errorBook = data;
-			if(!data["error"]){
-				$scope.book = {};
-				messageKey = "bookSuccess";
-			} else {
-				messageKey = "bookError";
-			}
-			$translate('message.'+messageKey).then(function (data) {
+
+		function showEmptyMessage () {
+			$translate('message.empty').then(function (data) {
 				$scope.messageBook = data;
 			});
-		})
-		.error(function (data) {
-			console.log(data);
-		});
-	};
+			$scope.errorBook = true;
+		}
 
+		if(!$scope.book){
+			showEmptyMessage();
+		}
+		else if ($scope.book.name
+				&& $scope.book.description
+				&& $scope.book.birthDate
+				&& $scope.book.ISBN !== undefined
+				&& $scope.book.author
+				&& $scope.book.imageUrl)
+				{
+				if (0<$scope.book.birthDate && $scope.book.birthDate<2016){
+					$http.put('/api/book', $scope.book)
+					.success(function(data){
+						var messageKey;
+						$scope.errorBook = data;
+						if(!data["error"]){
+							$scope.book = {};
+							messageKey = "bookSuccess";
+						} else {
+							messageKey = "bookError";
+						}   
+						$translate('message.'+messageKey).then(function (data) {
+							$scope.messageBook = data;
+						});
+					})
+					.error(function (data) {
+						console.log(data);
+					});
+				} else {
+					$translate('message.date').then(function (data) {
+						$scope.messageBook = data;
+					});
+					$scope.errorBook = true;
+				}
+			
+		} else{
+			showEmptyMessage();
+		}
+	}
 	AuthorService.getAuthors(function(data){
 		$scope.authors = data;
 	});
@@ -47,7 +75,7 @@ function BookRegisterCtrl($scope, $http, AuthorService) {
 	
 }
 
-function AuthorRegisterCtrl($scope, $http) {
+function AuthorRegisterCtrl($scope, $http, $translate) {
 	$scope.save = function() {
 		$http.put('/api/author', $scope.author)
 		.success(function(data){
@@ -69,7 +97,7 @@ function AuthorRegisterCtrl($scope, $http) {
 	};
 }
 
-function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
+function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
 
 	getBook();
 
@@ -124,24 +152,36 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 	}
 
 	$scope.save = function(){
-		$http.post('/api/book/' + $scope.book["id"], $scope.book)
-		.success(function (data){
-			getBook();
-		})
-		.error(function (data) {
-			console.log(data);
-		});
+
+		 if ($scope.book.name
+			&& $scope.book.description
+			&& $scope.book.birthDate
+			&& $scope.book.ISBN !== undefined
+			&& $scope.book.author
+			&& $scope.book.imageUrl) {
+			if (0<$scope.book.birthDate && $scope.book.birthDate<2016){
+				$http.post('/api/book/' + $scope.book["id"], $scope.book)
+				.success(function (data){
+					getBook();
+				})
+				.error(function (data) {
+					console.log(data);
+				});
+			} else {
+				$translate('message.date').then(function (data) {
+					$scope.messageChangeBook = data;
+				});
+			}
+		} else{
+			$translate('message.empty').then(function (data) {
+				$scope.messageChangeBook = data;
+			});
+			$scope.error = true;
+		}
 	};
 
 	$scope.openModal = function(book){
 		$('#myModal').modal();
-
-		for (var key in $scope.authors){
-			if ($scope.authors[key].id == book["authorId"]){
-				var chooseAuthor = $scope.authors[key];
-				break;
-			}
-		}
 
 		var data = {
 			"name": book["name"],
@@ -149,8 +189,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 			"ISBN": book["ISBN"],
 			"imageUrl": book["imageUrl"],
 			"birthDate": book["birthDate"],
-			"id": book["id"],
-			"author": chooseAuthor
+			"id": book["id"]
 		};
 		$scope.book = data;
 	};
@@ -165,7 +204,7 @@ function ChangeBooksCtrl($scope, $http, $window, AuthorService) {
 
 }
 
-function ChangeAuthorsCtrl ($scope, $http, $window, AuthorService){
+function ChangeAuthorsCtrl ($scope, $http, $window, $translate, AuthorService){
 	
 	AuthorService.getAuthors(function(data){
 		$scope.authors = data;

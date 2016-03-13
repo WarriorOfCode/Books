@@ -60,7 +60,9 @@ function TranslationConfig($translateProvider) {
 			bookSuccess: "Книга успешно добавлена",
 			bookError: "Такая книга уже зарегестрирована",
 			authorError: "Такой автор уже зарегестрирован",
-			authorSuccess: "Автор успешно зарегестрирован"
+			authorSuccess: "Автор успешно зарегестрирован",
+			empty: "Пустые поля не допускаются",
+			date: "Проверьте введенную дату"
 		}
 	};
 
@@ -79,7 +81,9 @@ function TranslationConfig($translateProvider) {
 			bookSuccess: "A book added",
 			bookError: "Such book is registered yet",
 			authorError: "Such author is registered yet",
-			authorSuccess: "An author added"
+			authorSuccess: "An author added",
+			empty: "Fields can not be empty",
+			date: "Date is incorrect"
 		}
 	};
 	

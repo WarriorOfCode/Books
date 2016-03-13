@@ -150,7 +150,7 @@ router.get('/connections', function (req, res){
 });
 
 router.post('/book/:id', function (req, res){
-	bookService.updateBook(req.params.id, req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows){
+	bookService.updateBook(req.params.id, req.body.name, req.body.description, req.body.birthDate, req.body.imageUrl, req.body.ISBN, function(err, rows){
 		if (err) throw err;
 		bookService.updateConnection(req.params.id, req.body.author, function(err, rows1){
 			if (err) throw err;
@@ -314,7 +314,7 @@ router.put('/book', function(req, res){
 			if (rows!= null && rows.length > 0){
 				res.json(1);
 			} else {
-				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
+				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.birthDate, req.body.imageUrl, req.body.ISBN, function(err, rows3){
 					if (err) throw err;
 					bookService.getBookId(function(err, rows4){
 						if (err) throw err;
@@ -332,7 +332,7 @@ router.put('/book', function(req, res){
 			if (rows != null && rows.length>1) {
 				res.json(1);
 			} else {
-				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
+				bookService.addBook(req.body.name, req.body.description, req.body.birthDate, req.body.imageUrl, function(err, rows3){
 					if (err) throw err;
 					bookService.getBookId(function(err, rows4){
 						if (err) throw err;

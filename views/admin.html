@@ -45,7 +45,9 @@
 				</form>
 			</div>
 
-			<!-- Table -->
+			<div class="alert alert-danger collapse" role="alert" ng-bind="messageChangeBook" ng-show="messageChangeBook"></div>
+
+
 			<table class="table table-bordered">
 				<tr> 
 					<th>
@@ -109,7 +111,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save changes</button>
+								<button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal" data-toggle="collapse" data-target=".alert">Save changes</button>
 							</div>
 						</form>
 					</div>
