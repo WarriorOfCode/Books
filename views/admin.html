@@ -7,8 +7,8 @@
 	<uib-tabset>
 		<uib-tab heading="Регистрация книги">
 			<ng-form name="formA" ng-controller="BookRegisterCtrl" class="form-horizontal">
-				<div class="alert alert-success collapse" role="alert" ng-bind="messageBook" ng-show="messageBook && !errorIsbn"></div>
-				<div class="alert alert-danger collapse" role="alert" ng-bind="messageBook" ng-show="errorIsbn"></div>
+				<div class="alert alert-success collapse" role="alert" ng-bind="messageBook" ng-show="messageBook && !errorBook"></div>
+				<div class="alert alert-danger collapse" role="alert" ng-bind="messageBook" ng-show="errorBook"></div>
 				
 				<% include includes/bookForm %>
 

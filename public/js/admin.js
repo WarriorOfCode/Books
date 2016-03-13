@@ -23,10 +23,17 @@ function BookRegisterCtrl($scope, $http, AuthorService) {
 	$scope.send = function() {
 		$http.put('/api/book', $scope.book)
 		.success(function(data){
-			$scope.messageBook = data["message"];
-			$scope.errorIsbn = data["error"];
-			if(!data["error"])
+			var messageKey;
+			$scope.errorBook = data;
+			if(!data["error"]){
 				$scope.book = {};
+				messageKey = "bookSuccess";
+			} else {
+				messageKey = "bookError";
+			}
+			$translate('message.'+messageKey).then(function (data) {
+				$scope.messageBook = data;
+			});
 		})
 		.error(function (data) {
 			console.log(data);
@@ -44,10 +51,17 @@ function AuthorRegisterCtrl($scope, $http) {
 	$scope.save = function() {
 		$http.put('/api/author', $scope.author)
 		.success(function(data){
-			$scope.messageAuthor = data["message"];
-			$scope.errorAuthor = data["error"];
-			if(!data["error"])
+			var messageKey;
+			if (!data){
+				messageKey = "authorSuccess"
 				$scope.author = {};
+			} else {
+				messageKey ="authorError";
+			}
+			$scope.errorAuthor = data;
+			$translate('message.'+messageKey).then(function (data) {
+				$scope.messageAuthor = data;
+			});	
 		})
 		.error(function (data) {
 			console.log(data);

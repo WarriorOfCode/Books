@@ -4,7 +4,6 @@ var userService = require('../services/userService');
 var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');
 var listService = require('../services/listService');
-var message = require('../services/messages')
 
 router.get('/users', function (req, res){
 	userService.getUsers(function (err, rows) {
@@ -291,11 +290,11 @@ router.put('/author', function(req, res){
 	authorService.getAuthorByName(req.body.name, req.body.lastname, function(err, rows){
 		if (err) throw err;
 		if (rows != null && rows.length > 0) {
-			res.json(message.authorError);
+			res.json(1);
 		} else {
 			authorService.addAuthor(req.body.name, req.body.lastName, req.body.patronymic, req.body.birthDate, req.body.biography, req.body.birthCountry, req.body.imageUrl, function(err, rows1){
 				if (err) throw err;
-				res.json(message.authorSuccess);
+				res.json(0);
 			});
 		}
 	});
@@ -304,7 +303,7 @@ router.put('/author', function(req, res){
 router.delete('/book/:id', function(req, res){
 	bookService.deleteBook(req.params.id, function(err, rows){
 		if (err) throw err;
-		res.json(message.changedSuccess);
+		res.json(0);
 	});
 });
 
@@ -313,7 +312,7 @@ router.put('/book', function(req, res){
 		bookService.getBookByISBN(req.body.isbn, function(err, rows){
 			if (err) throw err;
 			if (rows!= null && rows.length > 0){
-				res.json(message.bookError);
+				res.json(1);
 			} else {
 				bookService.addBookWithISBN(req.body.name, req.body.description, req.body.age, req.body.link, req.body.isbn, function(err, rows3){
 					if (err) throw err;
@@ -322,7 +321,7 @@ router.put('/book', function(req, res){
 						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 						});
-						res.json(message.bookSuccess);
+						res.json(0);
 					});
 				});
 			};
@@ -331,7 +330,7 @@ router.put('/book', function(req, res){
 		bookService.checkBookUniqueness(req.body.name, req.body.author.id, function(err, rows){
 			if (err) throw err;
 			if (rows != null && rows.length>1) {
-				res.json(message.bookError);
+				res.json(1);
 			} else {
 				bookService.addBook(req.body.name, req.body.description, req.body.age, req.body.link, function(err, rows3){
 					if (err) throw err;
@@ -340,7 +339,7 @@ router.put('/book', function(req, res){
 						bookService.addConnectionBookAuthor(rows4[0].id, req.body.author, function(err, rows5){
 							if (err) throw err;
 						});
-						res.json(message.bookSuccess);
+						res.json(0);
 					});
 				});
 			}
