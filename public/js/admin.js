@@ -1,16 +1,16 @@
 angular
 	.module('Books')
-	.factory('AuthorService', ['$http', AuthorService])
-	.controller('BookRegisterCtrl', ['$scope', '$http', '$translate', 'AuthorService', BookRegisterCtrl])
-	.controller('AuthorRegisterCtrl', ['$scope', '$http', '$translate', AuthorRegisterCtrl])
-	.controller('ChangeBooksCtrl', ['$scope', '$http', '$window', '$translate', 'AuthorService',  ChangeBooksCtrl])
-	.controller('ChangeAuthorsCtrl', ['$scope', '$http', '$window', '$translate', 'AuthorService', ChangeAuthorsCtrl])
-	.controller('OffersCtrl', ['$scope', '$http', OffersCtrl]);
+	.factory('AuthorsService', ['AuthorService', AuthorsService])
+	.controller('BookRegisterCtrl', ['$scope', 'BookService', '$translate', 'AuthorsService', BookRegisterCtrl])
+	.controller('AuthorRegisterCtrl', ['$scope', 'AuthorService', '$translate', AuthorRegisterCtrl])
+	.controller('ChangeBooksCtrl', ['$scope', 'BookService', '$window', '$translate', 'AuthorsService',  ChangeBooksCtrl])
+	.controller('ChangeAuthorsCtrl', ['$scope', 'AuthorService', '$window', '$translate', 'AuthorsService', ChangeAuthorsCtrl])
+	.controller('OffersCtrl', ['$scope', 'UserService', OffersCtrl]);
 
-function AuthorService($http) {
+function AuthorsService(AuthorService) {
 	return {
 		getAuthors: function(callback) {
-			$http.get('/api/authors')
+			AuthorService.getAllAuthors()
 			.success(callback)
 			.error(function(data){
 				console.log(data);
@@ -19,7 +19,7 @@ function AuthorService($http) {
 	}
 }
 
-function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
+function BookRegisterCtrl($scope, BookService, $translate, AuthorsService) {
 	
 	function showEmptyMessage () {
 		$translate('message.empty').then(function (data) {
@@ -40,7 +40,7 @@ function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
 				&& $scope.book.imageUrl)
 				{
 				if (0<$scope.book.birthDate && $scope.book.birthDate<2016){
-					$http.put('/api/book', $scope.book)
+					BookService.addBook($scope.book)
 					.success(function(data){
 						var messageKey;
 						$scope.errorBook = data;
@@ -68,14 +68,14 @@ function BookRegisterCtrl($scope, $http, $translate, AuthorService) {
 			showEmptyMessage();
 		}
 	}
-	AuthorService.getAuthors(function(data){
+	AuthorsService.getAuthors(function(data){
 		$scope.authors = data;
 	});
 
 	
 }
 
-function AuthorRegisterCtrl($scope, $http, $translate) {
+function AuthorRegisterCtrl($scope, AuthorService, $translate) {
 	function showEmptyMessage () {
 		$translate('message.emptyExceptPatronymic').then(function (data) {
 			$scope.messageAuthor = data;
@@ -94,7 +94,7 @@ function AuthorRegisterCtrl($scope, $http, $translate) {
 				&& $scope.author.birthDate
 				&& $scope.author.imageUrl)
 				{
-				$http.put('/api/author', $scope.author)
+				AuthorsService.addAuthor($scope.author)
 				.success(function(data){
 					var messageKey;
 					if (!data){
@@ -118,16 +118,16 @@ function AuthorRegisterCtrl($scope, $http, $translate) {
 
 }
 
-function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
+function ChangeBooksCtrl($scope, BookService, $window, $translate, AuthorsService) {
 
 	getBook();
 
-	AuthorService.getAuthors(function(data){
+	AuthorsService.getAuthors(function(data){
 		$scope.authors = data;
 	});
 
 	function getBook() {
-		$http.get('/api/books')
+		BookService.getAllBooks()
 		.success(function(data){
 			for (var i=0; i<data.length; i++){
 				for (var k=1; k<data.length; k++){
@@ -162,7 +162,7 @@ function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
 	$scope.action = function(bookId){
 		var deleteConfirm = $window.confirm("Are you sure that you want it?");
 		if (deleteConfirm) {
-			$http.delete('/api/book/'+ bookId)
+			BookService.deleteBook(bookId)
 			.success(function (data){
 				updateBook(bookId);
 			})
@@ -181,7 +181,7 @@ function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
 			&& $scope.book.author
 			&& $scope.book.imageUrl) {
 			if (0<$scope.book.birthDate && $scope.book.birthDate<2016){
-				$http.post('/api/book/' + $scope.book["id"], $scope.book)
+				BookService.updateBook($scope.book["id"], $scope.book)
 				.success(function (data){
 					getBook();
 				})
@@ -225,16 +225,16 @@ function ChangeBooksCtrl($scope, $http, $window, $translate, AuthorService) {
 
 }
 
-function ChangeAuthorsCtrl ($scope, $http, $window, $translate, AuthorService){
+function ChangeAuthorsCtrl ($scope, AuthorService, $window, $translate, AuthorsService){
 	
-	AuthorService.getAuthors(function(data){
+	AuthorsService.getAuthors(function(data){
 		$scope.authors = data;
 	});
 
 	$scope.action = function(authorId){
 		var deleteConfirm = $window.confirm("Are you sure that you want it?");
 		if (deleteConfirm) {
-			$http.delete('/api/author/'+ authorId)
+			AuthorService.deleteAuthor(authorId)
 			.success(function (data){
 				updateAuthors(authorId);
 			})
@@ -268,9 +268,9 @@ function ChangeAuthorsCtrl ($scope, $http, $window, $translate, AuthorService){
 				&& $scope.author.birthDate
 				&& $scope.author.imageUrl)
 				{
-				$http.post('/api/author/'+$scope.author["id"], $scope.author)
+				AuthorService.updateAuthor($scope.author["id"], $scope.author)
 				.success(function (data){
-					AuthorService.getAuthors(function(data){
+					AuthorsService.getAuthors(function(data){
 						$scope.authors = data;
 					});
 				})
@@ -296,9 +296,9 @@ function ChangeAuthorsCtrl ($scope, $http, $window, $translate, AuthorService){
 
 }
 
-function OffersCtrl($scope, $http){
+function OffersCtrl($scope, UserService){
 	
-	$http.get('/api/offers')
+	UserService.getAllOffers()
 	.success(function(data){
 		if (data.length>0)
 			$scope.offers = data;
@@ -308,7 +308,7 @@ function OffersCtrl($scope, $http){
 	})
 
 	$scope.delete = function(id){
-		$http.delete('/api/offer/'+id)
+		UserService.deleteOffer(id)
 		.success(function(data){
 			updateOffers(id);
 		})

@@ -1,15 +1,15 @@
 angular
 	.module('Books')
-	.controller('AuthorsCtrl', ['$scope', '$http', AuthorsCtrl])
-	.controller('ListCtrl', ['$scope', '$http', ListCtrl]);
+	.controller('AuthorsCtrl', ['$scope', 'AuthorService', AuthorsCtrl])
+	.controller('ListCtrl', ['$scope', 'ListService', ListCtrl]);
 
-function AuthorsCtrl($scope, $http) {
+function AuthorsCtrl($scope, AuthorService) {
 	var search = decodeURIComponent(location.search.replace("?query=", ""));
 
 	searchAuthros();
 
 	function searchAuthros (){
-		$http.get('/api/authors/search/'+search)
+		AuthorService.searchAuthor(search)
 		.success(function(data){
 			$scope.authors = data;
 		})
@@ -20,12 +20,12 @@ function AuthorsCtrl($scope, $http) {
 
 }
 
-function ListCtrl($scope, $http){
+function ListCtrl($scope, ListService){
 	var	search = decodeURIComponent(location.search.replace("?query=", ""));
 	searchLists();
 
 	function searchLists (){
-		$http.get('/api/lists/search/'+search)
+		ListService.searchList(search)
 		.success(function(data){
 			var booksShow = [];
 			var lists = [];

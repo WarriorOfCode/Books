@@ -1,14 +1,14 @@
 angular
 	.module('Books')
-	.controller('EditCtrl', ['$scope', '$http', '$window', '$translate', EditCtrl])
-	.controller('PasswordCtrl', ['$scope', '$http', '$translate', PasswordCtrl]);
+	.controller('EditCtrl', ['$scope', 'UserService', '$window', '$translate', EditCtrl])
+	.controller('PasswordCtrl', ['$scope', 'UserService', '$translate', PasswordCtrl]);
 
-function EditCtrl($scope, $http, $window, $translate){
+function EditCtrl($scope, UserService, $window, $translate){
 	$scope.user = $window.userDate;
 	$scope.send = function() {
 		$scope.error = true;
 		if ($scope.user.email){
-			$http.post('/api/edit', $scope.user)
+			UserService.editPersonalInformation($scope.user)
 			.success(function(data){
 				if (data){
 					translate('emailError');
@@ -32,12 +32,12 @@ function EditCtrl($scope, $http, $window, $translate){
 	};
 }
 
-function PasswordCtrl($scope, $http, $translate){
+function PasswordCtrl($scope, UserService, $translate){
 	$scope.save = function(){
 		$scope.errorpassword = true;
 		if ($scope.password && $scope.password.newPassword && $scope.password.newPassword.length > 5){
 			if ($scope.password.newPassword == $scope.password.repeat){
-				$http.post('/api/password', $scope.password)
+				UserService.editPassword($scope.password)
 				.success(function(data){
 					if(!data){
 						$scope.password = {};

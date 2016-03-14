@@ -1,10 +1,10 @@
 angular
 	.module('Books')
-	.controller('LoginCtrl', ['$scope', '$http', '$location', '$translate', LoginCtrl]);
+	.controller('LoginCtrl', ['$scope', 'UserService', '$location', '$translate', LoginCtrl]);
 
-function LoginCtrl($scope, $http, $location, $translate) {
+function LoginCtrl($scope, UserService, $location, $translate) {
     $scope.sendData = function () {
-		$http.post('/api/login', $scope.user)
+		UserService.login($scope.user)
 		.success(function(data){
 			if(!data)
 				location.href = '/';

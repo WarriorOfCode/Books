@@ -1,11 +1,11 @@
 angular
 	.module('Books')
-	.controller('FriendCtrl', ['$scope', '$http', '$window', FriendCtrl])
-	.controller('UserBooks', ['$scope', '$http', '$window', UserBooks])
-	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
-	.controller('CitationCtrl', ['$scope', '$http', '$window', CitationCtrl]);
+	.controller('FriendCtrl', ['$scope', '$window', 'UserService', FriendCtrl])
+	.controller('UserBooks', ['$scope', '$window', 'UserService', UserBooks])
+	.controller('ReviewCtrl', ['$scope', 'UserService', '$window', ReviewCtrl])
+	.controller('CitationCtrl', ['$scope', 'UserService', '$window', CitationCtrl]);
 
-function FriendCtrl($scope, $http, $window){
+function FriendCtrl($scope, $window, UserService){
 
 	$scope.type = false;
 	$scope.costil = false;
@@ -15,7 +15,7 @@ function FriendCtrl($scope, $http, $window){
 
 	var userId = $window.App.pageId;
 
-	$http.get('/api/checkFollowing/'+userId)
+	UserService.checkFollowing(userId)
 	.success(function(data){
 		$scope.isFriend = data != null && data.length > 0;;
 		updateText();
@@ -35,11 +35,11 @@ function FriendCtrl($scope, $http, $window){
 		if (inProgress) return;
 		inProgress = true;
 		if ($scope.isFriend) {
-			$http.delete('/api/friend/' + userId)
+			UserService.unsubscribe(userId)
 			.success(successHandler)
 			.error(errorHandler);
 		} else {
-			$http.put('/api/friend/', { userId: userId })
+			UserService.subscribe(userId)
 			.success(successHandler)
 			.error(errorHandler);
 		}
@@ -62,7 +62,7 @@ function FriendCtrl($scope, $http, $window){
 		$scope.text = $scope.isFriend ? unFriendText : friendText;	
 	}
 
-	$http.get('/api/user/'+userId+'/follower/')
+	UserService.getFollowers(userId)
 	.success(function(data){
 		$scope.followers = data;
 	})
@@ -70,7 +70,7 @@ function FriendCtrl($scope, $http, $window){
 		console.log(data)
 	})
 
-	$http.get('/api/user/'+userId+'/following/')
+	UserService.getFollowing(userId)
 	.success(function(data){
 		$scope.followings = data;
 	})
@@ -79,12 +79,12 @@ function FriendCtrl($scope, $http, $window){
 	})
 }
 
-function UserBooks($scope, $http, $window){
+function UserBooks($scope, $window, UserService){
 	var userId = $window.App.pageId;
 	$scope.login = $window.App.login;
 	$scope.id = $window.App.pageId;
 
-	$http.get('/api/user/books/'+userId)
+	UserService.getUserBooks(userId)
 	.success(function(data){
 		var booksInProgress = [],
 			booksInPast = [],
@@ -113,13 +113,14 @@ function UserBooks($scope, $http, $window){
 	
 }
 
-function ReviewCtrl($scope, $http, $window) {
+function ReviewCtrl($scope, UserService, $window) {
 	var userId = $window.App.pageId;
 	$scope.id = $window.App.id;
 	getReviews();
 
 	function getReviews() {
-		$http.get('/api/user/'+userId+'/reviews')
+
+		UserService.getUserReviews(userId)
 		.success(function(data){
 			$scope.reviews = data;
 		})
@@ -129,7 +130,7 @@ function ReviewCtrl($scope, $http, $window) {
 	}
 
 	$scope.deleteReview = function(reviewId){
-		$http.delete('/api/book/review/'+reviewId)
+		UserService.deleteReview(reviewId)
 		.success(function(data){
 			$scope.buttonHide = false;
 			getReviews();
@@ -140,13 +141,13 @@ function ReviewCtrl($scope, $http, $window) {
 	}
 }
 
-function CitationCtrl($scope, $http, $window) {
+function CitationCtrl($scope, UserService, $window) {
 	var userId = $window.App.pageId;
 	$scope.id = $window.App.id;
 	getCitations();
 
 	function getCitations() {
-		$http.get('/api/user/'+userId+'/citations')
+		UserService.getCitations(userId)
 		.success(function(data){
 			$scope.reviews = data;
 		})
@@ -156,7 +157,7 @@ function CitationCtrl($scope, $http, $window) {
 	}
 
 	$scope.deleteReview = function(citationId){
-		$http.delete('/api/book/citation/'+citationId)
+		UserService.deleteCitation(citationId)
 		.success(function(data){
 			getCitations();
 		})

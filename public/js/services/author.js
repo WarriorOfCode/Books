@@ -1,16 +1,41 @@
 angular
-    .module('Books')
-    .factory('AuthorService', ['$http', function($http) {
-        return {
-            getBooksByAuthorId: getBooksByAuthorId,
-            getFactsByAuthorId: getFactsByAuthorId
-        };
+	.module('Books')
+	.factory('AuthorService', ['$http', function($http) {
+		return {
+			addAuthor: addAuthor,
+			deleteAuthor: deleteAuthor,
+			updateAuthor: updateAuthor,
+			getBooksByAuthorId: getBooksByAuthorId,
+			getFactsByAuthorId: getFactsByAuthorId,
+			searchAuthor: searchAuthor,
+			getAllAuthors: getAllAuthors
+		};
 
-        function getBooksByAuthorId(authorId) {
-            return $http.get('/api/author/'+ authorId +'/books');
-        }
+		function addAuthor(author) {
+			return $http.put('/api/author', author);
+		}
 
-        function getFactsByAuthorId(authorId) {
-            return $http.get('/api/author/'+ authorId +'/facts');
-        }
-    }]);
+		function deleteAuthor(authorId) {
+			return $http.delete('/api/author/'+ authorId);
+		}
+
+		function updateAuthor(authorId, author){
+			return $http.post('/api/author/'+authorId, author);
+		}
+
+		function getBooksByAuthorId(authorId) {
+			return $http.get('/api/author/'+ authorId +'/books');
+		}
+
+		function getFactsByAuthorId(authorId) {
+			return $http.get('/api/author/'+ authorId +'/facts');
+		}
+		
+		function searchAuthor(search) {
+			return $http.get('/api/authors/search/'+search);
+		}
+
+		function getAllAuthors() {
+			return $http.get('/api/authors');
+		}
+	}]);

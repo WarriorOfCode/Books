@@ -1,105 +1,15 @@
 angular
 	.module('Books')
-	.controller('ReadCtrl', ['$scope', '$http', '$window', ReadCtrl])
-	.controller('RatingCtrl', ['$scope', '$http', RatingCtrl])
-	.controller('AuthorBookCtrl', ['$scope', '$http', AuthorBookCtrl])
-	.controller('ListCtrl', ['$scope', '$http', ListCtrl])
-	.controller('ReviewCtrl', ['$scope', '$http', '$window', ReviewCtrl])
-	.controller('CitatCtrl', ['$scope', '$http', '$window', CitatCtrl])
-	.controller('FactsCtrl', ['$scope', '$http', '$window', FactsCtrl]);
+	.controller('ReadCtrl', ['$scope', 'BookService', '$window', ReadCtrl])
+	.controller('RatingCtrl', ['$scope', 'BookService', RatingCtrl])
+	.controller('AuthorBookCtrl', ['$scope', 'BookService', AuthorBookCtrl])
+	.controller('ListCtrl', ['$scope', 'BookService', ListCtrl])
+	.controller('ReviewCtrl', ['$scope', 'BookService', '$window', ReviewCtrl])
+	.controller('CitatCtrl', ['$scope', 'BookService', '$window', CitatCtrl])
+	.controller('FactsCtrl', ['$scope', 'BookService', '$window', FactsCtrl]);
 
-function FactsCtrl($scope, $http, $window) {
-	var bookId = location.pathname.replace("/book/", "");
 
-	$http.get('/api/book/'+bookId+'/facts')
-	.success(function(data){
-		$scope.facts = data;
-	})
-	.error(function(data){
-		console.log(data);
-	});
-};
-
-function RatingCtrl($scope, $http) {
-	var bookId = location.pathname.replace("/book/", "");
-
-	getAssessment();
-
-	$scope.rate = 4.5;
-	$scope.isReadonly = false;
-
-	$scope.hoveringOver = function(value) {
-		$scope.overStar = value;
-	};
-
-	$scope.ratingStates = [
-		{stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
-		{stateOff: 'glyphicon-off'}
-	];
-
-	$scope.sendMark = function(rate){
-		if (!$scope.oldmark){
-			$http.put('/api/book/'+bookId+'/mark', {rate: rate})
-			.success(function(data){
-				$scope.oldmark = rate;
-				$scope.isReadonly = true;
-			})
-			.error(function(data){
-				console.log(data);
-			})
-		} else if ($scope.oldmark!=rate){
-			$http.post('/api/book/'+bookId+'/mark', {rate: rate})
-			.success(function(data){
-				$scope.isReadonly = true;
-				$scope.oldmark = rate;
-			})
-			.error(function(data){
-				console.log(data)
-			})
-		}
-		
-	}
-
-	$scope.deleteMark = function(){
-		$http.delete('/api/book/'+bookId+'/mark')
-		.success(function(data){
-			$scope.isReadonly = false;
-			$scope.rate = 4.5;
-			$scope.oldmark = false;
-		})
-		.error(function(data){
-			console.log(data)
-		})
-	}
-
-	function getAssessment(){
-		$http.get('/api/book/'+bookId+'/mark')
-		.success(function(data){
-			if (data.length>0){
-				$scope.rate = data[0]["assessment"];
-				$scope.oldmark = data[0]["assessment"];
-				$scope.isReadonly = true;
-			}
-		})
-		.error(function(data){
-			console.log(data);
-		})
-	}
-
-}
-
-function AuthorBookCtrl($scope, $http) {
-	var bookId = location.pathname.replace("/book/", "");
-	$http.get('/api/book/'+bookId+'/authors')
-	.success(function(data){
-		$scope.authors = data;
-	})
-	.error(function(data){
-		console.log(data);
-	});
-}
-
-function ReadCtrl($scope, $http, $window) {
+function ReadCtrl($scope, BookService, $window) {
 
 	var bookId = location.pathname.replace("/book/", "");
 
@@ -109,7 +19,7 @@ function ReadCtrl($scope, $http, $window) {
 		inFutureText = "Буду читать",
 		inProgress = false;
 
-	$http.get('/api/book/user/'+bookId)
+	BookService.checkUserReadedByBookId(bookId)
 	.success(function(data){
 		data.forEach(function(data){
 			switch (data["progress"]) {
@@ -135,11 +45,11 @@ function ReadCtrl($scope, $http, $window) {
 		inProgress = true;
 
 		if ($scope.isReaded) {
-			$http.delete('/api/book/user/'+bookId)
+			BookService.deleteReadedMark(bookId)
 			.success(successHandler)
 			.error(errorHandler);
 		} else {
-			$http.put('/api/book/user', { bookId: bookId, progress: 0})
+			BookService.addReadMark(bookId, 0)
 			.success(successHandler)
 			.error(errorHandler);
 		}
@@ -150,7 +60,7 @@ function ReadCtrl($scope, $http, $window) {
 		inProgress = true;
 
 		if ($scope.isPresent) {
-			$http.delete('/api/book/user/inPresent/'+bookId)
+			BookService.deleteReadMark(bookId)
 			.success(function(data){
 				$scope.isPresent = !$scope.isPresent;
 				inProgress = false;
@@ -158,7 +68,7 @@ function ReadCtrl($scope, $http, $window) {
 			})
 			.error(errorHandler);
 		} else {
-			$http.put('/api/book/user', { bookId: bookId, progress: 1})
+			BookService.addReadMark(bookId, 1)
 			.success(function(data){
 				$scope.isPresent = !$scope.isPresent;
 				$scope.isReaded = false;
@@ -175,7 +85,7 @@ function ReadCtrl($scope, $http, $window) {
 		inProgress = true;
 
 		if ($scope.isFuture) {
-			$http.delete('/api/book/user/inFuture/'+bookId)
+			BookService.deleteWillReadMark(bookId)
 			.success(function(data){
 				$scope.isFuture = !$scope.isFuture;
 				inProgress = false;
@@ -183,7 +93,7 @@ function ReadCtrl($scope, $http, $window) {
 			})
 			.error(errorHandler);
 		} else {
-			$http.put('/api/book/user/', { bookId: bookId, progress: 2})
+			BookService.addReadMark(bookId, 2)
 			.success(function(data){
 				$scope.isFuture = !$scope.isFuture;
 				$scope.isReaded = false;
@@ -220,10 +130,91 @@ function ReadCtrl($scope, $http, $window) {
 
 }
 
-function ListCtrl($scope, $http){
+function RatingCtrl($scope, BookService) {
 	var bookId = location.pathname.replace("/book/", "");
 
-	$http.get('/api/book/lists/'+bookId)
+	getAssessment();
+
+	$scope.rate = 4.5;
+	$scope.isReadonly = false;
+
+	$scope.hoveringOver = function(value) {
+		$scope.overStar = value;
+	};
+
+	$scope.ratingStates = [
+		{stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+		{stateOff: 'glyphicon-off'}
+	];
+
+	$scope.sendMark = function(rate){
+		if (!$scope.oldmark){
+			BookService.addMark(bookId, rate)
+			.success(function(data){
+				$scope.oldmark = rate;
+				$scope.isReadonly = true;
+			})
+			.error(function(data){
+				console.log(data);
+			})
+		} else if ($scope.oldmark!=rate){
+			BookService.updateMark(bookId, rate)
+			.success(function(data){
+				$scope.isReadonly = true;
+				$scope.oldmark = rate;
+			})
+			.error(function(data){
+				console.log(data)
+			})
+		}
+		
+	}
+
+	$scope.deleteMark = function(){
+		BookService.deleteMark(bookId)
+		.success(function(data){
+			$scope.isReadonly = false;
+			$scope.rate = 4.5;
+			$scope.oldmark = false;
+		})
+		.error(function(data){
+			console.log(data)
+		})
+	}
+
+	function getAssessment(){
+		BookService.getMark(bookId)
+		.success(function(data){
+			if (data.length>0){
+				$scope.rate = data[0]["assessment"];
+				$scope.oldmark = data[0]["assessment"];
+				$scope.isReadonly = true;
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		})
+	}
+
+}
+
+
+function AuthorBookCtrl($scope, BookService) {
+	var bookId = location.pathname.replace("/book/", "");
+	BookService.getAuthorsByBookId(bookId)
+	.success(function(data){
+		$scope.authors = data;
+	})
+	.error(function(data){
+		console.log(data);
+	});
+}
+
+
+function ListCtrl($scope, BookService){
+	var bookId = location.pathname.replace("/book/", "");
+
+	BookService.getListsByBookId(bookId)
 	.success(function(data){
 
 		var genres =[];
@@ -242,7 +233,7 @@ function ListCtrl($scope, $http){
 	})
 }
 
-function ReviewCtrl($scope, $http, $window){
+function ReviewCtrl($scope, BookService, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
 	getReviews();
@@ -251,7 +242,7 @@ function ReviewCtrl($scope, $http, $window){
 
 
 	function getReviews () {
-		$http.get('/api/book/'+bookId+'/review')
+		BookService.getReviewsByBooksId(bookId)
 		.success(function(data){
 			if (data.length>0){
 				$scope.reviews = data;
@@ -272,7 +263,7 @@ function ReviewCtrl($scope, $http, $window){
 
 	$scope.send = function(){
 		if ($scope.review != null && $scope.review.body){
-			$http.put('/api/book/'+bookId+'/review', $scope.review)
+			BookService.addReview(bookId, $scope.review)
 			.success(function(data){
 				$scope.checked = !$scope.checked;
 				getReviews();
@@ -284,7 +275,7 @@ function ReviewCtrl($scope, $http, $window){
 	}
 
 	$scope.deleteReview = function(reviewId){
-		$http.delete('/api/book/review/'+reviewId)
+		BookService.deleteReview(reviewId)
 		.success(function(data){
 			$scope.buttonHide = false;
 			getReviews();
@@ -296,7 +287,7 @@ function ReviewCtrl($scope, $http, $window){
 	
 }
 
-function CitatCtrl($scope, $http, $window){
+function CitatCtrl($scope, BookService, $window){
 
 	var bookId = location.pathname.replace("/book/", "");
 	$scope.login = $window.App.login;
@@ -305,7 +296,7 @@ function CitatCtrl($scope, $http, $window){
 	getCitations();
 
 	function getCitations () {
-		$http.get('/api/book/'+bookId+'/citations')
+		BookService.getCitationsByBookId(bookId)
 		.success(function(data){
 			if (data.length>0){
 				$scope.reviews = data;
@@ -320,7 +311,7 @@ function CitatCtrl($scope, $http, $window){
 
 	$scope.send = function(){
 		if ($scope.citation != null){
-			$http.put('/api/book/'+bookId+'/citation', {text: $scope.citation})
+			BookService.addCitation(bookId, $scope.citation)
 			.success(function(data){
 				$scope.checked = !$scope.checked;
 				getCitations();
@@ -331,8 +322,8 @@ function CitatCtrl($scope, $http, $window){
 		}
 	}
 
-	$scope.deleteCitation = function(citationId){
-		$http.delete('/api/book/citation/'+citationId)
+	$scope.deleteReview = function(citationId){
+		BookService.deleteCitation(citationId)
 		.success(function(data){
 			getCitations();
 		})
@@ -342,3 +333,16 @@ function CitatCtrl($scope, $http, $window){
 	}
 	
 }
+
+
+function FactsCtrl($scope, BookService, $window) {
+	var bookId = location.pathname.replace("/book/", "");
+
+	BookService.getFactByBookId(bookId)
+	.success(function(data){
+		$scope.facts = data;
+	})
+	.error(function(data){
+		console.log(data);
+	});
+};

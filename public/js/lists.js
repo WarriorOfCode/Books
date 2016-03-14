@@ -1,10 +1,10 @@
 angular
 	.module('Books')
-	.controller('ListCtrl', ['$scope', '$http', '$window', ListCtrl]);
+	.controller('ListCtrl', ['$scope', 'ListService', '$window', ListCtrl]);
 
-function ListCtrl ($scope, $http, $window) {
+function ListCtrl ($scope, ListService, $window) {
 	function getList() {
-		$http.get('/api/lists')
+		ListService.getLists()
 		.success(function (data){
 			$scope.lists = data;
 		})
@@ -14,7 +14,7 @@ function ListCtrl ($scope, $http, $window) {
 	};
 
 	function getBook() {
-		$http.get('/api/lists/books')
+		ListService.getBookInLists()
 		.success(function (data){
 			var booksShow = [];
 

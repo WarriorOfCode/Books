@@ -1,14 +1,14 @@
 angular
 	.module('Books', ['ngAnimate', 'ui.bootstrap', 'pascalprecht.translate'])
-	.controller('LogoutCtrl', ['$scope', '$http', LogoutCtrl])
+	.controller('LogoutCtrl', ['$scope', 'UserService', LogoutCtrl])
 	.controller('SearchCtrl', ['$scope', SearchCtrl])
-	.controller('OfferCtrl', ['$scope', '$http', '$translate', OfferCtrl])
+	.controller('OfferCtrl', ['$scope', 'UserService', '$translate', OfferCtrl])
 	.config(['$translateProvider', TranslationConfig]);
 
 
-function LogoutCtrl($scope, $http) {
+function LogoutCtrl($scope, UserService) {
 	$scope.send = function () {
-		$http.get('/api/out')
+		UserService.logout()
 		.success(function(data){
 			location.reload();
 		})
@@ -26,11 +26,11 @@ function SearchCtrl($scope) {
 	};
 }
 
-function OfferCtrl($scope, $http, $translate) {
+function OfferCtrl($scope, UserService, $translate) {
 
 	$scope.send = function(){
 		if ($scope.book){
-			$http.put('/api/offer', $scope.book)
+			UserService.addOffer($scope.book)
 			.success(function(data){
 				$scope.book= {};
 				$translate('message.offer').then(function (data) {

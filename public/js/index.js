@@ -1,9 +1,9 @@
 angular
 	.module('Books')
-	.controller('BooksLists', ['$scope', '$http', BooksLists]);
+	.controller('BooksLists', ['$scope', 'ListService', BooksLists]);
 
-function BooksLists($scope, $http){
-	$http.get('/api/lists/newBooks')
+function BooksLists($scope, ListService){
+	ListService.getListNewBooks()
 	.success(function(data){
 		$scope.newBooks = data;
 	})
@@ -11,7 +11,7 @@ function BooksLists($scope, $http){
 		console.log(data)
 	});
 
-	$http.get('/api/lists/rating')
+	ListService.getListRatingBooks()
 	.success(function(data){
 		$scope.books = data;
 	})

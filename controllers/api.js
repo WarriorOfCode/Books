@@ -432,14 +432,14 @@ router.get('/user/:id/reviews', function(req, res){
 router.put('/book/:id/citation', function(req, res){
 	bookService.addCitation(req.params.id, req.session.id, req.body.text, function(err, rows){
 		if (err) throw err;
-		res.send(0);
+		res.json(0);
 	});
 });
 
 router.delete('/book/citation/:citationId', function(req, res){
 	bookService.deleteCitation(req.params.citationId, req.session.id, function(err, rows1){
 		if (err) throw err;
-		res.send("");
+		res.json("");
 	});
 });
 
