@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var connection = require('../db.js');
 var userService = require('../services/userService');
 var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');

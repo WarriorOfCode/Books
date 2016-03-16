@@ -2,6 +2,7 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
+var gulp = require('gulp');
 var api = require('./controllers/api');
 var admin = require('./controllers/admin');
 var pages = require('./controllers/pages');
