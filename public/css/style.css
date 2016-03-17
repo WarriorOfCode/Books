@@ -1,123 +1,91 @@
 /* STYLES FOR BOOK */
-
 .book-image img {
-	max-width: 100%;
-	min-height: 350px;
-}
+  max-width: 100%;
+  min-height: 350px; }
 
-.book-image input{
-	margin-top: 5px;
-	border: 1px solid #333333;
-}
+.book-image input {
+  margin-top: 5px;
+  border: 1px solid #333333; }
 
 /* STYLES FOR EDIT */
-
-.down{
-	margin-top: 15px;
-}
+.down {
+  margin-top: 15px; }
 
 /* STYLES FOR BOOKLIST*/
-
 .books img {
+  width: 200px;
+  height: 250px; }
 
-	width: 200px;
-	height: 250px;
-}
-
-
-.books div{
-	margin-bottom: 15px;
-	text-align: center;
-}
+.books div {
+  margin-bottom: 15px;
+  text-align: center; }
 
 /* STYLES FOR INDEX AND SEARCH*/
-.left{
-	margin-left: 20px;
-}
+.left {
+  margin-left: 20px; }
 
-.left-name{
-	padding: 0px 20px;
-}
+.left-name {
+  padding: 0px 20px; }
 
-.modal-body div{
-	margin: 5px 0;
-}
-
+.modal-body div {
+  margin: 5px 0; }
 
 /* STYLES FOR ADMIN PAGE*/
 .backsearch {
-	height: 70px;
-	width: 100%;
-}
-
-.backsearch input{
-	margin: 15px 0 0;
-}
+  height: 70px;
+  width: 100%; }
+  .backsearch input {
+    margin: 15px 0 0; }
 
 /*STYLES FOR RATING STARS*/
 .glyphicon.ng-scope.glyphicon-star {
-	font-size: 22px;
-}
+  font-size: 22px; }
 
 .glyphicon.ng-scope.glyphicon-star-empty {
-	font-size: 22px;
-}
+  font-size: 22px; }
 
 .book-image .label {
-	font-size: 13px;
-}
+  font-size: 13px; }
 
 /*STYLES FOR row-fluid offset*/
 .row-fluid .col-sm-offset-4 {
-	text-align: center;
-}
+  text-align: center; }
 
 .dropdown-menu a {
-	cursor: pointer;
-}
+  cursor: pointer; }
 
 /*STYLES FOR SHARE BOTTOMS*/
-
 .share-btn > a {
-    border: 1px solid #ccc;
-    padding: 5px;
-    font-size: 12px;
-    font-family: Verdana, Arial;
-}
-.share-btn > a:hover {
-    cursor: pointer;
-}
+  border: 1px solid #ccc;
+  padding: 5px;
+  font-size: 12px;
+  font-family: Verdana, Arial; }
+  .share-btn > a:hover {
+    cursor: pointer; }
 
 img {
-	display: block;
-	background: url('/images/cover.jpg') no-repeat;
-	margin: 0 auto;
-	min-height: 250px;
-	text-indent: -9000px;
-}
+  display: block;
+  background: url("/images/cover.jpg") no-repeat;
+  margin: 0 auto;
+  min-height: 250px;
+  text-indent: -9000px; }
 
 /* STYLES FOR HEADER */
-
 .head {
-	margin-top: 15px;
-}
-.navbar-brand {
-	height: 100px;
-	padding: 0;
-}
-.navbar-brand img {
-	display: inline;
-	width: 120px;
-	height: 100px;
-	margin-top: -5px;
-	margin-left: 15px;
-	min-height: 0px;
-}
+  margin-top: 15px; }
+  .head ul {
+    margin-top: 5px; }
 
-.head ul {
-	margin-top: 5px;
-}
+.navbar-brand {
+  height: 100px;
+  padding: 0; }
+  .navbar-brand img {
+    display: inline;
+    width: 120px;
+    height: 100px;
+    margin-top: -5px;
+    margin-left: 15px;
+    min-height: 0px; }
 
 .navbar {
-	border-radius: 0;
-}
+  border-radius: 0; }
