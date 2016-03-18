@@ -8,13 +8,14 @@
     "cookie-session": "^1.2.0",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
-    "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
     "mysql": "^2.10.0",
     "node-mysql-connect": "^1.1.0",
     "node-sass": "^3.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.2.0",
+    },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
