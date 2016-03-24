@@ -17,10 +17,9 @@
 		<div class="form-group" ng-class="{'has-error' : formA.email.$error.email}">
 			<label class="col-sm-3 control-label">Email</label>
 			<div class="col-sm-5">
-				<input name="email" type="email" ng-model="user.email" class="form-control" placeholder="Введите email" required>
+				<input name="email" type="email" ng-change="checkEmail()" ng-model="user.email" class="form-control" placeholder="Введите email" required>
 			</div>
 		</div>
-			<!-- <span ng-bind="emailError" ></span> -->
 			
 
 		<div class="form-group" >

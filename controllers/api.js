@@ -5,6 +5,18 @@ var authorService = require('../services/authorService');
 var bookService = require('../services/bookService');
 var listService = require('../services/listService');
 
+router.post('/email', function(req, res){
+	console.log(req.body.email)
+	userService.checkEmailUniqueness(req.body.email, 0, function(err, rows) {
+		if (err) throw err;
+		if (rows!= null && rows.length > 0){
+			res.json('1');
+		} else {
+			res.json('0');
+		}
+	});
+});
+
 router.get('/users', function (req, res){
 	userService.getUsers(function (err, rows) {
 		if (err) throw err;

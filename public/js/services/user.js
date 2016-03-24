@@ -19,7 +19,8 @@ angular
 			login: login,
 			logout: logout,
 			editPersonalInformation: editPersonalInformation,
-			editPassword: editPassword
+			editPassword: editPassword,
+			checkEmail: checkEmail
 		};
 
 		/**
@@ -113,6 +114,10 @@ angular
 
 		function editPassword(password) {
 			return $http.post('/api/edit', password)
+		}
+
+		function checkEmail(email) {
+			return $http.post('/api/email', email)
 		}
 
 	}]);
