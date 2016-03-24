@@ -20,7 +20,8 @@ angular
 			logout: logout,
 			editPersonalInformation: editPersonalInformation,
 			editPassword: editPassword,
-			checkEmail: checkEmail
+			checkEmail: checkEmail,
+			checkLogin: checkLogin
 		};
 
 		/**
@@ -117,7 +118,11 @@ angular
 		}
 
 		function checkEmail(email) {
-			return $http.post('/api/email', email)
+			return $http.post('/api/email', {email: email})
+		}
+
+		function checkLogin(login) {
+			return $http.post('/api/checkLogin', {login: login});
 		}
 
 	}]);

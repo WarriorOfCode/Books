@@ -121,8 +121,12 @@ function checkEmailUniqueness(email, userId, callback) {
 }
 
 function updateUserInformation(name, lastName, email, userId, callback) {
-	var updateSql = "UPDATE users SET name = ?, lastName = ?, email =? WHERE id = ?";
+	var updateSql = "UPDATE users SET name = ?, lastName = ?, email = ? WHERE id = ?";
 	connection.query(updateSql, [name, lastName, email, userId], callback);
+}
+
+function checkLogin(login, callback) {
+	connection.query("SELECT id FROM users WHERE login = ?", login, callback);
 }
 
 module.exports = {
@@ -143,5 +147,6 @@ module.exports = {
 	getUser: getUser,
 	insertUser: insertUser,
 	checkEmailUniqueness: checkEmailUniqueness,
-	updateUserInformation: updateUserInformation
+	updateUserInformation: updateUserInformation,
+	checkLogin: checkLogin
 };

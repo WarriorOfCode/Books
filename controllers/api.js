@@ -6,13 +6,23 @@ var bookService = require('../services/bookService');
 var listService = require('../services/listService');
 
 router.post('/email', function(req, res){
-	console.log(req.body.email)
 	userService.checkEmailUniqueness(req.body.email, 0, function(err, rows) {
 		if (err) throw err;
 		if (rows!= null && rows.length > 0){
-			res.json('1');
+			res.json(1);
 		} else {
-			res.json('0');
+			res.json(0);
+		}
+	});
+});
+
+router.post('/checkLogin', function(req, res){
+	userService.checkLogin(req.body.login, function(err, rows){
+		if (err) throw err;
+		if (rows!=null && rows.length > 0){
+			res.json(1);
+		} else {
+			res.json(0);
 		}
 	});
 });

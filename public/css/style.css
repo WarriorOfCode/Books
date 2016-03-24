@@ -89,3 +89,8 @@ img {
 
 .navbar {
   border-radius: 0; }
+
+  /*STYLES FOR FORM REGISTRATION*/
+  form input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+  }
