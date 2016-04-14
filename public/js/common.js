@@ -1,12 +1,35 @@
 angular
 	.module('Books', ['ngAnimate', 'ui.bootstrap', 'pascalprecht.translate'])
-	.controller('LogoutCtrl', ['$scope', 'UserService', LogoutCtrl])
+	.provider('environment', [environment])
+	.config(['environmentProvider', environmentConfig])
+	.controller('LogoutCtrl', ['$scope', 'UserService', 'environment', LogoutCtrl])
 	.controller('SearchCtrl', ['$scope', SearchCtrl])
 	.controller('OfferCtrl', ['$scope', 'UserService', '$translate', OfferCtrl])
 	.config(['$translateProvider', TranslationConfig]);
 
+function environment() {
+	var DevMode = undefined;
+	var UILanguage = undefined;
+	this.setDevMode = function(val){
+		DevMode = val;
+	}
+	this.setUILanguage = function(val){
+		UILanguage = val;
+	}
+	this.$get = function(){
+		return {
+			isDevMode:DevMode,
+			isUILanguage: UILanguage
+		}
+	}
+}
 
-function LogoutCtrl($scope, UserService) {
+function environmentConfig(environmentProvider) {
+	environmentProvider.setDevMode(true);
+	environmentProvider.setUILanguage("RU");
+}
+
+function LogoutCtrl($scope, UserService, environment) {
 	$scope.send = function () {
 		UserService.logout()
 		.success(function(data){
@@ -16,6 +39,8 @@ function LogoutCtrl($scope, UserService) {
 			console.log(data);
 		});
 	};
+	console.log(environment.isDevMode)
+	console.log(environment.isUILanguage)
 }
 
 function SearchCtrl($scope) {
